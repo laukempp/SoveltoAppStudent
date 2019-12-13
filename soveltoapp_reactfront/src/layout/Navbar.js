@@ -1,13 +1,12 @@
 import React from "react";
-import Navbar from "react-bootstrap/navbar";
-import Nav from "react-bootstrap/nav";
+import {Navbar, Nav} from "react-bootstrap";
 import { Link } from "react-router-dom";
-const Navigation = props => {
+export const Navigation = props => {
   return (
-    <div>
-    <Navbar className="navbar bg-dark">
+    
+   <Navbar className="navbar bg-light">
       <Nav.Link eventKey={1} as={Link} to="/dashboard">
-           <Nav.Item><h3>{props.title}</h3></Nav.Item>
+           <Nav.Item><h3 id="sovelto-red">{props.title}</h3></Nav.Item>
         </Nav.Link>
       <Nav.Item>
         <Nav.Link eventKey={1} as={Link} to="/dashboard/quiz">
@@ -24,12 +23,28 @@ const Navigation = props => {
           Edit Profile
         </Nav.Link>
       </Nav.Item>
-      
-     
-    </Navbar>
-    {/* <SearchPage /> */}
-    </div>
+      </Navbar>
+
+
+   /*  <Nav fill variant="tabs" defaultActiveKey="/dashboard">
+  <Nav.Item>
+    <Nav.Link href="/dashboard">Active</Nav.Link>
+  </Nav.Item>
+  <Nav.Item>
+    <Nav.Link eventKey="link-1">Loooonger NavLink</Nav.Link>
+  </Nav.Item>
+  <Nav.Item>
+    <Nav.Link eventKey="link-2">Link</Nav.Link>
+  </Nav.Item>
+  <Nav.Item>
+    <Nav.Link eventKey="disabled" disabled>
+      Disabled
+    </Nav.Link>
+  </Nav.Item>
+</Nav> */
+    
+   
   );
 };
 
-export default Navigation;
+/* export default Navigation; */
