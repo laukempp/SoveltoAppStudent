@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { loginUser, checkItem } from "../../service/Request";
+import { loginUser } from "../../service/Auth";
+import auth from '../../service/Auth';
 import { Redirect } from "react-router-dom";
-
 export default function Login() {
-  const [toDash, setToDash] = useState(false);
+  const [authT, setAuthT] = useState(auth.isAuthenticated());
+  
+  console.log("login authT", authT)
+
 
   const loginSchema = Yup.object().shape({
     login: Yup.string().required("This field is required."),
@@ -13,20 +16,24 @@ export default function Login() {
   });
   return (
     <>
-      {toDash ? <Redirect to="/dashboard" /> : null}
+      {authT ? <Redirect to="/dashboard" /> : null}
       <div>
         <Formik
           initialValues={{ login: "", password: "" }}
           validationSchema={loginSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
-            loginUser(values)
-              .then(res => {
+            loginUser(values).then(res => {
+              setAuthT(auth.isAuthenticated())
+            })
+            
+          
+              /* .then(res => {
                 return checkItem();
               })
               .then(item => {
                 setToDash(item);
-              });
+              }); */
             resetForm();
             setSubmitting(false);
           }}
