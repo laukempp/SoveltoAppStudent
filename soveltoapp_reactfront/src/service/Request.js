@@ -1,4 +1,4 @@
-const token = sessionStorage.getItem('tommi');
+
 
 export const fetchQuestions =(topic_id)=> {
   return fetch("api/topics/" + topic_id, {
