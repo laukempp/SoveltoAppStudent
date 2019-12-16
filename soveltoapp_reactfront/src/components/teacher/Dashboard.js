@@ -11,7 +11,12 @@ import Footer from '../../layout/Footer';
 export default function Dashboard() {
   const authT = auth.sessionStorageGetItem();
   
+
+/*   console.log("hello from dashboard", authT);
+  {authT ? null : <Redirect to="/" />} */
+
   console.log("hello from dashboard", authT);
+
 
   return (
     <div>
