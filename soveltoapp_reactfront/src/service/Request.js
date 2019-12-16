@@ -39,16 +39,3 @@ export const getTopics = topic => {
   return fetch(`${url}/ids`).then(res => res.json())
     .catch(err => err)
 }
-
-// export const deleteQuestion = id => {
-//   return fetch(`${url}/${id}`, {
-//     method: "DELETE"
-//   });
-// };
-
-// export const editQuestion = id => {
-//   return fetch(`${url}/${id}`, {
-//     method: "PUT",
-//     headers: { "Content-Type": "application/json" }
-//   });
-// };
