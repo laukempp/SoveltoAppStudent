@@ -38,4 +38,10 @@
 }
 #sovelto-red {
   color: red !important;
+  text-align: center;
+}
+.footer {
+  top: 100%;
+  left: 0%;
+  position: absolute;
 }
