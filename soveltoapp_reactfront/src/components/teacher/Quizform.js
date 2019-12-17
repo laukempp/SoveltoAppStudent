@@ -61,11 +61,11 @@ export default function QuizForm() {
     <>
       <div>
         <Formik
-          initialValues={{ name: "", number: 0, topic_id: 1 }}
+          initialValues={{ topics_id: 1, number: 1 }}
           validationSchema={quizformSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
-            fetchQuestions(parseInt(values.topic_id))
+            fetchQuestions(parseInt(values))
               .then(res => setQuestions(res))
               .then (res => setShow(true))
             resetForm();
@@ -101,10 +101,10 @@ export default function QuizForm() {
               <Field
                 as="select"
                 name="topic_id"
-                className={touched.topic_id && errors.topic_id ? "error" : null}
+                className={touched.topics_id && errors.topics_id ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.topic_id}
+                value={values.topics_id}
                 style={{ display: "block" }}
               >
                 {topicInput}
