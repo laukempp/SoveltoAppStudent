@@ -4,7 +4,7 @@ import auth from '../../service/Auth';
 
 import Quizform from './Quizform'
 import Questionform from './Questionform';
-import MainWebSocket from '../student/MainWebSocket';
+
 import {Navigation} from '../../layout/Navbar';
 import Footer from '../../layout/Footer';
 
