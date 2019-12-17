@@ -1,14 +1,12 @@
 import React from 'react'
-
 export default function Logout() {
     const tokenRemover = () => {
-        sessionStorage.removeItem("tommi");
+        sessionStorage.removeItem("tommi");   
     }
     tokenRemover();
-    return (
-        
-        <div>
-            Logout successful, bye!
+    return ( 
+        <div>  
+            <p>Logout successful!</p>    
         </div>
     )
 }

@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { loginUser } from "../../service/Auth";
 import auth from '../../service/Auth';
 import { Redirect } from "react-router-dom";
+import Footer from "../../layout/Footer";
 export default function Login() {
   const [authT, setAuthT] = useState(auth.isAuthenticated());
   
@@ -85,6 +86,7 @@ export default function Login() {
             </Form>
           )}
         </Formik>
+        <Footer />
       </div>
     </>
   );
