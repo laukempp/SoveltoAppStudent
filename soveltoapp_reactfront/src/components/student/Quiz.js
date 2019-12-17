@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { getStudentQs } from '../../service/Request'
-import { Formik, Form, Field } from 'formik';
-
-const Quiz = () => {
-
-
-    const [studentquestions, setStudentquestions] = useState([])
-    const fetchStudentQuestions = () => {
-        getStudentQs().then(res => setStudentquestions(res))
-    }
-
-    useEffect(() => {
-        fetchStudentQuestions()
-    }, [])
-    console.log(studentquestions);
-
+import React, {useState} from 'react'
+import socketIOClient from 'socket.io-client';
+export default function Quiz() {
+    const [message, setMessage] = useState ('');
+    const socket = socketIOClient('http://localhost:5001');
+     socket.on('eventMessageStudent', (message) => {
+        console.log('saapunut viesti', message)
+        messageSocket = message;
+        console.log(messageSocket);
+        setMessage(message);
+    })
+    /* .then(message => messageReturner(message)) */
+   let messageSocket = message
+    
     return (
         <div>
-            TÄHÄN TULEE OPPILAIDEN QUIZ
+            FUNCTIONAALINEN QUIZ {messageSocket}
         </div>
     )
 }

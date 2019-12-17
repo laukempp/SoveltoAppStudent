@@ -1,11 +1,16 @@
 const url = "/api/topics/";
 const token = sessionStorage.getItem("tommi");
 
-export const fetchQuestions = (topic_id) => {
-  return fetch(url + topic_id, {
+
+export const fetchQuestions =(querydata)=> {
+  return fetch(url, {
+    method: "POST",
     headers: {
-      'authorization': token,
-    }
+      "authorization": token,
+      "Accept": "application/json", 
+      "Content-type": "application/json"
+    },
+    body: JSON.stringify(querydata)
   })
     .then(res => res.json())
 };
@@ -26,6 +31,19 @@ export const getStudentQs = () => {
   return fetch("/api/questions/quiz")
     .then(res => res.json())
 };
+
+  export const postQuestion = question => {
+    return fetch(`${url}/question`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": token },
+      body: JSON.stringify(question)
+    });
+  };
+  
+  export const getTopics = topic => {
+    return fetch(url).then(res => res.json())
+      .catch(err => err)
+  }
 
 
 
@@ -57,16 +75,3 @@ export const checkItem = () => {
 
 export const redirect = () => {};
  */
-
-export const postQuestion = question => {
-  return fetch(`${url}/question`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": token },
-    body: JSON.stringify(question)
-  });
-};
-
-export const getTopics = topic => {
-  return fetch(`${url}`).then(res => res.json())
-    .catch(err => err)
-}
