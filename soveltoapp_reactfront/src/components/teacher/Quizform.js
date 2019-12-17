@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import auth from "../../service/Auth";
-import {fetchQuestions} from '../../service/Request'
+import {fetchQuestions, getTopics} from '../../service/Request'
 import { Redirect } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import socketIOClient from 'socket.io-client';
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
-  const [quizT, setQuizT] = useState('')
   const [show, setShow] = useState(false);
-  const [newQuiz, setNewQuiz] = useState({})
+ const [data, setData] = useState({title: '', idArray: []})
+  const [topics, setTopics] = useState([])
+
+  const handleClose = () => setShow(false);
   const socket = socketIOClient('http://localhost:5001');
   let eventBoolean = false;
   
@@ -24,26 +26,42 @@ export default function QuizForm() {
       socket.emit('eventMessage', 'tämä tulee dashboardilta, opettajalta oppilaalle')
   }
 
-  const handleClose = () => setShow(false);
+ 
 
-  
+  const fetchTopics = () => {
+    getTopics().then(res => setTopics(res))
+  }
+  useEffect(() => {
+    fetchTopics()
+  }, [])
+
+  let topicInput = topics.map(option => {
+    return (
+      <option key={option.id} value={option.id} label={option.title} />
+    )
+  })
+
 
   let box = questions.map(option => {
+      let count = 0;
+      let unikey = option.id;
       return (
         <div key={option.id}>
+          <div>
           <label>{option.question}</label>
+          </div>
+          <div>
           <input type="radio" id="correct"
-          name="correct"/>
+          name="correct" disabled/>
           <label htmlFor="correct">{option.correct_answer}</label>
-          <input type="radio" id="wrong1"
-          name="wrong1"/>
-          <label htmlFor="wrong1">{option.wrong_answer[0]}</label>
-          <input type="radio" id="wrong2"
-          name="wrong2"/>
-          <label htmlFor="wrong2">{option.wrong_answer[1]}</label>
-          <input type="radio" id="wrong3"
-          name="wrong3"/>
-          <label htmlFor="wrong3">{option.wrong_answer[2]}</label>
+          </div>
+          {option.wrong_answer.map((wrongy, index) => {
+            count++;
+            unikey=unikey+3;
+            return (<div key={unikey}> <input type="radio" id={count} name={count} disabled/>
+            <label key={unikey} htmlFor={count}>{wrongy}</label>
+              </div>)
+          })}
         </div>
       )       
     })
@@ -63,7 +81,6 @@ export default function QuizForm() {
             setSubmitting(true);
             fetchQuestions(parseInt(values.topic_id))
               .then(res => setQuestions(res))
-              .then(res => setQuizT(values.name))
               .then (res => setShow(true))
             resetForm();
             setSubmitting(false);
@@ -104,10 +121,7 @@ export default function QuizForm() {
                 value={values.topic_id}
                 style={{ display: "block" }}
               >
-                <option value="1" label="React" />
-                <option value="2" label="Angular" />
-                <option value="3" label="Scrum" />
-                <option value="4" label="Students" />
+                {topicInput}
   
               </Field>
 
@@ -144,7 +158,9 @@ export default function QuizForm() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button id="sendQuiz" variant="primary" >
+
+          <Button variant="primary">
+
             Send Quiz
           </Button>
         </Modal.Footer>
