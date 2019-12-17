@@ -6,14 +6,27 @@ import {fetchQuestions, getTopics} from '../../service/Request'
 import { Redirect } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-
+import socketIOClient from 'socket.io-client';
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [show, setShow] = useState(false);
-  const [data, setData] = useState({title: '', idArray: []})
+ const [data, setData] = useState({title: '', idArray: []})
   const [topics, setTopics] = useState([])
 
   const handleClose = () => setShow(false);
+  const socket = socketIOClient('http://localhost:5001');
+  let eventBoolean = false;
+  
+  const eventClick = () => {
+    eventBoolean = true;
+      socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
+  }
+  const eventMessage = () => {
+    
+      socket.emit('eventMessage', 'tämä tulee dashboardilta, opettajalta oppilaalle')
+  }
+
+ 
 
   const fetchTopics = () => {
     getTopics().then(res => setTopics(res))
@@ -27,6 +40,7 @@ export default function QuizForm() {
       <option key={option.id} value={option.id} label={option.title} />
     )
   })
+
 
   let box = questions.map(option => {
       let count = 0;
@@ -128,9 +142,12 @@ export default function QuizForm() {
               <button type="submit" disabled={isSubmitting}>
                 Submit
               </button>
+              
             </Form>
           )}
         </Formik>
+        <button onClick={eventClick}>start student</button>
+        <button onClick={eventMessage}>send message</button>
 
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -141,7 +158,9 @@ export default function QuizForm() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
+
           <Button variant="primary">
+
             Send Quiz
           </Button>
         </Modal.Footer>
