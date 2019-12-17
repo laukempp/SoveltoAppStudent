@@ -1,6 +1,7 @@
 const url = "/api/topics/";
 const token = sessionStorage.getItem("tommi");
 
+
 export const fetchQuestions =(querydata)=> {
   return fetch(url, {
     method: "POST",
@@ -11,20 +12,25 @@ export const fetchQuestions =(querydata)=> {
     },
     body: JSON.stringify(querydata)
   })
-  .then(res => res.json())
+    .then(res => res.json())
 };
 
 export const postQuiz = (quiz) => {
   return fetch("api/topics/quiz", {
     method: "POST",
-        headers: {
-        "Accept": "application/json", 
-        "Content-type": "application/json", 
-        "authorization": token
-        },
-        body: JSON.stringify(quiz)
-    })
-  }
+    headers: {
+      "Accept": "application/json",
+      "Content-type": "application/json",
+      "authorization": token
+    },
+    body: JSON.stringify(quiz)
+  })
+}
+
+export const getStudentQs = () => {
+  return fetch("/api/questions/quiz")
+    .then(res => res.json())
+};
 
   export const postQuestion = question => {
     return fetch(`${url}/question`, {

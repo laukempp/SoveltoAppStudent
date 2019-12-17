@@ -12,7 +12,6 @@ export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [show, setShow] = useState(false);
   const [data, setData] = useState([])
-
   const [topics, setTopics] = useState([])
 
   const createArray = (array) => {
@@ -32,11 +31,12 @@ export default function QuizForm() {
 
   const socket = socketIOClient('http://localhost:5001');
   let eventBoolean = false;
-  
+
   const eventClick = () => {
     eventBoolean = true;
-      socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
+    socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
   }
+
   const eventMessage = (message) => {
       socket.emit('eventMessage', `tämä on idarray ${message}`)
   }
@@ -56,28 +56,28 @@ export default function QuizForm() {
 
 
   let box = questions.map(option => {
-      let count = 0;
-      let unikey = option.id;
-      return (
-        <div key={option.id}>
-          <div>
+    let count = 0;
+    let unikey = option.id;
+    return (
+      <div key={option.id}>
+        <div>
           <label>{option.question}</label>
-          </div>
-          <div>
-          <input type="radio" id="correct"
-          name="correct" disabled/>
-          <label htmlFor="correct">{option.correct_answer}</label>
-          </div>
-          {option.wrong_answer.map((wrongy, index) => {
-            count++;
-            unikey=unikey+3;
-            return (<div key={unikey}> <input type="radio" id={count} name={count} disabled/>
-            <label key={unikey} htmlFor={count}>{wrongy}</label>
-              </div>)
-          })}
         </div>
-      )       
-    })
+        <div>
+          <input type="radio" id="correct"
+            name="correct" disabled />
+          <label htmlFor="correct">{option.correct_answer}</label>
+        </div>
+        {option.wrong_answer.map((wrongy, index) => {
+          count++;
+          unikey = unikey + 3;
+          return (<div key={unikey}> <input type="radio" id={count} name={count} disabled />
+            <label key={unikey} htmlFor={count}>{wrongy}</label>
+          </div>)
+        })}
+      </div>
+    )
+  })
 
   const quizformSchema = Yup.object().shape({
     name: Yup.string().required("This field is required."),
@@ -156,30 +156,30 @@ export default function QuizForm() {
               <button type="submit" disabled={isSubmitting}>
                 Submit
               </button>
-              
-            </Form>
-          )}
+
+              </Form>
+            )}
         </Formik>
         <button onClick={eventClick}>start student</button>
         <button onClick={buttonHappen}>send message</button>
 
         <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{box}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{box}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
           </Button>
-
           <Button variant="primary" onClick={buttonHappen}>
 
             Send Quiz
+          
           </Button>
-        </Modal.Footer>
-      </Modal>
-      
+          </Modal.Footer>
+        </Modal>
+
 
       </div>
     </>
