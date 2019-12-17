@@ -9,21 +9,24 @@ import Button from 'react-bootstrap/Button'
 
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
-  const [quiz, setQuiz] = useState({})
+  const [quizT, setQuizT] = useState('')
   const [show, setShow] = useState(false);
   const [newQuiz, setNewQuiz] = useState({})
 
   const handleClose = () => setShow(false);
 
   const createQuiz = (questions, title) => {
-    let question = questions.map(item => ( {title:title, 
+    let question = questions.map(item => {
+      return item.question
     })
-    let correct = questions.map(item => (item.correct_answer))
+    let correct = questions.map(item => {
+      return item.correct_answer})
+
     let answers = questions.map(item => {
-      return item.wrong_answer[0], + item.wrong_answer[1], item.wrong_answer[2], item.correct_answer
+      return [item.wrong_answer[0], item.wrong_answer[1], item.wrong_answer[2], item.correct_answer]
     })
 
-    return title, question, correct, answers
+    return ({title, question, correct, answers})
   }
 
   let box = questions.map(option => {
@@ -45,11 +48,7 @@ export default function QuizForm() {
         </div>
       )       
     })
-  
 
-  console.log(quiz)
-  console.log(questions)
-  
   const quizformSchema = Yup.object().shape({
     name: Yup.string().required("This field is required."),
     number: Yup.string().required("number is required")
@@ -65,7 +64,7 @@ export default function QuizForm() {
             setSubmitting(true);
             fetchQuestions(parseInt(values.topic_id))
               .then(res => setQuestions(res))
-              .then(res => setQuiz(values.name, values.number))
+              .then(res => setQuizT(values.name))
               .then (res => setShow(true))
             resetForm();
             setSubmitting(false);
@@ -143,7 +142,7 @@ export default function QuizForm() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={createQuiz(questions, quizT)}>
             Send Quiz
           </Button>
         </Modal.Footer>
