@@ -6,28 +6,27 @@ import {fetchQuestions} from '../../service/Request'
 import { Redirect } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
-
+import socketIOClient from 'socket.io-client';
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [quizT, setQuizT] = useState('')
   const [show, setShow] = useState(false);
   const [newQuiz, setNewQuiz] = useState({})
+  const socket = socketIOClient('http://localhost:5001');
+  let eventBoolean = false;
+  
+  const eventClick = () => {
+    eventBoolean = true;
+      socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
+  }
+  const eventMessage = () => {
+    
+      socket.emit('eventMessage', 'tämä tulee dashboardilta, opettajalta oppilaalle')
+  }
 
   const handleClose = () => setShow(false);
 
-  const createQuiz = (questions, title) => {
-    let question = questions.map(item => {
-      return item.question
-    })
-    let correct = questions.map(item => {
-      return item.correct_answer})
-
-    let answers = questions.map(item => {
-      return [item.wrong_answer[0], item.wrong_answer[1], item.wrong_answer[2], item.correct_answer]
-    })
-
-    return ({title, question, correct, answers})
-  }
+  
 
   let box = questions.map(option => {
       return (
@@ -129,9 +128,12 @@ export default function QuizForm() {
               <button type="submit" disabled={isSubmitting}>
                 Submit
               </button>
+              
             </Form>
           )}
         </Formik>
+        <button onClick={eventClick}>start student</button>
+        <button onClick={eventMessage}>send message</button>
 
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -142,7 +144,7 @@ export default function QuizForm() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={createQuiz(questions, quizT)}>
+          <Button id="sendQuiz" variant="primary" >
             Send Quiz
           </Button>
         </Modal.Footer>
