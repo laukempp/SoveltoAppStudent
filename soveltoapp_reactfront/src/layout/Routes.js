@@ -18,7 +18,7 @@ const Routes = () => (
     <Switch>
       <Route exact path="/" component={Login} />
       <Route exact path="/dashboard" component={Dashboard} />
-       <Route exact path="/dashboard/quiz" component={Preview} />
+      {/* <Route exact path="/dashboard/quiz" component={Preview} />*/}
       <Route exact path="/dashboard/question" component={Questionform} /> 
       <Route exact path="/student/" component={MainWebSocket} />
       <Route exact path="/student/wait" component={MainWebSocket} />
