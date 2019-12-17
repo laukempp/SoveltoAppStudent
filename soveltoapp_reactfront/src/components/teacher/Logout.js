@@ -1,14 +1,12 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom';
+import auth from '../../service/Auth'
 export default function Logout() {
-    const tokenRemover = () => {
-        sessionStorage.removeItem("tommi");
-    }
-    tokenRemover();
-    return (
-        
-        <div>
-            Logout successful, bye!
+          auth.logOut();
+    return ( 
+        <div>  
+            <p>Logout successful!</p> 
+            
         </div>
     )
 }

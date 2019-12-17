@@ -1,5 +1,5 @@
 import React from "react";
-//import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import auth from '../../service/Auth';
 
 import Quizform from './Quizform'
@@ -9,15 +9,15 @@ import {Navigation} from '../../layout/Navbar';
 import Footer from '../../layout/Footer';
 
 export default function Dashboard() {
-  const authT = sessionStorage.getItem("tommi");
+  const authT = auth.sessionStorageGetItem();
 
   console.log("hello from dashboard", authT);
 
-  /*{authT ? null : <Redirect to="/" />}*/
+ 
 
   return (
     <div>
-
+ {authT ? null : <Redirect to="/login" />}
       <Navigation title={'Soveltommi'} />
       
       
