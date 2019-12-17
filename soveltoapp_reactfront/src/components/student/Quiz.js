@@ -13,6 +13,7 @@ export default function Quiz() {
         setMessage(message);
     })
     /* .then(message => messageReturner(message)) */
+
     let messageSocket = message
 
 
@@ -56,3 +57,4 @@ export default function Quiz() {
     }
 
 }
+

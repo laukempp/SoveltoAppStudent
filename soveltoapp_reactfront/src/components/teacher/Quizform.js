@@ -1,19 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import auth from "../../service/Auth";
-import { fetchQuestions, getTopics } from '../../service/Request'
-import { Redirect } from "react-router-dom";
+import {fetchQuestions, getTopics} from '../../service/Request'
+/*import auth from "../../service/Auth";
+import { Redirect } from "react-router-dom";*/
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import socketIOClient from 'socket.io-client';
+
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [show, setShow] = useState(false);
-  const [data, setData] = useState({ title: '', idArray: [] })
+  const [data, setData] = useState([])
   const [topics, setTopics] = useState([])
 
+  const createArray = (array) => {
+    return array.map(option => {
+      let pip = option.id
+      return pip;
+    })
+  }
+
   const handleClose = () => setShow(false);
+
+  const buttonHappen = () => {
+    const tama = createArray(questions);
+    eventMessage(tama)
+    eventClick()
+  }
+
   const socket = socketIOClient('http://localhost:5001');
   let eventBoolean = false;
 
@@ -21,12 +36,10 @@ export default function QuizForm() {
     eventBoolean = true;
     socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
   }
-  const eventMessage = () => {
-    eventBoolean = true;
-    socket.emit('eventMessage', eventBoolean)
+
+  const eventMessage = (message) => {
+      socket.emit('eventMessage', `tämä on idarray ${message}`)
   }
-
-
 
   const fetchTopics = () => {
     getTopics().then(res => setTopics(res))
@@ -75,13 +88,14 @@ export default function QuizForm() {
     <>
       <div>
         <Formik
-          initialValues={{ name: "", number: 0, topic_id: 1 }}
+          initialValues={{title: '', topics_id: 1, number: 0 }}
           validationSchema={quizformSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
-            fetchQuestions(parseInt(values.topic_id))
+            fetchQuestions(values)
               .then(res => setQuestions(res))
-              .then(res => setShow(true))
+              .then(res => setData(values.title))
+              .then (res => setShow(true))
             resetForm();
             setSubmitting(false);
           }}
@@ -95,59 +109,59 @@ export default function QuizForm() {
             handleBlur,
             handleSubmit
           }) => (
-              <Form onSubmit={handleSubmit}>
-                <Field
-                  type="name"
-                  name="name"
-                  placeholder="Kyselyn nimi"
-                  className={touched.name && errors.name ? "error" : null}
-                  onChange={handleChange}
-                  autoComplete="off"
-                  onBlur={handleBlur}
-                  value={values.name || ""}
-                />
-                <ErrorMessage
-                  component="div"
-                  name="name"
-                  className="invalidQName"
-                />
+            <Form onSubmit={handleSubmit}>
+              <Field
+                type="name"
+                name="name"
+                placeholder="Kyselyn nimi"
+                className={touched.name && errors.name ? "error" : null}
+                onChange={handleChange}
+                autoComplete="off"
+                onBlur={handleBlur}
+                value={values.name || ""}
+              />
+              <ErrorMessage
+                component="div"
+                name="name"
+                className="invalidQName"
+              />
 
-                <Field
-                  as="select"
-                  name="topic_id"
-                  className={touched.topic_id && errors.topic_id ? "error" : null}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.topic_id}
-                  style={{ display: "block" }}
-                >
-                  {topicInput}
+              <Field
+                as="select"
+                name="topic_id"
+                className={touched.topics_id && errors.topics_id ? "error" : null}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.topics_id}
+                style={{ display: "block" }}
+              >
+                {topicInput}
+  
+              </Field>
 
-                </Field>
+              <Field
+                type="number"
+                name="number"
+                className={touched.number && errors.number ? "error" : null}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.number || ""}
+              />
+              <ErrorMessage
+                component="div"
+                name="number"
+                className="invalidQNumber"
+              />
 
-                <Field
-                  type="number"
-                  name="number"
-                  className={touched.number && errors.number ? "error" : null}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.number || ""}
-                />
-                <ErrorMessage
-                  component="div"
-                  name="number"
-                  className="invalidQNumber"
-                />
-
-                <button type="submit" disabled={isSubmitting}>
-                  Submit
+              <button type="submit" disabled={isSubmitting}>
+                Submit
               </button>
 
               </Form>
             )}
         </Formik>
         <button onClick={eventClick}>start student</button>
-        <button onClick={eventMessage}>send message</button>
+        <button onClick={buttonHappen}>send message</button>
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
@@ -158,10 +172,10 @@ export default function QuizForm() {
             <Button variant="secondary" onClick={handleClose}>
               Close
           </Button>
+          <Button variant="primary" onClick={buttonHappen}>
 
-            <Button variant="primary">
-
-              Send Quiz
+            Send Quiz
+          
           </Button>
           </Modal.Footer>
         </Modal>
