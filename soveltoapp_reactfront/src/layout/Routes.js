@@ -11,7 +11,7 @@ import MainWebSocket from '../components/student/MainWebSocket'
 /*import Wait from "../components/student/Wait";*/
 import Quiz from "../components/student/Quiz";
 import Logout from '../components/teacher/Logout';
-import Footer from "./Footer";
+import Result from "../components/student/Result";
 const Routes = () => (
   <Router>
     <Switch>
@@ -22,6 +22,7 @@ const Routes = () => (
       <Route exact path="/student/" component={MainWebSocket} />
       <Route exact path="/student/wait" component={MainWebSocket} />
       <Route exact path="/student/quiz" component={Quiz} />
+      <Route exact path="/student/results" component={Result} />
       <Route path="/logout" component={Logout} />
       <Route path="/dashboard/*" component={Dashboard} />
       <Route path="/student/*" component={MainWebSocket} />
