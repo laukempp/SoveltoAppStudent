@@ -1,32 +1,45 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import auth from "../../service/Auth";
 import {fetchQuestions, getTopics} from '../../service/Request'
-import { Redirect } from "react-router-dom";
+/*import auth from "../../service/Auth";
+import { Redirect } from "react-router-dom";*/
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import socketIOClient from 'socket.io-client';
+
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [show, setShow] = useState(false);
- const [data, setData] = useState({title: '', idArray: []})
+  const [data, setData] = useState([])
   const [topics, setTopics] = useState([])
 
-  const handleClose = () => setShow(false);
-  const socket = socketIOClient('http://localhost:5001');
-  let eventBoolean = false;
-  
-  const eventClick = () => {
-    eventBoolean = true;
-      socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
-  }
-  const eventMessage = () => {
-    
-      socket.emit('eventMessage', 'tämä tulee dashboardilta, opettajalta oppilaalle')
+  const createArray = (array) => {
+    return array.map(option => {
+      let pip = option.id
+      return pip;
+    })
   }
 
- 
+  const handleClose = () => setShow(false);
+
+  const buttonHappen = () => {
+    const tama = createArray(questions);
+    eventMessage(tama)
+    eventClick()
+  }
+
+  const socket = socketIOClient('http://localhost:5001');
+  let eventBoolean = false;
+
+  const eventClick = () => {
+    eventBoolean = true;
+    socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
+  }
+
+  const eventMessage = (message) => {
+      socket.emit('eventMessage', `tämä on idarray ${message}`)
+  }
 
   const fetchTopics = () => {
     getTopics().then(res => setTopics(res))
@@ -43,28 +56,28 @@ export default function QuizForm() {
 
 
   let box = questions.map(option => {
-      let count = 0;
-      let unikey = option.id;
-      return (
-        <div key={option.id}>
-          <div>
+    let count = 0;
+    let unikey = option.id;
+    return (
+      <div key={option.id}>
+        <div>
           <label>{option.question}</label>
-          </div>
-          <div>
-          <input type="radio" id="correct"
-          name="correct" disabled/>
-          <label htmlFor="correct">{option.correct_answer}</label>
-          </div>
-          {option.wrong_answer.map((wrongy, index) => {
-            count++;
-            unikey=unikey+3;
-            return (<div key={unikey}> <input type="radio" id={count} name={count} disabled/>
-            <label key={unikey} htmlFor={count}>{wrongy}</label>
-              </div>)
-          })}
         </div>
-      )       
-    })
+        <div>
+          <input type="radio" id="correct"
+            name="correct" disabled />
+          <label htmlFor="correct">{option.correct_answer}</label>
+        </div>
+        {option.wrong_answer.map((wrongy, index) => {
+          count++;
+          unikey = unikey + 3;
+          return (<div key={unikey}> <input type="radio" id={count} name={count} disabled />
+            <label key={unikey} htmlFor={count}>{wrongy}</label>
+          </div>)
+        })}
+      </div>
+    )
+  })
 
   const quizformSchema = Yup.object().shape({
     name: Yup.string().required("This field is required."),
@@ -75,12 +88,13 @@ export default function QuizForm() {
     <>
       <div>
         <Formik
-          initialValues={{ name: "", number: 0, topic_id: 1 }}
+          initialValues={{title: '', topics_id: 1, number: 0 }}
           validationSchema={quizformSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
-            fetchQuestions(parseInt(values.topic_id))
+            fetchQuestions(values)
               .then(res => setQuestions(res))
+              .then(res => setData(values.title))
               .then (res => setShow(true))
             resetForm();
             setSubmitting(false);
@@ -115,10 +129,10 @@ export default function QuizForm() {
               <Field
                 as="select"
                 name="topic_id"
-                className={touched.topic_id && errors.topic_id ? "error" : null}
+                className={touched.topics_id && errors.topics_id ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.topic_id}
+                value={values.topics_id}
                 style={{ display: "block" }}
               >
                 {topicInput}
@@ -142,30 +156,30 @@ export default function QuizForm() {
               <button type="submit" disabled={isSubmitting}>
                 Submit
               </button>
-              
-            </Form>
-          )}
+
+              </Form>
+            )}
         </Formik>
         <button onClick={eventClick}>start student</button>
-        <button onClick={eventMessage}>send message</button>
+        <button onClick={buttonHappen}>send message</button>
 
         <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{box}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
+          <Modal.Header closeButton>
+            <Modal.Title>Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>{box}</Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
           </Button>
-
-          <Button variant="primary">
+          <Button variant="primary" onClick={buttonHappen}>
 
             Send Quiz
+          
           </Button>
-        </Modal.Footer>
-      </Modal>
-      
+          </Modal.Footer>
+        </Modal>
+
 
       </div>
     </>
