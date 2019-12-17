@@ -11,40 +11,24 @@ export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [quizT, setQuizT] = useState('')
   const [show, setShow] = useState(false);
-  const [newQuiz, setNewQuiz] = useState({})
+  const [idarray, setIdarray] = useState([])
 
   const handleClose = () => setShow(false);
-
-  const createQuiz = (questions, title) => {
-    let question = questions.map(item => {
-      return item.question
-    })
-    let correct = questions.map(item => {
-      return item.correct_answer})
-
-    let answers = questions.map(item => {
-      return [item.wrong_answer[0], item.wrong_answer[1], item.wrong_answer[2], item.correct_answer]
-    })
-
-    return ({title, question, correct, answers})
-  }
+console.log(questions.wrong_answer)
 
   let box = questions.map(option => {
+      let count = 0;
       return (
         <div key={option.id}>
           <label>{option.question}</label>
           <input type="radio" id="correct"
-          name="correct"/>
+          name="correct" disabled/>
           <label htmlFor="correct">{option.correct_answer}</label>
-          <input type="radio" id="wrong1"
-          name="wrong1"/>
-          <label htmlFor="wrong1">{option.wrong_answer[0]}</label>
-          <input type="radio" id="wrong2"
-          name="wrong2"/>
-          <label htmlFor="wrong2">{option.wrong_answer[1]}</label>
-          <input type="radio" id="wrong3"
-          name="wrong3"/>
-          <label htmlFor="wrong3">{option.wrong_answer[2]}</label>
+          {option.wrong_answer.map((wrongy, index) => {
+            count++;
+            return (<> <label key={index} htmlFor={count}>{wrongy}</label>
+                  <input type="radio" id={count} name={count} disabled/></>)
+          })}
         </div>
       )       
     })
@@ -142,7 +126,7 @@ export default function QuizForm() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={createQuiz(questions, quizT)}>
+          <Button variant="primary">
             Send Quiz
           </Button>
         </Modal.Footer>
