@@ -1,19 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import auth from "../../service/Auth";
 import {fetchQuestions, getTopics} from '../../service/Request'
-import { Redirect } from "react-router-dom";
+/*import auth from "../../service/Auth";
+import { Redirect } from "react-router-dom";*/
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import socketIOClient from 'socket.io-client';
+
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [show, setShow] = useState(false);
- const [data, setData] = useState({title: '', idArray: []})
+  const [data, setData] = useState([])
+
   const [topics, setTopics] = useState([])
 
+  const createArray = (array) => {
+    return array.map(option => {
+      let pip = option.id
+      return pip;
+    })
+  }
+
   const handleClose = () => setShow(false);
+
+  const buttonHappen = () => {
+    const tama = createArray(questions);
+    eventMessage(tama)
+    eventClick()
+  }
+
   const socket = socketIOClient('http://localhost:5001');
   let eventBoolean = false;
   
@@ -21,12 +37,9 @@ export default function QuizForm() {
     eventBoolean = true;
       socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
   }
-  const eventMessage = () => {
-    
-      socket.emit('eventMessage', 'tämä tulee dashboardilta, opettajalta oppilaalle')
+  const eventMessage = (message) => {
+      socket.emit('eventMessage', `tämä on idarray ${message}`)
   }
-
- 
 
   const fetchTopics = () => {
     getTopics().then(res => setTopics(res))
@@ -75,12 +88,13 @@ export default function QuizForm() {
     <>
       <div>
         <Formik
-          initialValues={{ topics_id: 1, number: 1 }}
+          initialValues={{title: '', topics_id: 1, number: 0 }}
           validationSchema={quizformSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
-            fetchQuestions(parseInt(values))
+            fetchQuestions(values)
               .then(res => setQuestions(res))
+              .then(res => setData(values.title))
               .then (res => setShow(true))
             resetForm();
             setSubmitting(false);
@@ -147,7 +161,7 @@ export default function QuizForm() {
           )}
         </Formik>
         <button onClick={eventClick}>start student</button>
-        <button onClick={eventMessage}>send message</button>
+        <button onClick={buttonHappen}>send message</button>
 
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -159,7 +173,7 @@ export default function QuizForm() {
             Close
           </Button>
 
-          <Button variant="primary">
+          <Button variant="primary" onClick={buttonHappen}>
 
             Send Quiz
           </Button>
