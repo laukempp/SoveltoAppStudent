@@ -3,14 +3,12 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
 } from "react-router-dom";
 import Login from "../components/teacher/Login";
 import Dashboard from "../components/teacher/Dashboard";
-import Preview from "../components/teacher/Preview";
 import Questionform from "../components/teacher/Questionform";
 import MainWebSocket from '../components/student/MainWebSocket'
-import Wait from "../components/student/Wait";
+/*import Wait from "../components/student/Wait";*/
 import Quiz from "../components/student/Quiz";
 
 const Routes = () => (

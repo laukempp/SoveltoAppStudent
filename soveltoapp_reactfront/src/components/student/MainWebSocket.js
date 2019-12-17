@@ -1,7 +1,7 @@
-import React, { Component, setState } from 'react'
+import React, { Component } from 'react'
 import Wait from './Wait';
 import socketIOClient from 'socket.io-client';
-import Quiz from './Quiz';
+
 /* class Main extends Component {
     ws = new WebSocket('ws://localhost:5000/ws')
 
