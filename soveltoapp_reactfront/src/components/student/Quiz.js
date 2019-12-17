@@ -37,10 +37,14 @@ export default function Quiz() {
         })
 
         return (
-            <div>
-                {studentQs}
-                {messageSocket}
-            </div>
+            <form className="" >
+                <span>{studentQs}</span>
+
+
+                <button type="submit"> </button>
+
+            </form>
+
         )
     }
     else {

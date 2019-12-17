@@ -2,12 +2,12 @@ const url = "/api/topics/";
 const token = sessionStorage.getItem("tommi");
 
 
-export const fetchQuestions =(querydata)=> {
+export const fetchQuestions = (querydata) => {
   return fetch(url, {
     method: "POST",
     headers: {
       "authorization": token,
-      "Accept": "application/json", 
+      "Accept": "application/json",
       "Content-type": "application/json"
     },
     body: JSON.stringify(querydata)
@@ -32,23 +32,23 @@ export const getStudentQs = () => {
     .then(res => res.json())
 };
 
-  export const postQuestion = question => {
-    return fetch(`${url}/question`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": token },
-      body: JSON.stringify(question)
-    });
-  };
-  
-  export const getTopics = topic => {
-    return fetch(url).then(res => res.json())
-      .catch(err => err)
-  }
+export const postQuestion = question => {
+  return fetch(`${url}question`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": token },
+    body: JSON.stringify(question)
+  });
+};
+
+export const getTopics = topic => {
+  return fetch(url).then(res => res.json())
+    .catch(err => err)
+}
 
 
 
 
-/* 
+/*
 
 
 //Kirjaudutaan sisään
