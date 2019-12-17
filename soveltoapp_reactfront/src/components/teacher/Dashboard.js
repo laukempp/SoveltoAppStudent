@@ -10,12 +10,10 @@ import Footer from '../../layout/Footer';
 
 export default function Dashboard() {
   const authT = auth.sessionStorageGetItem();
-  
-
-/*   console.log("hello from dashboard", authT);
-  {authT ? null : <Redirect to="/" />} */
 
   console.log("hello from dashboard", authT);
+
+  //siirrä alas {authT ? null : <Redirect to="/" />}
 
 
   return (
@@ -25,7 +23,7 @@ export default function Dashboard() {
       <Quizform/>
 
       <Navigation title={'Soveltommi'} />
-      {authT ? null : <Redirect to="/" />}
+      
       
       <h1>Tämä on dashboard</h1>
 
