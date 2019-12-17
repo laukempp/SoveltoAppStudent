@@ -30,7 +30,7 @@ export default function QuestionForm() {
   useEffect(() => {
     fetchTopics()
   }, [])
-  console.log(topics);
+
 
   let topicInput = topics.map(option => {
     return (
@@ -71,7 +71,7 @@ export default function QuestionForm() {
                 <Field
                   as="select"
                   name="topics_id"
-                  ClassName={touched.topics_id && errors.topics_id ? "error" : null}
+                  className={touched.topics_id && errors.topics_id ? "error" : null}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.topics_id}

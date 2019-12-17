@@ -3,8 +3,8 @@ import { Redirect } from "react-router-dom";
 import auth from '../../service/Auth';
 
 import Quizform from './Quizform'
-
-
+import Questionform from './Questionform';
+import MainWebSocket from '../student/MainWebSocket';
 import {Navigation} from '../../layout/Navbar';
 import Footer from '../../layout/Footer';
 
@@ -13,20 +13,17 @@ export default function Dashboard() {
 
   console.log("hello from dashboard", authT);
 
-  //siirrä alas {authT ? null : <Redirect to="/" />}
-
 
   return (
     <div>
 
-    
-      <Quizform/>
-
       <Navigation title={'Soveltommi'} />
       
-      
+      {authT ? null : <Redirect to="/" />}
       <h1>Tämä on dashboard</h1>
-
+      <Quizform/>
+     {/*  <Questionform /> */}
+    
     <Footer />
 
     </div>
