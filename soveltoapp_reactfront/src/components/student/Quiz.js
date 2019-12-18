@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 import { getStudentQs } from "../../service/Request";
 import Question from "./Question";
+import "../../styles/quiz.css";
 export default function Quiz() {
   const [message, setMessage] = useState("");
   const [questions, setQuestions] = useState([]);
@@ -13,8 +14,11 @@ export default function Quiz() {
     setMessage(message);
   });
   /* .then(message => messageReturner(message)) */
-
   let messageSocket = message;
+
+
+  //   const [score, setScore] = useState(0)
+  //   const score = 0;
 
   useEffect(() => {
     getQuestions();
@@ -23,19 +27,21 @@ export default function Quiz() {
     getStudentQs().then(res => setQuestions(res));
   };
   console.log(questions);
-  if (message === false) {
+  if (message === true) {
     console.log(questions);
 
     const studentQs = questions.map(result => {
-      return <Question result={result} />;
+      return <Question result={result} key={result.id} />;
     });
 
     return (
-      <form className="">
-        <span>{studentQs}</span>
+      <div className="container">
+        <form className="">
+          <div className="qnbox">{studentQs}</div>
 
-        <button type="submit"> </button>
-      </form>
+          <button type="submit"> Submit the quiz </button>
+        </form>
+      </div>
     );
   } else {
     return <div>ei oikeuksia {messageSocket}</div>;

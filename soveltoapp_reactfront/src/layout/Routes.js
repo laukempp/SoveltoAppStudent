@@ -4,11 +4,10 @@ import Login from "../components/teacher/Login";
 import Dashboard from "../components/teacher/Dashboard";
 import Questionform from "../components/teacher/Questionform";
 import MainWebSocket from "../components/student/MainWebSocket";
-/*import Wait from "../components/student/Wait";*/
-// import Quiz from "../components/student/Quiz";
+// import Wait from "../components/student/Wait";
+import Quiz from "../components/student/Quiz";
 import Logout from "../components/teacher/Logout";
 import Result from "../components/student/Result";
-import Quiz from "../components/student/quizzzz";
 const Routes = () => (
   <Router>
     <Switch>
@@ -23,7 +22,6 @@ const Routes = () => (
       <Route path="/logout" component={Logout} />
       <Route path="/dashboard/*" component={Dashboard} />
       <Route path="/student/*" component={MainWebSocket} />
-      <Route path="/quizzz" component={Quiz} />
       <Route component={Login} />
     </Switch>
   </Router>

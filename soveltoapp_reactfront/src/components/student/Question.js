@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
+import "../../styles/quiz.css";
 
 const Question = ({ result }) => {
   const [singlequestion, setsingleQuestion] = useState();
   const [counter, setCounter] = useState(0);
+  //   const [answerChosen, setAnswerChosen] = useState("");
   console.log(result);
 
   let arrayy = [result.correct_answer];
   const answers = result.wrong_answer.map(result_ => {
     arrayy.push(result_);
   });
+
+  //   const value = 0;
+
+  //   const radioChangeHandler = event => {};
+
 
   const shuffle = arr => {
     let i, j, temp;
@@ -26,18 +33,17 @@ const Question = ({ result }) => {
   const shuffledAnswers = shuffled.map(input => {
     return (
       <div>
-        {" "}
-        <input type="radio" name="answer" /> <label>{input}</label>{" "}
+        <input type="radio" value={input} /> <label>{input}</label>
       </div>
     );
   });
 
   return (
     <div>
-      <div>
-        <h1>{result.question}</h1>
+      <div className="qntxtbox">
+        <b>{result.question}</b>
       </div>
-      <p>{shuffledAnswers}</p>
+      <div className="answerDiv">{shuffledAnswers}</div>
     </div>
   );
 };
