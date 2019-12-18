@@ -9,29 +9,31 @@ export default function Quiz() {
     socket.on('eventMessageStudent', (message) => {
         console.log('saapunut viesti', message)
         messageSocket = message;
-        console.log(messageSocket);
+        console.log("tämä näin" + message.idArray);
         setMessage(message);
+        let helpme = {idArray: [1,2,3]};
+        console.log('näin' + helpme)
+        getQuestions(message)
     })
     /* .then(message => messageReturner(message)) */
 
     let messageSocket = message
 
+    /*if(message) {
+        sessionStorage.setItem('started', true)
+    }*/
 
-    useEffect(() => {
-        getQuestions()
-    }, [])
-    const getQuestions = () => {
-
-        getStudentQs().then(res => setQuestions(res))
-
+    const getQuestions = (helpme) => {
+        getStudentQs(helpme).then(res => setQuestions(res))
     }
+ 
     console.log(questions);
-    if (message === true) {
+
+    if (sessionStorage.getItem('started')) {
         console.log(questions);
 
-
-
         const studentQs = questions.map(result => {
+
             return (
                 <Question result={result} />
             )
@@ -40,7 +42,7 @@ export default function Quiz() {
         return (
             <div>
                 {studentQs}
-                {messageSocket}
+                {messageSocket.idArray}
             </div>
         )
     }
