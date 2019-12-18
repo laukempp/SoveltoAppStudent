@@ -151,6 +151,8 @@ export default function QuizForm() {
                 type="number"
                 name="number"
                 id="kysynum"
+                placeholder="Kysymysten määrä"
+
                 className={touched.number && errors.number ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -161,10 +163,12 @@ export default function QuizForm() {
                 name="number"
                 className="invalidQNumber"
               />
+
             <div className="em">
               <button className="btnLogin" type="submit" disabled={isSubmitting}>
                 Submit
               </button></div>
+
 
               </Form>
             )}
