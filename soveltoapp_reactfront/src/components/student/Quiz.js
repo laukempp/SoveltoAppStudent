@@ -10,7 +10,7 @@ export default function Quiz({history}) {
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
   const [open, setOpen] = useState(false);
-  const [scoreArray, setScoreArray] = useState({});
+  const [isDir, setIsDir] = useState(false)
 
   let newObject = { idArray: [] };
   let scoreObject = {nickname: '', score: []};
@@ -43,7 +43,12 @@ export default function Quiz({history}) {
     sessionStorage.removeItem('pimpeliPom')
     pointArray.push(point);
     console.log("pointArray: " + pointArray);
-    sessionStorage.setItem('pimpelipom', pointArray)
+    let length = pointArray.length;
+    let helpArray = pointArray.reduce((a, b) => a + b, 0)
+    console.log('tämä tässä on ' + length + " ja tämä on apu " + helpArray )
+    let toinenApu = parseInt(helpArray/length*100);
+    console.log("apu " + toinenApu)
+    sessionStorage.setItem('pimpelipom', toinenApu)
     /*history.push({
         pathname: "/student/results",
         state: {array: pointArray}
@@ -51,8 +56,7 @@ export default function Quiz({history}) {
 }
 
 const createObject =(one1, one2) => {
-    let newOne = JSON.parse("[" + one2 + "]");
-    scoreObject["score"] = newOne;
+    scoreObject["score"] = parseInt(one2);
     scoreObject["nickname"] = one1;
     console.log(scoreObject)
     return scoreObject
@@ -89,6 +93,10 @@ const createObject =(one1, one2) => {
             .then(() => {sessionStorage.setItem('piip', values.nickname)})
             .then(() => {postScores(createObject(sessionStorage.getItem('piip'),
                 sessionStorage.getItem('pimpelipom')))})
+            .then(() => {history.push({
+                pathname: "/student/results",
+                state: {}
+            })})
             setSubmitting(false);
           }}
         >

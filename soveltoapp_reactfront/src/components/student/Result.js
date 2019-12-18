@@ -16,19 +16,21 @@ export default class Score extends Component {
 
     render() {
         return (
+            <div>
+                <h2>Miten meni noin niin kuin omasta mielestä?</h2>
                 <table>
-                    <th>NAME</th><th>SCORE</th>
                 <tbody>
-                    {
-                    this.state.scores.map((item) =>{
-                    return <tr key={item._id}>
-                        <td>{item.name}</td>
-                        <td>{item.score}</td>
-                        </tr>
-                    })
-                    }
+                    <tr>
+                    <th>Nimimerkki</th>
+                    <th>Tulos</th>
+                    </tr>
+                    <tr>
+                        <td>{sessionStorage.getItem('piip')}</td>
+                        <td>{sessionStorage.getItem('pimpelipom')}%</td>
+                    </tr>
                     </tbody>
                 </table>
+                </div>
         )
     }
 }
