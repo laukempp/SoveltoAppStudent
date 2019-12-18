@@ -47,7 +47,7 @@ export default function Quiz() {
     else {
         return (
             <div>
-                ei oikeuksia {message}
+                ei oikeuksia {message.title}
             </div>
         )
     }

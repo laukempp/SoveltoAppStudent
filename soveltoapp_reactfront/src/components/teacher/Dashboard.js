@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      {/*authT ? null : <Redirect to="/" />*/}
+      {authT ? null : <Redirect to="/" />}
       <Navigation title={'Soveltommi'} />
       
       

@@ -38,7 +38,7 @@ export default function QuestionForm() {
     )
   })
 
-  if (!authT) {
+  if (authT) {
     return (
       <div>
         <Formik
@@ -124,12 +124,12 @@ export default function QuestionForm() {
                 <FieldArray name="wrong_answer"
                   render={({ insert, remove, push }) => (
                     <div>
-                      {values.wrong_answer.length > 1 &&
+                      {values.wrong_answer.length >= 1 &&
                         values.wrong_answer.map((one_wrong_answer, index) => (
                           <div className="row" key={index}>
                             <div className="col">
-                              <label htmlFor={`wrong_answer.${index}`}>Wrong Answer</label>
-                              <Field name={`wrong_answer.${index}`}
+                              <label htmlFor={`wrong_answer.${one_wrong_answer}`}>Wrong Answer</label>
+                              <Field name={`wrong_answer.${one_wrong_answer}`}
 
                                 placeholder="Add another"
                                 type="text" />

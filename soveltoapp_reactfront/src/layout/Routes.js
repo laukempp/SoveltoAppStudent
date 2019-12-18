@@ -19,9 +19,13 @@ const Routes = () => (
       <Route exact path="/dashboard/question" component={Questionform} />
       <Route exact path="/student/quiz" component={Quiz} />
       <Route exact path="/student/results" component={Result} />
-      <Route path="/logout" component={Logout} />
+      <Route exact path="/logout" component={Logout} />
       <Route component={Login} />
     </Switch>
+    
+    
+      
+    
   </Router>
 );
 
