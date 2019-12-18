@@ -16,6 +16,7 @@ export default function Quiz() {
         getQuestions(message)
     })
     /* .then(message => messageReturner(message)) */
+
     let messageSocket = message
 
     /*if(message) {
@@ -54,3 +55,4 @@ export default function Quiz() {
     }
 
 }
+

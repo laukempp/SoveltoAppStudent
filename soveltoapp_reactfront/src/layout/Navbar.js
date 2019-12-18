@@ -19,7 +19,7 @@ export const Navigation = props => {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey={3} as={Link} to="/profile">
+        <Nav.Link eventKey={3} as={Link} to="/logout">
           Log Out
         </Nav.Link>
       </Nav.Item>
