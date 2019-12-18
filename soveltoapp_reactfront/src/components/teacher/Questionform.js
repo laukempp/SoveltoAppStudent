@@ -40,7 +40,7 @@ export default function QuestionForm() {
 
   if (authT) {
     return (
-      <div>
+      <div className="user">
         <Formik
           initialValues={{
             question: "",
@@ -67,10 +67,11 @@ export default function QuestionForm() {
             isSubmitting,
             handleReset
           }) => (
-              <Form onSubmit={handleSubmit}>
+              <Form className="form" onSubmit={handleSubmit}>
                 <Field
                   as="select"
                   name="topics_id"
+                  id="topic_id"
                   className={touched.topics_id && errors.topics_id ? "error" : null}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -83,7 +84,7 @@ export default function QuestionForm() {
                   type="text"
                   name="question"
                   id="question"
-                  placeholder="Enter the question here"
+                  placeholder="Kirjoita uusi kysymys"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.question}
@@ -103,7 +104,7 @@ export default function QuestionForm() {
                   type="text"
                   name="correct_answer"
                   id="correct_answer"
-                  placeholder="Give correct answer here"
+                  placeholder="Oikea vastaus tähän"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.correct_answer}
@@ -121,17 +122,17 @@ export default function QuestionForm() {
                 <div>
                   <br />
                 </div>
-                <FieldArray name="wrong_answer"
+                <FieldArray className="wrongAns" name="wrong_answer"
                   render={({ insert, remove, push }) => (
-                    <div>
+                    <div className="wrongAns">
                       {values.wrong_answer.length >= 1 &&
                         values.wrong_answer.map((one_wrong_answer, index) => (
-                          <div className="row" key={index}>
+                          <div className="row" id={index} key={index}>
                             <div className="col">
-                              <label htmlFor={`wrong_answer.${one_wrong_answer}`}>Wrong Answer</label>
-                              <Field name={`wrong_answer.${one_wrong_answer}`}
+                              <label htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
+                              <Field className="wrongAns" value={JSON.stringify()} name={`wrong_answer.${JSON.stringify(index)}`}
 
-                                placeholder="Add another"
+                                placeholder="Lisää uusi"
                                 type="text" />
                               <ErrorMessage
                                 component="div"
@@ -141,31 +142,31 @@ export default function QuestionForm() {
                             <div className="col">
                               <button
                                 type="button"
-                                className="secondary"
+                                className="secondary btnLogin"
                                 onClick={() => remove(index)}>X
                             </button>
                             </div>
                           </div>
                         ))}
-                      <button type="button" className="secondary"
+                      <button type="button" className="secondary btnLogin"
                         onClick={() => push({ wrong_answer: "Add another" })}>
-                        Add another wrong answer
+                        Lisää väärä vastaus
                   </button>
                     </div>
                   )}
                 />
                 <br />
-                <button onClick={event => {
+                <button className="btnLogin" onClick={event => {
                   event.preventDefault();
                   handleReset();
                 }}
-                >Reset</button>
+                >Tyhjennä</button>
 
 
 
                 <div className="input-row">
-                  <button type="submit" disabled={isSubmitting}>
-                    Submit
+                  <button className="btnLogin" type="submit" disabled={isSubmitting}>
+                    Lähetä
               </button>
                 </div>
               </Form>

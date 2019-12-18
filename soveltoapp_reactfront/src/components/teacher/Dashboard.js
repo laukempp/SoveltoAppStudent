@@ -21,7 +21,7 @@ export default function Dashboard() {
       <Navigation title={'Soveltommi'} />
       
       
-      <h1>Tämä on dashboard</h1>
+      <h1 className="user__header detail_header">Tervetuloa kojelaudalle</h1>
       <Quizform/>
       {/*  <Questionform /> */}
     
