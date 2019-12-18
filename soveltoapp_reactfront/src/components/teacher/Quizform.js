@@ -82,8 +82,12 @@ export default function QuizForm() {
   })
 
   const quizformSchema = Yup.object().shape({
-    name: Yup.string().required("Tämä kenttä vaaditaan"),
-    number: Yup.string().required("Vaaditaan numero")
+    name: Yup.string().required("This field is required."),
+    number: Yup.number()
+    .required("number is required")
+    .positive("Numeron täytyy olla positiivinen luku")
+    .integer("Kokonaisluku, kiitos")
+    .lessThan(10, "Enintään 10 kysymystä, ei kiusata oppilaita enempää")
   });
 
   return (
@@ -136,7 +140,6 @@ export default function QuizForm() {
               <Field
                 as="select"
                 name="topics_id"
-                id="topic_id"
                 className={touched.topics_id && errors.topics_id ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}

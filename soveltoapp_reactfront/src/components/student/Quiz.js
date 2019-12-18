@@ -1,54 +1,132 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 import socketIOClient from "socket.io-client";
-import { getStudentQs } from "../../service/Request";
+import { getStudentQs, postScores } from "../../service/Request";
 import Question from "./Question";
 import "../../styles/quiz.css";
 
-export default function Quiz() {
-  
-    const [message, setMessage] = useState('');
-    const [questions, setQuestions] = useState([]);
+export default function Quiz({history}) {
+  const [message, setMessage] = useState({});
+  const [questions, setQuestions] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [scoreArray, setScoreArray] = useState({});
 
-    const socket = socketIOClient('http://localhost:5001');
-    socket.on('eventMessageStudent', (message) => {
-        setMessage(message)
-        sessionStorage.setItem('started', message.idArray)
-        console.log(message)
+  let newObject = { idArray: [] };
+  let scoreObject = {nickname: '', score: []};
+  let pointArray = [];
+
+  const socket = socketIOClient("http://localhost:5001");
+  socket.on("eventMessageStudent", message => {
+    setMessage(message);
+    getStudentQs(message).then(res => setQuestions(res));
+    sessionStorage.setItem("started", message.idArray);
+    sessionStorage.setItem("title", message.title);
+  });
+
+  let newmessage = JSON.parse("[" + sessionStorage.getItem("started") + "]");
+  newObject["idArray"] = newmessage;
+
+  const toggle = (values) => {
+    return new Promise(resolve => {
+        console.log(values)
+        setOpen(!open)
+        resolve("näkyykö")
     })
-    /* .then(message => messageReturner(message)) */
+  }
 
-    /*if(message) {
-        sessionStorage.setItem('started', true)
-    }*/
+  useEffect(() => {
+    getStudentQs(newObject).then(res => setQuestions(res));
+  }, []);
 
-    const getQuestions = (array) => {
-        getStudentQs(array).then(res => setQuestions(res))
-    }
- 
-    console.log(questions);
+  const collectPoints = point => {
+    sessionStorage.removeItem('pimpeliPom')
+    pointArray.push(point);
+    console.log("pointArray: " + pointArray);
+    sessionStorage.setItem('pimpelipom', pointArray)
+    /*history.push({
+        pathname: "/student/results",
+        state: {array: pointArray}
+    })*/
+}
 
-    if (sessionStorage.getItem('started')) {
-        let newmessage = JSON.parse("[" + sessionStorage.getItem('started') + "]")
-        console.log(newmessage)
-        getQuestions(newmessage)
-        
-        const studentQs = questions.map(result => {
-            return <Question result={result} key={result.id} />;
-          });
+const createObject =(one1, one2) => {
+    let newOne = JSON.parse("[" + one2 + "]");
+    scoreObject["score"] = newOne;
+    scoreObject["nickname"] = one1;
+    console.log(scoreObject)
+    return scoreObject
+}
+
+  const quizSchema = Yup.object().shape({
+    nickname: Yup.string()
+      .required("Valitse nyt joku nimimerkki, jookoskookos")
+      .min(5, "Viisi kirjainta vähintään olis hyvä!")
+      .max(20, "No niin, ei liioitella noilla merkeillä")
+  });
+
+  if (sessionStorage.getItem("started")) {
+    const studentQs = questions.map(result => {
+      return (
+        <Question
+          result={result}
+          key={result.id}
+          collectPoints={collectPoints}
+          open={open}
+        />
+      );
+    });
 
     return (
       <div className="container">
-        <form className="">
-          <div className="qnbox">{studentQs}</div>
-          <button type="submit"> Submit the quiz </button>
-        </form>
+        <h2>{sessionStorage.getItem("title")}</h2>
+        <Formik
+          initialValues={{ nickname: "", score: pointArray}}
+          validationSchema={quizSchema}
+          onSubmit={(values, { setSubmitting }) => {
+            setSubmitting(true);
+            toggle()
+            .then(() => {sessionStorage.setItem('piip', values.nickname)})
+            .then(() => {postScores(createObject(sessionStorage.getItem('piip'),
+                sessionStorage.getItem('pimpelipom')))})
+            setSubmitting(false);
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            isSubmitting,
+            handleChange,
+            handleBlur,
+            handleSubmit
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <Field
+                type="text"
+                name="nickname"
+                placeholder="Nimimerkki"
+                className={touched.nickname && errors.nickname ? "error" : null}
+                onChange={handleChange}
+                autoComplete="off"
+                onBlur={handleBlur}
+                value={values.nickname || ""}
+              />
+              <ErrorMessage
+                component="div"
+                name="nickname"
+                className="invalidQName"
+              />
+              <div className="qnbox">{studentQs}</div>
+              <button type="submit" disabled={isSubmitting}>
+                Submit
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
-    )}
-    else {
-        return (
-            <div>
-                ei oikeuksia {message.title}
-            </div>
-        )
-    }
+    );
+  } else {
+    return <div>ei oikeuksia {message.title}</div>;
+  }
 }
