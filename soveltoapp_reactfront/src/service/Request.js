@@ -30,19 +30,19 @@ export const postQuiz = (quiz) => {
 export const getStudentQs = (array) => {
   console.log(JSON.stringify(array))
   return fetch("/api/topics/quiz", {
-  method: "POST",
-  headers: {
-    "Accept": "application/json",
-    "Content-type": "application/json",
-    "authorization": token
-  },
-  body: JSON.stringify(array),
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-type": "application/json",
+      "authorization": token
+    },
+    body: JSON.stringify(array),
   })
     .then(res => res.json())
 };
 
 export const postQuestion = question => {
-  return fetch(`${url}question`, {
+  return fetch(`/api/topics/question`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": token },
     body: JSON.stringify(question)
@@ -53,34 +53,3 @@ export const getTopics = topic => {
   return fetch(url).then(res => res.json())
     .catch(err => err)
 }
-
-
-
-
-/*
-
-
-//Kirjaudutaan sisään
-
-
-
-export const checkAuth = (token) => {
-
-  return token;
-};
-
-export const logoutUser = () => {
-  localStorage.removeItem("tommi");
-};
-
-export const checkItem = () => {
-  let item = localStorage.getItem("tommi");
-  if (item) {
-    return true;
-  } else {
-    return false;
-  }
-};
-
-export const redirect = () => {};
- */
