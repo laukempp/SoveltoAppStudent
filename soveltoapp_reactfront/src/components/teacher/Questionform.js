@@ -38,7 +38,7 @@ export default function QuestionForm() {
     )
   })
 
-  if (!authT) {
+  if (authT) {
     return (
       <div>
         <Formik
