@@ -45,3 +45,14 @@
   left: 0%;
   position: absolute;
 }
+.logoutxt {
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: -5px;
+  color: ghostwhite;
+  text-align: center;
+  position: absolute;
+  margin-top: 3%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
