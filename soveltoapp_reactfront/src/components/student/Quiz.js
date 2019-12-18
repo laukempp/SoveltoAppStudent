@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import socketIOClient from 'socket.io-client';
-import { getStudentQs } from '../../service/Request';
-import Question from './Question';
+import React, { useState} from "react";
+import socketIOClient from "socket.io-client";
+import { getStudentQs } from "../../service/Request";
+import Question from "./Question";
+import "../../styles/quiz.css";
 
 export default function Quiz() {
-
+  
     const [message, setMessage] = useState('');
     const [questions, setQuestions] = useState([]);
 
@@ -32,19 +33,17 @@ export default function Quiz() {
         getQuestions(newmessage)
         
         const studentQs = questions.map(result => {
+            return <Question result={result} key={result.id} />;
+          });
 
-            return (
-                <Question result={result} />
-            )
-        })
-
-        return (
-            <div>
-                {studentQs}
-                {message.idArray}
-            </div>
-        )
-    }
+    return (
+      <div className="container">
+        <form className="">
+          <div className="qnbox">{studentQs}</div>
+          <button type="submit"> Submit the quiz </button>
+        </form>
+      </div>
+    )}
     else {
         return (
             <div>
@@ -52,6 +51,4 @@ export default function Quiz() {
             </div>
         )
     }
-
 }
-

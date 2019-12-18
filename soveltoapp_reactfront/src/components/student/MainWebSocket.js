@@ -24,8 +24,11 @@ import socketIOClient from 'socket.io-client';
     }
 } 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 330af9009b6ca0e552b37656e8acc8c919c27a64
 export default class MainWebSocket extends Component {
     
     componentDidMount(){
