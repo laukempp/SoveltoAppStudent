@@ -144,6 +144,7 @@ export default function QuizForm() {
               <Field
                 type="number"
                 name="number"
+                placeholder="Kysymysten määrä"
                 className={touched.number && errors.number ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -156,7 +157,7 @@ export default function QuizForm() {
               />
 
               <button type="submit" disabled={isSubmitting}>
-                Submit
+                Luo quiz
               </button>
 
               </Form>
