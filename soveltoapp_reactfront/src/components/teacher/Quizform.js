@@ -140,6 +140,7 @@ export default function QuizForm() {
               <Field
                 as="select"
                 name="topics_id"
+                id="topic_id"
                 className={touched.topics_id && errors.topics_id ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}
