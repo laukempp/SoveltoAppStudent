@@ -1,49 +1,69 @@
-import React, { useState } from "react";
-import { Formik, Form, Field } from "formik";
+import React, { useState, useEffect } from "react";
+//import { Formik, Form, Field } from "formik";
 import "../../styles/quiz.css";
 
-const Question = ({ result }) => {
-  const [singlequestion, setsingleQuestion] = useState();
+const Question = ({ result, collectPoints, open }) => {
+  const [answerOptions, setAnswerOptions] = useState([]); 
   const [counter, setCounter] = useState(0);
-  //   const [answerChosen, setAnswerChosen] = useState("");
-  console.log(result);
+  const [selected, setSelected] = useState();
+  let moi = 0;
 
-  let arrayy = [result.correct_answer];
-  const answers = result.wrong_answer.map(result_ => {
-    arrayy.push(result_);
-  });
+  let newArray = result.wrong_answer.concat(result.correct_answer)
 
-  //   const value = 0;
-
-  //   const radioChangeHandler = event => {};
-
+  useEffect(() => {
+    shuffle(newArray)
+  }, [])
 
   const shuffle = arr => {
     let i, j, temp;
-    for (i = answers.length - 1; i > 0; i--) {
+    for (i = arr.length - 1; i > 0; i--) {
       j = Math.floor(Math.random() * (i + 1));
       temp = arr[i];
       arr[i] = arr[j];
       arr[j] = temp;
     }
-    return arr;
+    setAnswerOptions(arr);
   };
-  const shuffled = shuffle(arrayy);
 
-  const shuffledAnswers = shuffled.map(input => {
+  const onChangeCheck = e => {
+    console.log('moi')
+    setSelected({...selected, [e.target.name]: e.target.value })
+    if (e.target.value === result.correct_answer) {
+      setCounter(1)
+    } if (e.target.value !== result.correct_answer) {
+      setCounter(0)
+    }
+  }
+
+  if (open) {
+    collectPoints(counter)
+  }
+
+  console.log("tämä on laskin" + counter)
+
+  let answers = answerOptions.map((answer, index) => {
     return (
-      <div>
-        <input type="radio" value={input} /> <label>{input}</label>
+      <div key={index}>
+        <input
+          type="radio"
+          value={answer}
+          onChange={onChangeCheck}
+          name={result.id}
+        />{" "}
+        <label>{answer}</label>
       </div>
     );
-  });
+  })
+
 
   return (
     <div>
       <div className="qntxtbox">
         <b>{result.question}</b>
       </div>
-      <div className="answerDiv">{shuffledAnswers}</div>
+      <div className="answerDiv">
+        {answers}
+      </div>
     </div>
   );
 };

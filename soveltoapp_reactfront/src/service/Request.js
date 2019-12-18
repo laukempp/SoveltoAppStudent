@@ -42,7 +42,7 @@ export const getStudentQs = (array) => {
 };
 
 export const postQuestion = question => {
-  return fetch(`${url}question`, {
+  return fetch(`/api/topics/question`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": token },
     body: JSON.stringify(question)
@@ -53,6 +53,15 @@ export const getTopics = topic => {
   return fetch(url).then(res => res.json())
     .catch(err => err)
 }
+
+export const postScores = score => {
+  console.log("Tässä näkyy score" + score)
+  return fetch(`/api/scores`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Authorization": token },
+    body: JSON.stringify(score)
+  });
+};
 
 
 
