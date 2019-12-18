@@ -30,13 +30,13 @@ export const postQuiz = (quiz) => {
 export const getStudentQs = (array) => {
   console.log(JSON.stringify(array))
   return fetch("/api/topics/quiz", {
-  method: "POST",
-  headers: {
-    "Accept": "application/json",
-    "Content-type": "application/json",
-    "authorization": token
-  },
-  body: JSON.stringify(array),
+    method: "POST",
+    headers: {
+      "Accept": "application/json",
+      "Content-type": "application/json",
+      "authorization": token
+    },
+    body: JSON.stringify(array),
   })
     .then(res => res.json())
 };

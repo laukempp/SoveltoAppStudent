@@ -1,12 +1,14 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, {useEffect} from 'react'
 import auth from '../../service/Auth'
 export default function Logout() {
-          auth.logOut();
+    useEffect(() => {
+        setTimeout(() => {
+           window.location.assign('login'); 
+        }, 1500)     
+    })
+          auth.logOut();      
     return ( 
-        <div>  
-            <p>Logout successful!</p> 
-            
-        </div>
+        <div className="logoutxt" >Logout successful
+       </div>
     )
 }

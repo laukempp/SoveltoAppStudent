@@ -92,7 +92,7 @@ export default function QuizForm() {
 
   return (
     <>
-      <div>
+      <div className="user">
         <Formik
           initialValues={{name: '', topics_id: 1, number: 0 }}
           validationSchema={quizformSchema}
@@ -115,23 +115,28 @@ export default function QuizForm() {
             handleBlur,
             handleSubmit
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form className="form" onSubmit={handleSubmit}>
+              <div className="form__group">
+              <div className="em">
+                <h3 className="detail_header">Luo uusi tentti</h3>
+              <span className="detail_span">Tentin nimi</span>
               <Field
                 type="name"
                 name="name"
                 placeholder="Kyselyn nimi"
+                id="kysynimi"
                 className={touched.name && errors.name ? "error" : null}
                 onChange={handleChange}
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.name || ""}
-              />
+              /></div></div>
               <ErrorMessage
                 component="div"
                 name="name"
                 className="invalidQName"
               />
-
+                <span className="detail_span">Tentin aihe</span>
               <Field
                 as="select"
                 name="topics_id"
@@ -144,42 +149,48 @@ export default function QuizForm() {
                 {topicInput}
   
               </Field>
-
+              <div className="em">
+                <span className="detail_span">Kysymysten lukumäärä</span>
               <Field
                 type="number"
                 name="number"
+                id="kysynum"
+                placeholder="Kysymysten määrä"
+
                 className={touched.number && errors.number ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.number || ""}
-              />
+              /></div>
               <ErrorMessage
                 component="div"
                 name="number"
                 className="invalidQNumber"
               />
 
-              <button type="submit" disabled={isSubmitting}>
-                Submit
-              </button>
+            <div className="em">
+              <button className="btnLogin" type="submit" disabled={isSubmitting}>
+                Luo uusi
+              </button></div>
+
 
               </Form>
             )}
         </Formik>
-        <button onClick={buttonHappen}>send message</button>
+       {/*  <button onClick={buttonHappen}>send message</button> */}
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Esikatselu</Modal.Title>
           </Modal.Header>
           <Modal.Body>{box}</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Close
+              Sulje
           </Button>
           <Button variant="primary" onClick={buttonHappen}>
 
-            Send Quiz
+           Lähetä quiz
           
           </Button>
           </Modal.Footer>

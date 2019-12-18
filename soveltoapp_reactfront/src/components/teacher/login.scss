@@ -29,7 +29,7 @@ body {
     text-align: center;
     opacity: 0;
     transform: translate3d(0, 500px, 0);
-    animation: arrive 500ms ease-in-out 0.7s forwards;
+    animation: arrive 500ms ease-in-out 0.4s forwards;
 }
 
 .user__title {
@@ -45,7 +45,7 @@ body {
     overflow: hidden;
     opacity: 0;
     transform: translate3d(0, 500px, 0);
-    animation: arrive 500ms ease-in-out 0.9s forwards;
+    animation: arrive 400ms ease-in-out 0.7s forwards;
 }
 
 .form--no {
@@ -54,7 +54,7 @@ body {
     transform: translate3d(0, 0, 0);
 }
 
-#passfield, #emailfield {
+#passfield, #emailfield, #kysynimi, #kysynum, #topic_id, .wrongAns, #correct_answer, #question, #topics_id {
     display: block;
     width: 100%;
     padding: 20px;
@@ -127,4 +127,19 @@ body {
     100% {
         background-position: 0 0
     }
+}
+.em {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+}
+.detail_span {
+    color: whitesmoke;
+    background-color: rgba(0, 0, 0, 0.267);
+    border-radius: 5px;
+}
+.detail_header {
+    color: whitesmoke;
+    
+    border-radius: 5px;
 }

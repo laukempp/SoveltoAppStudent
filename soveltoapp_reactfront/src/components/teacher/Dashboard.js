@@ -17,11 +17,11 @@ export default function Dashboard() {
 
   return (
     <div>
-      {/*authT ? null : <Redirect to="/" />*/}
+      {authT ? null : <Redirect to="/" />}
       <Navigation title={'Soveltommi'} />
       
       
-      <h1>Tämä on dashboard</h1>
+      <h1 className="user__header detail_header">Tervetuloa kojelaudalle</h1>
       <Quizform/>
       {/*  <Questionform /> */}
     
