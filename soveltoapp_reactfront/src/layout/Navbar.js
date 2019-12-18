@@ -9,11 +9,6 @@ export const Navigation = props => {
         <Nav.Item><h3 id="sovelto-red">{props.title}</h3></Nav.Item>
       </Nav.Link>
       <Nav.Item>
-        <Nav.Link eventKey={1} as={Link} to="/dashboard/quiz">
-          Quiz-esikatselu
-        </Nav.Link>
-      </Nav.Item>
-      <Nav.Item>
         <Nav.Link eventKey={2} as={Link} to="/dashboard/question">
           Luo kysymyksiä
         </Nav.Link>
@@ -24,27 +19,7 @@ export const Navigation = props => {
         </Nav.Link>
       </Nav.Item>
     </Navbar>
-
-
-    /*  <Nav fill variant="tabs" defaultActiveKey="/dashboard">
-   <Nav.Item>
-     <Nav.Link href="/dashboard">Active</Nav.Link>
-   </Nav.Item>
-   <Nav.Item>
-     <Nav.Link eventKey="link-1">Loooonger NavLink</Nav.Link>
-   </Nav.Item>
-   <Nav.Item>
-     <Nav.Link eventKey="link-2">Link</Nav.Link>
-   </Nav.Item>
-   <Nav.Item>
-     <Nav.Link eventKey="disabled" disabled>
-       Disabled
-     </Nav.Link>
-   </Nav.Item>
- </Nav> */
-
-
   );
 };
 
-/* export default Navigation; */
+
