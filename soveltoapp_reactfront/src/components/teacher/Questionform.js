@@ -142,7 +142,7 @@ export default function QuestionForm() {
                             <div className="col">
                               <button
                                 type="button"
-                                className="secondary btnLogin"
+                                className="secondary"
                                 onClick={() => remove(index)}>X
                             </button>
                             </div>

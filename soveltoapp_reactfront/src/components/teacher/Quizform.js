@@ -82,8 +82,8 @@ export default function QuizForm() {
   })
 
   const quizformSchema = Yup.object().shape({
-    name: Yup.string().required("This field is required."),
-    number: Yup.string().required("number is required")
+    name: Yup.string().required("Tämä kenttä vaaditaan"),
+    number: Yup.string().required("Vaaditaan numero")
   });
 
   return (
@@ -114,6 +114,7 @@ export default function QuizForm() {
             <Form className="form" onSubmit={handleSubmit}>
               <div className="form__group">
               <div className="em">
+                <h3 className="detail_header">Luo uusi tentti</h3>
               <span className="detail_span">Tentin nimi</span>
               <Field
                 type="name"
@@ -166,7 +167,7 @@ export default function QuizForm() {
 
             <div className="em">
               <button className="btnLogin" type="submit" disabled={isSubmitting}>
-                Submit
+                Luo uusi
               </button></div>
 
 
@@ -177,16 +178,16 @@ export default function QuizForm() {
 
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal heading</Modal.Title>
+            <Modal.Title>Esikatselu</Modal.Title>
           </Modal.Header>
           <Modal.Body>{box}</Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
-              Close
+              Sulje
           </Button>
           <Button variant="primary" onClick={buttonHappen}>
 
-            Send Quiz
+           Lähetä quiz
           
           </Button>
           </Modal.Footer>
