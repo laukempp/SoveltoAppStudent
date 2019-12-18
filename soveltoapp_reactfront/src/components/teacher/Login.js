@@ -5,11 +5,12 @@ import { loginUser } from "../../service/Auth";
 import auth from '../../service/Auth';
 import { Redirect } from "react-router-dom";
 import Footer from "../../layout/Footer";
+import './login.scss';
 export default function Login() {
   const [authT, setAuthT] = useState(auth.isAuthenticated());
   
   console.log("login authT", authT)
-
+  
 
   const loginSchema = Yup.object().shape({
     login: Yup.string().required("This field is required."),
@@ -18,7 +19,8 @@ export default function Login() {
   return (
     <>
       {authT ? <Redirect to="/dashboard" /> : null}
-      <div>
+      <div className="user">
+        <h1 className="user__title">Sovelto Quiz Login</h1>
         <Formik
           initialValues={{ login: "", password: "" }}
           validationSchema={loginSchema}
@@ -48,27 +50,30 @@ export default function Login() {
             handleBlur,
             handleSubmit
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form className="form" onSubmit={handleSubmit}>
+              <div className="form__group">
               <Field
                 type="email"
                 name="login"
-                placeholder="email@example.com"
+                placeholder="email@sovelto.com"
+                id="emailfield"
                 className={touched.login && errors.login ? "error" : null}
                 onChange={handleChange}
                 autoComplete="off"
                 onBlur={handleBlur}
                 value={values.login || ""}
-              />
+              /></div>
               <ErrorMessage
                 component="div"
                 name="login"
                 className="invalidEmail"
               />
-
+              
               <Field
                 type="password"
                 name="password"
                 placeholder="*********"
+                id="passfield"
                 className={touched.password && errors.password ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -80,14 +85,19 @@ export default function Login() {
                 className="invalidPassword"
               />
 
-              <button type="submit" disabled={isSubmitting}>
-                Submit
+              <button className="btnLogin" type="submit" disabled={isSubmitting}>
+                Login 
               </button>
             </Form>
+            
           )}
         </Formik>
         <Footer />
+        
       </div>
+      
     </>
+    
   );
+  
 }

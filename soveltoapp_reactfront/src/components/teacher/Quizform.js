@@ -11,7 +11,7 @@ import socketIOClient from 'socket.io-client';
 export default function QuizForm() {
   const [questions, setQuestions] = useState([]);
   const [show, setShow] = useState(false);
-  const [data, setData] = useState([])
+  const [title, setTitle] = useState('')
   const [topics, setTopics] = useState([])
 
   const createArray = (array) => {
@@ -25,20 +25,22 @@ export default function QuizForm() {
 
   const buttonHappen = () => {
     const tama = createArray(questions);
-    eventMessage(tama)
-    eventClick()
+    let helpMe = {idArray: tama, title: title}
+    eventMessage(helpMe)
+    .then(() => {handleClose()})
   }
 
   const socket = socketIOClient('http://localhost:5001');
-  let eventBoolean = false;
 
-  const eventClick = () => {
-    eventBoolean = true;
-    socket.emit('eventClick', 'tämä tulee quizformista ' + eventBoolean)
-  }
+  /*const eventClick = () => {
+    socket.emit('eventClick', 'tämä tulee quizformista')
+  }*/
 
-  const eventMessage = (message) => {
-      socket.emit('eventMessage', `tämä on idarray ${message}`)
+  const eventMessage = (object) => {
+        return new Promise((resolve, reject) => {
+        socket.emit('eventMessage', object)
+        resolve()
+      })
   }
 
   const fetchTopics = () => {
@@ -88,13 +90,13 @@ export default function QuizForm() {
     <>
       <div>
         <Formik
-          initialValues={{title: '', topics_id: 1, number: 0 }}
+          initialValues={{name: '', topics_id: 1, number: 0 }}
           validationSchema={quizformSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
             fetchQuestions(values)
               .then(res => setQuestions(res))
-              .then(res => setData(values.title))
+              .then(res => setTitle(values.name))
               .then (res => setShow(true))
             resetForm();
             setSubmitting(false);
@@ -160,7 +162,6 @@ export default function QuizForm() {
               </Form>
             )}
         </Formik>
-        <button onClick={eventClick}>start student</button>
         <button onClick={buttonHappen}>send message</button>
 
         <Modal show={show} onHide={handleClose}>
