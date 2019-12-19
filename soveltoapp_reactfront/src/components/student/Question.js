@@ -6,7 +6,6 @@ const Question = ({ result, collectPoints, open }) => {
   const [answerOptions, setAnswerOptions] = useState([]); 
   const [counter, setCounter] = useState(0);
   const [selected, setSelected] = useState();
-  let moi = 0;
 
   let newArray = result.wrong_answer.concat(result.correct_answer)
 
