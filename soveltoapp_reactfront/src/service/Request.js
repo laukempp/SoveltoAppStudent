@@ -6,7 +6,7 @@ export const fetchQuestions = (querydata) => {
   return fetch(url, {
     method: "POST",
     headers: {
-      "authorization": token,
+      "Authorization": token,
       "Accept": "application/json",
       "Content-type": "application/json"
     },
@@ -21,7 +21,7 @@ export const postQuiz = (quiz) => {
     headers: {
       "Accept": "application/json",
       "Content-type": "application/json",
-      "authorization": token
+      "Authorization": token
     },
     body: JSON.stringify(quiz)
   })
@@ -34,7 +34,7 @@ export const getStudentQs = (array) => {
     headers: {
       "Accept": "application/json",
       "Content-type": "application/json",
-      "authorization": token
+      "Authorization": token
     },
     body: JSON.stringify(array),
   })
@@ -50,12 +50,16 @@ export const postQuestion = question => {
 };
 
 export const getTopics = topic => {
-  return fetch(url).then(res => res.json())
+  return fetch(url, {
+    headers: {
+      "Authorization": token
+    },
+  }).then(res => res.json())
     .catch(err => err)
 }
 
 export const postScores = score => {
-  console.log("Tässä näkyy score" + score)
+  //console.log("Tässä näkyy score" + score)
   return fetch(`/api/scores`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": token },
