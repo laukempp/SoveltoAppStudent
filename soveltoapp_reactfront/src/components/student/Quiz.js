@@ -29,7 +29,6 @@ export default function Quiz({history}) {
 
   const toggle = (values) => {
     return new Promise(resolve => {
-        console.log(values)
         setOpen(!open)
         resolve("näkyykö")
     })
@@ -42,23 +41,15 @@ export default function Quiz({history}) {
   const collectPoints = point => {
     sessionStorage.removeItem('pimpeliPom')
     pointArray.push(point);
-    console.log("pointArray: " + pointArray);
     let length = pointArray.length;
     let helpArray = pointArray.reduce((a, b) => a + b, 0)
-    console.log('tämä tässä on ' + length + " ja tämä on apu " + helpArray )
     let toinenApu = parseInt(helpArray/length*100);
-    console.log("apu " + toinenApu)
     sessionStorage.setItem('pimpelipom', toinenApu)
-    /*history.push({
-        pathname: "/student/results",
-        state: {array: pointArray}
-    })*/
 }
 
 const createObject =(one1, one2) => {
     scoreObject["score"] = parseInt(one2);
     scoreObject["nickname"] = one1;
-    console.log(scoreObject)
     return scoreObject
 }
 
@@ -135,6 +126,7 @@ const createObject =(one1, one2) => {
       </div>
     );
   } else {
-    return <div>ei oikeuksia {message.title}</div>;
+    return <div>
+      <h2 className="detail_header">Odota hetki, tentti alkaa pian</h2></div>;
   }
 }

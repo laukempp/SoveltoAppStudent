@@ -1,23 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 /* import { studentScore } from ''; */
 
-export default class Score extends Component {
-    state = { scores: [] }
+const Score =() => {
 
-   /*  componentDidMount() {
-        this.fetchScoreList();
-    }
-    fetchScoreList = () => {
-        studentScore().then(scores => {
-            this.setState({ scores });
-        })
-    } */
+    sessionStorage.removeItem('started')
 
 
-    render() {
         return (
             <div>
-                <h2>Miten meni noin niin kuin omasta mielestä?</h2>
+                <h2 className="detail_header">Hienosti vedetty!</h2>
                 <table>
                 <tbody>
                     <tr>
@@ -32,5 +23,6 @@ export default class Score extends Component {
                 </table>
                 </div>
         )
-    }
 }
+
+export default Score;

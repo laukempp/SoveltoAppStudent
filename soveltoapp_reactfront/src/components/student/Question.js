@@ -26,7 +26,6 @@ const Question = ({ result, collectPoints, open }) => {
   };
 
   const onChangeCheck = e => {
-    console.log('moi')
     setSelected({...selected, [e.target.name]: e.target.value })
     if (e.target.value === result.correct_answer) {
       setCounter(1)
@@ -39,7 +38,7 @@ const Question = ({ result, collectPoints, open }) => {
     collectPoints(counter)
   }
 
-  console.log("tämä on laskin" + counter)
+  //console.log("tämä on laskin" + counter)
 
   let answers = answerOptions.map((answer, index) => {
     return (
