@@ -139,7 +139,28 @@ body {
     border-radius: 5px;
 }
 .detail_header {
-    color: whitesmoke;
-    
+    color: whitesmoke;  
     border-radius: 5px;
+}
+
+.mQuestion {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.mContainer {
+    margin-bottom: 10px;
+    background: rgb(245, 236, 236);
+    border-radius: 10px;
+    padding: 6px;
+
+}
+
+input[type=radio] {
+    margin-right: 5px;
+}
+ 
+.sendQ {
+    background: rgb(206, 89, 69) !important;
+    border: rgb(182, 87, 60) !important;
 }
