@@ -16,8 +16,8 @@ const Score =() => {
                     <th>Tulos</th>
                     </tr>
                     <tr>
-                        <td>{sessionStorage.getItem('piip')}</td>
-                        <td>{sessionStorage.getItem('pimpelipom')}%</td>
+                        <td>{sessionStorage.getItem('nick')}</td>
+                        <td>{sessionStorage.getItem('result')}%</td>
                     </tr>
                     </tbody>
                 </table>

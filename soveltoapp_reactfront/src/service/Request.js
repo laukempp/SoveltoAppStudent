@@ -1,8 +1,7 @@
 const url = "/api/topics/";
-const token = sessionStorage.getItem("tommi");
-
 
 export const fetchQuestions = (querydata) => {
+  let token = sessionStorage.getItem("tommi")
   return fetch(url, {
     method: "POST",
     headers: {
@@ -16,6 +15,7 @@ export const fetchQuestions = (querydata) => {
 };
 
 export const postQuiz = (quiz) => {
+  let token = sessionStorage.getItem("tommi")
   return fetch("api/topics/quiz", {
     method: "POST",
     headers: {
@@ -28,6 +28,7 @@ export const postQuiz = (quiz) => {
 }
 
 export const getStudentQs = (array) => {
+  let token = sessionStorage.getItem("tommi")
   console.log(JSON.stringify(array))
   return fetch("/api/topics/quiz", {
     method: "POST",
@@ -42,6 +43,7 @@ export const getStudentQs = (array) => {
 };
 
 export const postQuestion = question => {
+  let token = sessionStorage.getItem("tommi")
   return fetch(`/api/topics/question`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "Authorization": token },
@@ -50,6 +52,7 @@ export const postQuestion = question => {
 };
 
 export const getTopics = topic => {
+  let token = sessionStorage.getItem("tommi")
   return fetch(url, {
     headers: {
       "Authorization": token
@@ -59,6 +62,7 @@ export const getTopics = topic => {
 }
 
 export const postScores = score => {
+  let token = sessionStorage.getItem("tommi")
   //console.log("Tässä näkyy score" + score)
   return fetch(`/api/scores`, {
     method: "POST",

@@ -10,9 +10,7 @@ export default function Quiz({history}) {
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
   const [open, setOpen] = useState(false);
-  const [isDir, setIsDir] = useState(false)
 
-  let newObject = { idArray: [] };
   let scoreObject = {nickname: '', score: []};
   let pointArray = [];
 
@@ -21,30 +19,31 @@ export default function Quiz({history}) {
     setMessage(message);
     getStudentQs(message).then(res => setQuestions(res));
     sessionStorage.setItem("started", message.idArray);
-    sessionStorage.setItem("title", message.title);
   });
 
-  let newmessage = JSON.parse("[" + sessionStorage.getItem("started") + "]");
-  newObject["idArray"] = newmessage;
-
-  const toggle = (values) => {
-    return new Promise(resolve => {
-        setOpen(!open)
-        resolve("näkyykö")
-    })
-  }
+  let newObject = { idArray: [] };
+  newObject["idArray"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
 
   useEffect(() => {
     getStudentQs(newObject).then(res => setQuestions(res));
   }, []);
 
+
+
+  const toggle = () => {
+    return new Promise(resolve => {
+        setOpen(!open)
+        resolve()
+    })
+  }
+
   const collectPoints = point => {
-    sessionStorage.removeItem('pimpeliPom')
+    sessionStorage.removeItem('result')
     pointArray.push(point);
     let length = pointArray.length;
     let helpArray = pointArray.reduce((a, b) => a + b, 0)
     let toinenApu = parseInt(helpArray/length*100);
-    sessionStorage.setItem('pimpelipom', toinenApu)
+    sessionStorage.setItem('result', toinenApu)
 }
 
 const createObject =(one1, one2) => {
@@ -55,15 +54,16 @@ const createObject =(one1, one2) => {
 
   const quizSchema = Yup.object().shape({
     nickname: Yup.string()
-      .required("Valitse nyt joku nimimerkki, jookoskookos")
-      .min(5, "Viisi kirjainta vähintään olis hyvä!")
-      .max(20, "No niin, ei liioitella noilla merkeillä")
+      .required("Nimimerkki täytyy valita")
+      .min(2, "Kaksi kirjainta vähintään olis hyvä!")
+      .max(20, "Liikaa merkkejä")
   });
 
   if (sessionStorage.getItem("started")) {
-    const studentQs = questions.map(result => {
+    const studentQs = questions.map((result, index) => {
       return (
         <Question
+          index={index}
           result={result}
           key={result.id}
           collectPoints={collectPoints}
@@ -74,16 +74,16 @@ const createObject =(one1, one2) => {
 
     return (
       <div className="container">
-        <h2>{sessionStorage.getItem("title")}</h2>
+        <h2>{message.title}</h2>
         <Formik
           initialValues={{ nickname: "", score: pointArray}}
           validationSchema={quizSchema}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(true);
             toggle()
-            .then(() => {sessionStorage.setItem('piip', values.nickname)})
-            .then(() => {postScores(createObject(sessionStorage.getItem('piip'),
-                sessionStorage.getItem('pimpelipom')))})
+            .then(() => {sessionStorage.setItem('nick', values.nickname)})
+            .then(() => {postScores(createObject(sessionStorage.getItem('nick'),
+                sessionStorage.getItem('result')))})
             .then(() => {history.push({
                 pathname: "/student/results",
                 state: {}

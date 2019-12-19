@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import {fetchQuestions, getTopics} from '../../service/Request'
-/*import auth from "../../service/Auth";
-import { Redirect } from "react-router-dom";*/
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import socketIOClient from 'socket.io-client';
@@ -14,34 +12,32 @@ export default function QuizForm() {
   const [title, setTitle] = useState('')
   const [topics, setTopics] = useState([])
 
-  const createArray = (array) => {
-    return array.map(option => {
-      let pip = option.id
-      return pip;
-    })
-  }
-
+  const socket = socketIOClient('http://localhost:5001');
   const handleClose = () => setShow(false);
 
+  const eventMessage = (object) => {
+    return new Promise((resolve) => {
+    socket.emit('eventMessage', object)
+    resolve() })
+  }
+
+  const createIdArray = (array) => {
+    return array.map(option => {
+      let idArray = option.id
+      return idArray;})
+  }
+
   const buttonHappen = () => {
-    const tama = createArray(questions);
-    let helpMe = {idArray: tama, title: title}
-    eventMessage(helpMe)
+    const tama = createIdArray(questions);
+    let sendObject = {idArray: tama, title: title}
+    eventMessage(sendObject)
     .then(() => {handleClose()})
   }
 
-  const socket = socketIOClient('http://localhost:5001');
 
   /*const eventClick = () => {
     socket.emit('eventClick', 'tämä tulee quizformista')
   }*/
-
-  const eventMessage = (object) => {
-        return new Promise((resolve, reject) => {
-        socket.emit('eventMessage', object)
-        resolve()
-      })
-  }
 
   const fetchTopics = () => {
     getTopics().then(res => setTopics(res))
@@ -63,7 +59,7 @@ export default function QuizForm() {
     return (
       <div key={option.id}>
         <div>
-          <label>{option.question}</label>
+          <label className="mQuestion">{option.question}</label>
         </div>
         <div>
           <input type="radio" id="correct"
@@ -87,7 +83,7 @@ export default function QuizForm() {
     .required("number is required")
     .positive("Numeron täytyy olla positiivinen luku")
     .integer("Kokonaisluku, kiitos")
-    .lessThan(10, "Enintään 10 kysymystä, ei kiusata oppilaita enempää")
+    .lessThan(11, "Enintään 10 kysymystä, ei kiusata oppilaita enempää")
   });
 
   return (
@@ -172,8 +168,6 @@ export default function QuizForm() {
               <button className="btnLogin" type="submit" disabled={isSubmitting}>
                 Luo uusi
               </button></div>
-
-
               </Form>
             )}
         </Formik>
