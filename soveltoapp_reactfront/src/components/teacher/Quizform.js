@@ -57,7 +57,7 @@ export default function QuizForm() {
     let count = 0;
     let unikey = option.id;
     return (
-      <div key={option.id}>
+      <div className="mContainer"key={option.id}>
         <div>
           <label className="mQuestion">{option.question}</label>
         </div>
@@ -182,10 +182,8 @@ export default function QuizForm() {
             <Button variant="secondary" onClick={handleClose}>
               Sulje
           </Button>
-          <Button variant="primary" onClick={buttonHappen}>
-
-           Lähetä quiz
-          
+          <Button className="sendQ" onClick={buttonHappen}>
+             Lähetä quiz
           </Button>
           </Modal.Footer>
         </Modal>
