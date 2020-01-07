@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { Formik, Form, Field, ErrorMessage, FieldArray } from "formik";
+import { Formik, Form, Field, ErrorMessage, FieldArray, getIn } from "formik";
 import { postQuestion, getTopics } from "../../service/Request";
 import * as Yup from "yup";
 import auth from "../../service/Auth";
@@ -21,7 +21,8 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function QuestionForm() {
-  const authT = auth.sessionStorageGetItem();
+  const authT = "heippa" 
+  //auth.sessionStorageGetItem();
 
   const [topics, setTopics] = useState([])
   const fetchTopics = () => {
@@ -38,16 +39,20 @@ export default function QuestionForm() {
     )
   })
 
+  const initial = {
+    question: "",
+    correct_answer: "",
+    wrong_answer: [
+      {wrong: ""}
+    ],
+    topics_id: 1
+  };
+
   if (authT) {
     return (
       <div className="user">
         <Formik
-          initialValues={{
-            question: "",
-            correct_answer: "",
-            wrong_answer: [""],
-            topics_id: 1
-          }}
+          initialValues={initial}
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
@@ -66,7 +71,10 @@ export default function QuestionForm() {
             handleSubmit,
             isSubmitting,
             handleReset
-          }) => (
+          }) => {
+              console.log(values.wrong_answer + " values")
+              console.log(touched + " touched")
+              return (
               <Form className="form" onSubmit={handleSubmit}>
                 <Field
                   as="select"
@@ -120,20 +128,32 @@ export default function QuestionForm() {
                   className="invalidCorrectAnswer"
                 />
                 <div>
+                
                   <br />
                 </div>
                 <FieldArray className="wrongAns" name="wrong_answer"
-                  render={({ insert, remove, push }) => (
+                  render = {({remove, push }) => (
                     <div className="wrongAns">
-                      {values.wrong_answer.length >= 1 &&
-                        values.wrong_answer.map((one_wrong_answer, index) => (
+                      {values.wrong_answer && values.wrong_answer.length > 0 ? (
+                        values.wrong_answer.map((one_wrong_answer, index) => {
+                          const wrongAns = `wrong_answer[${index}]`;
+                          const touchedWrongAns = getIn(touched, wrongAns);
+                          const errorWrongAns = getIn(errors, wrongAns);
+
+                          return (
                           <div className="row" id={index} key={index}>
                             <div className="col">
                               <label htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
-                              <Field className="wrongAns" value={JSON.stringify()} name={`wrong_answer.${JSON.stringify(index)}`}
-
+                              <Field 
+                                type="text"
+                                value={JSON.stringify()}
+                                name={`wrong_answer.${JSON.stringify(index)}`}
                                 placeholder="Lisää uusi"
-                                type="text" />
+                                className={
+                                touchedWrongAns && errorWrongAns
+                                ? "has-error"
+                                : "wrongAns"
+                                }/>                              
                               <ErrorMessage
                                 component="div"
                                 name="wrong_answer"
@@ -147,12 +167,14 @@ export default function QuestionForm() {
                             </button>
                             </div>
                           </div>
-                        ))}
+                        )}) 
+                        ) : (                      
                       <button type="button" className="secondary btnLogin"
                         onClick={() => push({ wrong_answer: "Add another" })}>
                         Lisää väärä vastaus
-                  </button>
-                    </div>
+                    </button>
+                        )
+                  } </div>
                   )}
                 />
                 <br />
@@ -171,6 +193,7 @@ export default function QuestionForm() {
                 </div>
               </Form>
             )}
+            }
         </Formik>
       </div>
     );
