@@ -21,6 +21,11 @@ export default function QuizForm() {
     resolve() })
   }
 
+  
+    socket.on("renderScore", event => {
+      console.log("tässä tulee oppilaan vastausdata", event)
+    })
+  
   const createIdArray = (array) => {
     return array.map(option => {
       let idArray = option.id
@@ -78,17 +83,17 @@ export default function QuizForm() {
   })
 
   const quizformSchema = Yup.object().shape({
-    name: Yup.string().required("This field is required."),
+    name: Yup.string().required("Anna tentille nimi."),
     number: Yup.number()
     .required("number is required")
-    .positive("Numeron täytyy olla positiivinen luku")
+    .positive("Numeron täytyy olla positiivinen luku tai suurempi kuin 0")
     .integer("Kokonaisluku, kiitos")
     .lessThan(11, "Enintään 10 kysymystä, ei kiusata oppilaita enempää")
   });
 
   return (
     <>
-      <div className="user">
+      <div className="user text-white">
         <Formik
           initialValues={{name: '', topics_id: 1, number: 0 }}
           validationSchema={quizformSchema}
@@ -136,6 +141,7 @@ export default function QuizForm() {
               <Field
                 as="select"
                 name="topics_id"
+                id="quiztopic"
                 className={touched.topics_id && errors.topics_id ? "error" : null}
                 onChange={handleChange}
                 onBlur={handleBlur}

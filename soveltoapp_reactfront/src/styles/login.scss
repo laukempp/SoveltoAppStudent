@@ -15,7 +15,7 @@ body {
     background-size: 200% 100% !important;
     animation: move 10s ease infinite;
     transform: translate3d(0, 0, 0);
-    background: linear-gradient(45deg, rgb(207, 155, 155) 10%, rgb(233, 55, 55) 90%);
+    background: linear-gradient(45deg, rgb(197, 96, 96) 10%, rgb(233, 55, 55) 90%);
     height: 100vh
 }
 
@@ -54,7 +54,7 @@ body {
     transform: translate3d(0, 0, 0);
 }
 
-#passfield, #emailfield, #kysynimi, #kysynum, #topic_id, .wrongAns, #correct_answer, #question, #topics_id {
+#passfield, #emailfield, #kysynimi, #kysynum, #topic_id, .wrongAns, #correct_answer, #question, #topics_id, #quiztopic {
     display: block;
     width: 100%;
     padding: 20px;
@@ -163,4 +163,7 @@ input[type=radio] {
 .sendQ {
     background: rgb(206, 89, 69) !important;
     border: rgb(182, 87, 60) !important;
+}
+.text-white {
+    color: ghostwhite;
 }

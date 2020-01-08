@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, FieldArray, getIn } from "formik";
 import { postQuestion, getTopics } from "../../service/Request";
 import * as Yup from "yup";
-import auth from "../../service/Auth";
+/* import auth from "../../service/Auth"; */
 
 const validationSchema = Yup.object().shape({
   question: Yup.string()
@@ -50,7 +50,7 @@ export default function QuestionForm() {
 
   if (authT) {
     return (
-      <div className="user">
+      <div className="user text-white">
         <Formik
           initialValues={initial}
           validationSchema={validationSchema}
