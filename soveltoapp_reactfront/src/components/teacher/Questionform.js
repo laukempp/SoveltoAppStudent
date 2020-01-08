@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage, FieldArray, getIn } from "formik";
 import { postQuestion, getTopics } from "../../service/Request";
 import * as Yup from "yup";
 /* import auth from "../../service/Auth"; */
-
+import {Navigation} from '../../layout/Navbar';
 const validationSchema = Yup.object().shape({
   question: Yup.string()
     .min(2, "Question must have a at least two characters")
@@ -50,7 +50,10 @@ export default function QuestionForm() {
 
   if (authT) {
     return (
+      <div><Navigation title={'Soveltommi'} />
+      <div className="qFormContainer">
       <div className="user text-white">
+        
         <Formik
           initialValues={initial}
           validationSchema={validationSchema}
@@ -106,7 +109,7 @@ export default function QuestionForm() {
                   className="invalidQuestion"
                 />
                 <div>
-                  <br />
+                  {/* <br /> */}
                 </div>
                 <Field
                   type="text"
@@ -129,7 +132,7 @@ export default function QuestionForm() {
                 />
                 <div>
                 
-                  <br />
+                  {/* <br /> */}
                 </div>
                 <FieldArray className="wrongAns" name="wrong_answer"
                   render = {({remove, push }) => (
@@ -162,17 +165,21 @@ export default function QuestionForm() {
                             <div className="col">
                               <button
                                 type="button"
-                                className="secondary"
+                                className="qFormRemoveBtn"
                                 onClick={() => remove(index)}>X
                             </button>
                           </div>
-                          <div>
-                            <button type="button" className="secondary btnLogin"
+                          {/* <div>
+                            <button type="button" className="secondary"
                             onClick={() => push({ wrong_answer: "Add another" })}>
                             Lisää väärä vastaus
                             </button>
-                          </div>
-                          </div>
+                          </div> */}
+                          
+                          <button type="button" id="btn" className="secondary btnLogin"
+                          onClick={() => push({ wrong_answer: "Add another" })}>
+                          Lisää väärä vastaus
+                      </button></div>
                         )}) 
                         ) : (                      
                       <button type="button" className="secondary btnLogin"
@@ -201,7 +208,7 @@ export default function QuestionForm() {
             )}
             }
         </Formik>
-      </div>
+      </div></div></div>
     );
   } else {
     return <Redirect to="/" />;
