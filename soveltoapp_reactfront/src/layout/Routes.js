@@ -21,11 +21,7 @@ const Routes = () => (
       <Route exact path="/student/results" component={Result} />
       <Route exact path="/logout" component={Logout} />
       <Route component={Login} />
-    </Switch>
-    
-    
-      
-    
+    </Switch> 
   </Router>
 );
 
