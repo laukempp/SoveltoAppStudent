@@ -165,7 +165,13 @@ export default function QuestionForm() {
                                 className="secondary"
                                 onClick={() => remove(index)}>X
                             </button>
-                            </div>
+                          </div>
+                          <div>
+                            <button type="button" className="secondary btnLogin"
+                            onClick={() => push({ wrong_answer: "Add another" })}>
+                            Lisää väärä vastaus
+                            </button>
+                          </div>
                           </div>
                         )}) 
                         ) : (                      
