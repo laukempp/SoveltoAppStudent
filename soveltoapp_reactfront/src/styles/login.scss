@@ -12,10 +12,10 @@ $color-primary: rgb(182, 87, 60);
 body {
     font-family: $font-family;
     font-size: $font-size;
-    background-size: 200% 100% !important;
+    background-size:  200% 100% !important;
     animation: move 10s ease infinite;
     transform: translate3d(0, 0, 0);
-    background: linear-gradient(45deg, rgb(207, 155, 155) 10%, rgb(233, 55, 55) 90%);
+    background: linear-gradient(45deg, rgba(226, 0, 38, 0.89) 10%, #E20026 90%);
     height: 100vh
 }
 
@@ -54,7 +54,7 @@ body {
     transform: translate3d(0, 0, 0);
 }
 
-#passfield, #emailfield, #kysynimi, #kysynum, #topic_id, .wrongAns, #correct_answer, #question, #topics_id {
+#passfield, #emailfield, #kysynimi, #kysynum, #topic_id, .wrongAns, #correct_answer, #question, #topics_id, #quiztopic {
     display: block;
     width: 100%;
     padding: 20px;
@@ -163,4 +163,64 @@ input[type=radio] {
 .sendQ {
     background: rgb(206, 89, 69) !important;
     border: rgb(182, 87, 60) !important;
+}
+.text-white {
+    color: ghostwhite;
+}
+.qFormContainer {
+    background-color: rgba(39, 37, 30, 0.404);
+    max-width: 640px;
+    width: 50%;
+    margin: auto;
+    margin-top: 2%;
+    border-radius: 20px;
+    padding: 1%;
+    transform: translate3d(0, 1000px, 0);
+    animation: arrive 400ms ease-in 0.3s forwards;
+}
+#correct_answer {
+    margin: 10px 0px;
+}
+.qFormRemoveBtn {
+    display: block;
+    width: 50%;
+    padding: 15px 10px;
+    margin-top: 35px;
+    margin-left: 60.7%;
+    font-family: $font-family;
+    -webkit-appearance: none;
+    outline: 0;
+    border: 0;
+    color: white;
+    background: darken(rgb(235, 1, 1), 5%);
+    transition: 0.3s;
+    
+    &:hover {
+        background: darken(rgb(235, 1, 1), 10%);
+    }
+}
+#wrongAns {
+    display: inline-block;
+    width: 150%;
+    padding: 20px 30px;
+    margin-left: -15px;
+    font-family: $font-family;
+    -webkit-appearance: none;
+    border: 0;
+    outline: 0;
+    transition: 0.3s;
+}
+.wrongAnsLabel {
+    margin-left: 15%;
+}
+.formTitle {
+    display: block;
+    font-size: 30px;
+    margin-bottom: -30px;
+}
+.quizTitle {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 30px;
+    margin-top: -15px;
 }
