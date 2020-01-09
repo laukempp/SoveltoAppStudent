@@ -8,9 +8,12 @@ import Questionform from "../components/teacher/Questionform";
 import Quiz from "../components/student/Quiz";
 import Logout from "../components/teacher/Logout";
 import Result from "../components/student/Result";
+import { StoreProvider } from "../context/StoreContext";
+
 
 const Routes = () => (
 
+  <StoreProvider>
   <Router>
     <Switch>
       <Route exact path="/">{<Redirect to="/login" />}</Route> 
@@ -23,6 +26,7 @@ const Routes = () => (
       <Route component={Login} />
     </Switch> 
   </Router>
+  </StoreProvider>
 );
 
 export default Routes;

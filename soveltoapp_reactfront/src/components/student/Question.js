@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 //import { Formik, Form, Field } from "formik";
 import "../../styles/quiz.css";
+import {StoreContext, StoreProvider} from '../../context/StoreContext'
 
-const Question = ({ result, collectPoints, open }) => {
+const Question = ({ result, index }) => {
+  const {state, actions} = useContext(StoreContext);
   const [answerOptions, setAnswerOptions] = useState([]); 
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState({id: result.id, identifier: index, point: 0});
   const [selected, setSelected] = useState();
+
+  console.log(state.pointList)
 
   let newArray = result.wrong_answer.concat(result.correct_answer)
 
@@ -27,17 +31,13 @@ const Question = ({ result, collectPoints, open }) => {
   const onChangeCheck = e => {
     setSelected({...selected, [e.target.name]: e.target.value })
     if (e.target.value === result.correct_answer) {
-      setCounter(1)
+      setCounter({...counter, point: 1})
+      actions.addToPointList(counter, state.pointList);
     } if (e.target.value !== result.correct_answer) {
-      setCounter(0)
+      setCounter({...counter, point: 0})
+      actions.addToPointList(counter, state.pointList);
     }
   }
-
-  if (open) {
-    collectPoints(counter)
-  }
-
-  //console.log("tämä on laskin" + counter)
 
   let answers = answerOptions.map((answer, index) => {
     return (

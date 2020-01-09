@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import socketIOClient from "socket.io-client";
 import { getStudentQs, postScores } from "../../service/Request";
 import Question from "./Question";
+import {StoreContext} from '../../context/StoreContext'
 import "../../styles/quiz.css";
 
 export default function Quiz({history}) {
+  const {state} = useContext(StoreContext);
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [open, setOpen] = useState(false);
-
-  let scoreObject = {nickname: '', score: []};
-  let pointArray = [];
 
   const socket = socketIOClient("http://localhost:5001");
   socket.on("eventMessageStudent", message => {
@@ -32,30 +30,6 @@ export default function Quiz({history}) {
     getStudentQs(newObject).then(res => setQuestions(res));
   }, []);
 
-
-
-  const toggle = () => {
-    return new Promise(resolve => {
-        setOpen(!open)
-        resolve()
-    })
-  }
-
-  const collectPoints = point => {
-    sessionStorage.removeItem('result')
-    pointArray.push(point);
-    let length = pointArray.length;
-    let helpArray = pointArray.reduce((a, b) => a + b, 0)
-    let toinenApu = parseInt(helpArray/length*100);
-    sessionStorage.setItem('result', toinenApu)
-}
-
-const createObject =(one1, one2) => {
-    scoreObject["score"] = parseInt(one2);
-    scoreObject["nickname"] = one1;
-    return scoreObject
-}
-
   const quizSchema = Yup.object().shape({
     nickname: Yup.string()
       .required("Nimimerkki täytyy valita")
@@ -70,8 +44,6 @@ const createObject =(one1, one2) => {
           index={index}
           result={result}
           key={result.id}
-          collectPoints={collectPoints}
-          open={open}
         />
       );
     });
@@ -80,18 +52,14 @@ const createObject =(one1, one2) => {
       <div className="container">
         <h2>{message.title}</h2>
         <Formik
-          initialValues={{ nickname: "", score: pointArray}}
+          initialValues={{nickname: "", score: []}}
           validationSchema={quizSchema}
           onSubmit={(values, { setSubmitting }) => {
+            values.score = state.pointList;
             setSubmitting(true);
-            toggle()
-            .then(() => {sessionStorage.setItem('nick', values.nickname)})
-            .then(() => {postScores(createObject(sessionStorage.getItem('nick'),
-                sessionStorage.getItem('result')))})
-            .then(() => {history.push({
-                pathname: "/student/results",
-                state: {}
-            })})
+            setTimeout(() => {
+              postScores(values);
+            })
             setSubmitting(false);
           }}
         >
