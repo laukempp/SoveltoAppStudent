@@ -20,7 +20,11 @@ export default function Quiz({history}) {
     getStudentQs(message).then(res => setQuestions(res));
     sessionStorage.setItem("started", message.idArray);
   });
-
+  const submitClick = () => {
+    socket.emit("submitClick", ev => {
+      console.log("submit click lähtetty", ev);
+    })
+  }
   let newObject = { idArray: [] };
   newObject["idArray"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
 
@@ -117,7 +121,7 @@ const createObject =(one1, one2) => {
                 className="invalidQName"
               />
               <div className="qnbox">{studentQs}</div>
-              <button type="submit" disabled={isSubmitting}>
+              <button type="submit" onClick={submitClick} disabled={isSubmitting}>
                 Submit
               </button>
             </Form>

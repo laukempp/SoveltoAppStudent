@@ -3,17 +3,17 @@ import { Redirect } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, FieldArray, getIn } from "formik";
 import { postQuestion, getTopics } from "../../service/Request";
 import * as Yup from "yup";
-import auth from "../../service/Auth";
-
+/* import auth from "../../service/Auth"; */
+import {Navigation} from '../../layout/Navbar';
 const validationSchema = Yup.object().shape({
   question: Yup.string()
     .min(2, "Question must have a at least two characters")
     .max(255, "Must be shorter than 255")
-    .required("This field is required"),
+    .required("Kirjoita uusi kysymys"),
   correct_answer: Yup.string()
     .min(2, "Must have at least two characters")
     .max(255, "Must be shorter than 255")
-    .required("This field is required"),
+    .required("Anna oikea vastaus"),
   wrong_answer: Yup.string()
     .min(2, "Must have at least two characters")
     .max(255, "Must be shorter than 255")
@@ -50,7 +50,10 @@ export default function QuestionForm() {
 
   if (authT) {
     return (
-      <div className="user">
+      <div><Navigation title={'Soveltommi'} />
+      <div className="qFormContainer">
+        <p className="text-white formTitle" >Luo uusi kysymys</p>
+      <div className="user text-white">
         <Formik
           initialValues={initial}
           validationSchema={validationSchema}
@@ -77,18 +80,6 @@ export default function QuestionForm() {
               return (
               <Form className="form" onSubmit={handleSubmit}>
                 <Field
-                  as="select"
-                  name="topics_id"
-                  id="topic_id"
-                  className={touched.topics_id && errors.topics_id ? "error" : null}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.topics_id}
-                  style={{ display: "block" }}
-                >
-                  {topicInput}
-                </Field>
-                <Field
                   type="text"
                   name="question"
                   id="question"
@@ -105,8 +96,22 @@ export default function QuestionForm() {
                   name="question"
                   className="invalidQuestion"
                 />
+                <Field
+                  as="select"
+                  name="topics_id"
+                  id="topic_id"
+                  className={touched.topics_id && errors.topics_id ? "error" : null}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.topics_id}
+                  style={{ display: "block" }}
+                >
+                  {topicInput}
+                </Field>
+                
+                
                 <div>
-                  <br />
+                  {/* <br /> */}
                 </div>
                 <Field
                   type="text"
@@ -129,7 +134,7 @@ export default function QuestionForm() {
                 />
                 <div>
                 
-                  <br />
+                  {/* <br /> */}
                 </div>
                 <FieldArray className="wrongAns" name="wrong_answer"
                   render = {({remove, push }) => (
@@ -143,12 +148,13 @@ export default function QuestionForm() {
                           return (
                           <div className="row" id={index} key={index}>
                             <div className="col">
-                              <label htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
+                              <label className="wrongAnsLabel" htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
                               <Field 
                                 type="text"
                                 value={JSON.stringify()}
                                 name={`wrong_answer.${JSON.stringify(index)}`}
                                 placeholder="Lisää uusi"
+                                id="wrongAns"
                                 className={
                                 touchedWrongAns && errorWrongAns
                                 ? "has-error"
@@ -162,17 +168,21 @@ export default function QuestionForm() {
                             <div className="col">
                               <button
                                 type="button"
-                                className="secondary"
+                                className="qFormRemoveBtn"
                                 onClick={() => remove(index)}>X
                             </button>
                           </div>
-                          <div>
-                            <button type="button" className="secondary btnLogin"
+                          {/* <div>
+                            <button type="button" className="secondary"
                             onClick={() => push({ wrong_answer: "Add another" })}>
                             Lisää väärä vastaus
                             </button>
-                          </div>
-                          </div>
+                          </div> */}
+                          
+                          <button type="button" id="btn" className="secondary btnLogin"
+                          onClick={() => push({ wrong_answer: "Add another" })}>
+                          Lisää väärä vastaus
+                      </button></div>
                         )}) 
                         ) : (                      
                       <button type="button" className="secondary btnLogin"
@@ -201,7 +211,7 @@ export default function QuestionForm() {
             )}
             }
         </Formik>
-      </div>
+      </div></div></div>
     );
   } else {
     return <Redirect to="/" />;
