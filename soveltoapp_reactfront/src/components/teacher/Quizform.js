@@ -86,15 +86,17 @@ export default function QuizForm() {
     name: Yup.string().required("Anna tentille nimi."),
     number: Yup.number()
     .required("number is required")
-    .positive("Numeron täytyy olla positiivinen luku tai suurempi kuin 0")
+    .positive("Numeron täytyy olla positiivinen luku ja suurempi kuin 0")
     .integer("Kokonaisluku, kiitos")
     .lessThan(11, "Enintään 10 kysymystä, ei kiusata oppilaita enempää")
   });
 
   return (
     <>
-    <div className="qFormContainer">
-      <div className="user text-white">
+    <div className="qFormContainer text-white">
+      <h3 className="detail_header formTitle">Luo uusi tentti</h3>
+      <div className="user">
+      
         <Formik
           initialValues={{name: '', topics_id: 1, number: 0 }}
           validationSchema={quizformSchema}
@@ -120,7 +122,7 @@ export default function QuizForm() {
             <Form className="form" onSubmit={handleSubmit}>
               <div className="form__group">
               <div className="em">
-                <h3 className="detail_header quizTitle">Luo uusi tentti</h3>
+                
               <span className="detail_span">Tentin nimi</span>
               <Field
                 type="name"
