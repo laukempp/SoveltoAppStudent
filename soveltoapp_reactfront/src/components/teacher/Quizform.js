@@ -120,7 +120,7 @@ export default function QuizForm() {
             <Form className="form" onSubmit={handleSubmit}>
               <div className="form__group">
               <div className="em">
-                <h3 className="detail_header">Luo uusi tentti</h3>
+                <h3 className="detail_header quizTitle">Luo uusi tentti</h3>
               <span className="detail_span">Tentin nimi</span>
               <Field
                 type="name"

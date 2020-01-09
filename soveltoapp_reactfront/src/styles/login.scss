@@ -173,7 +173,7 @@ input[type=radio] {
     width: 50%;
     margin: auto;
     margin-top: 2%;
-    border-radius: 15px;
+    border-radius: 20px;
     padding: 1%;
     transform: translate3d(0, 1000px, 0);
     animation: arrive 400ms ease-in 0.3s forwards;
@@ -213,8 +213,14 @@ input[type=radio] {
 .wrongAnsLabel {
     margin-left: 15%;
 }
-#questionTitle {
+.formTitle {
     display: block;
     font-size: 30px;
     margin-bottom: -30px;
+}
+.quizTitle {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 30px;
+    margin-top: -15px;
 }

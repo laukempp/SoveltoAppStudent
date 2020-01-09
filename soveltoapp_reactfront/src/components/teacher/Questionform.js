@@ -52,7 +52,7 @@ export default function QuestionForm() {
     return (
       <div><Navigation title={'Soveltommi'} />
       <div className="qFormContainer">
-        <p className="text-white" id="questionTitle">Luo uusi kysymys</p>
+        <p className="text-white formTitle" >Luo uusi kysymys</p>
       <div className="user text-white">
         <Formik
           initialValues={initial}
