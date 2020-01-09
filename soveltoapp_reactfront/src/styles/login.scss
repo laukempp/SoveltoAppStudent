@@ -168,20 +168,25 @@ input[type=radio] {
     color: ghostwhite;
 }
 .qFormContainer {
-    background-color: #123;
-    width: 90%;
-    margin: 10% 5%;
-    border-radius: 5px;
+    background-color: rgba(41, 41, 41, 0.842);
+    max-width: 640px;
+    width: 50%;
+    margin: auto;
+    margin-top: 2%;
+    border-radius: 15px;
     padding: 1%;
+    transform: translate3d(0, 1000px, 0);
+    animation: arrive 400ms ease-in 0.3s forwards;
 }
 #correct_answer {
     margin: 10px 0px;
 }
 .qFormRemoveBtn {
     display: block;
-    width: 80%;
+    width: 50%;
     padding: 15px 10px;
-    margin-top: 25px;
+    margin-top: 35px;
+    margin-left: 60.7%;
     font-family: $font-family;
     -webkit-appearance: none;
     outline: 0;
@@ -193,4 +198,23 @@ input[type=radio] {
     &:hover {
         background: darken(rgb(235, 1, 1), 10%);
     }
+}
+#wrongAns {
+    display: inline-block;
+    width: 150%;
+    padding: 20px 30px;
+    margin-left: -15px;
+    font-family: $font-family;
+    -webkit-appearance: none;
+    border: 0;
+    outline: 0;
+    transition: 0.3s;
+}
+.wrongAnsLabel {
+    margin-left: 15%;
+}
+#questionTitle {
+    display: block;
+    font-size: 30px;
+    margin-bottom: -30px;
 }

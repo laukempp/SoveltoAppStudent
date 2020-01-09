@@ -9,11 +9,11 @@ const validationSchema = Yup.object().shape({
   question: Yup.string()
     .min(2, "Question must have a at least two characters")
     .max(255, "Must be shorter than 255")
-    .required("This field is required"),
+    .required("Kirjoita uusi kysymys"),
   correct_answer: Yup.string()
     .min(2, "Must have at least two characters")
     .max(255, "Must be shorter than 255")
-    .required("This field is required"),
+    .required("Anna oikea vastaus"),
   wrong_answer: Yup.string()
     .min(2, "Must have at least two characters")
     .max(255, "Must be shorter than 255")
@@ -52,8 +52,8 @@ export default function QuestionForm() {
     return (
       <div><Navigation title={'Soveltommi'} />
       <div className="qFormContainer">
+        <p className="text-white" id="questionTitle">Luo uusi kysymys</p>
       <div className="user text-white">
-        
         <Formik
           initialValues={initial}
           validationSchema={validationSchema}
@@ -146,12 +146,13 @@ export default function QuestionForm() {
                           return (
                           <div className="row" id={index} key={index}>
                             <div className="col">
-                              <label htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
+                              <label className="wrongAnsLabel" htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
                               <Field 
                                 type="text"
                                 value={JSON.stringify()}
                                 name={`wrong_answer.${JSON.stringify(index)}`}
                                 placeholder="Lisää uusi"
+                                id="wrongAns"
                                 className={
                                 touchedWrongAns && errorWrongAns
                                 ? "has-error"

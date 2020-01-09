@@ -93,6 +93,7 @@ export default function QuizForm() {
 
   return (
     <>
+    <div className="qFormContainer">
       <div className="user text-white">
         <Formik
           initialValues={{name: '', topics_id: 1, number: 0 }}
@@ -195,7 +196,7 @@ export default function QuizForm() {
         </Modal>
 
 
-      </div>
+      </div></div>
     </>
   );
 }
