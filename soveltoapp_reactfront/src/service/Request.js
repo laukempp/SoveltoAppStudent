@@ -1,6 +1,7 @@
 const url = "/api/topics/";
 
 export const fetchQuestions = (querydata) => {
+  console.log('Tässä serviceclientissa näkyvä quiz-data ' + querydata)
   let token = sessionStorage.getItem("tommi")
   return fetch(url, {
     method: "POST",
@@ -62,11 +63,10 @@ export const getTopics = topic => {
 }
 
 export const postScores = score => {
-  let token = sessionStorage.getItem("tommi")
-  //console.log("Tässä näkyy score" + score)
+  console.log("Tässä näkyy score" + score)
   return fetch(`/api/scores`, {
     method: "POST",
-    headers: { "Content-Type": "application/json", "Authorization": token },
+    headers: { "Content-Type": "application/json"},
     body: JSON.stringify(score)
   });
 };
