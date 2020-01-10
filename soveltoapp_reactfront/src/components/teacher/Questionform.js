@@ -3,26 +3,26 @@ import { Redirect } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage, FieldArray, getIn } from "formik";
 import { postQuestion, getTopics } from "../../service/Request";
 import * as Yup from "yup";
-/* import auth from "../../service/Auth"; */
+import auth from "../../service/Auth"; 
 import {Navigation} from '../../layout/Navbar';
+
 const validationSchema = Yup.object().shape({
   question: Yup.string()
-    .min(2, "Question must have a at least two characters")
-    .max(255, "Must be shorter than 255")
-    .required("Kirjoita uusi kysymys"),
+    .min(2, "Kysymyksen täytyy sisältää vähintään kaksi merkkiä.")
+    .max(255, "Kysymys ei voi olla pidempi kuin 255 merkkiä.")
+    .required("Kirjoita uusi kysymys."),
   correct_answer: Yup.string()
-    .min(2, "Must have at least two characters")
-    .max(255, "Must be shorter than 255")
+    .min(2, "Vastauksen täytyy sisältää vähintään kaksi merkkiä.")
+    .max(255, "Vastaus ei voi olla pidempi kuin 255 merkkiä.")
     .required("Anna oikea vastaus"),
-  wrong_answer: Yup.string()
-    .min(2, "Must have at least two characters")
-    .max(255, "Must be shorter than 255")
-    .required("At least one is required")
+  wrong_answer: Yup.array()
+    .min(1, "Vähintään yksi väärä vastaus.")
+    .max(3, "Enintään kolme väärää vastausta")
+    .required("Vähintään yksi väärä vastaus vaaditaan")
 });
 
 export default function QuestionForm() {
-  const authT = "heippa" 
-  //auth.sessionStorageGetItem();
+  const authT = auth.sessionStorageGetItem();
 
   const [topics, setTopics] = useState([])
   const fetchTopics = () => {
@@ -42,11 +42,11 @@ export default function QuestionForm() {
   const initial = {
     question: "",
     correct_answer: "",
-    wrong_answer: [
-      {wrong: ""}
-    ],
+    wrong_answer: [""],
     topics_id: 1
   };
+
+  console.log(initial.wrong_answer)
 
   if (authT) {
     return (
@@ -59,8 +59,8 @@ export default function QuestionForm() {
           validationSchema={validationSchema}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             setSubmitting(true);
-            console.log(values);
-            postQuestion(values);
+            console.log(values.wrong_answer);
+            //postQuestion(values);
             resetForm();
             setSubmitting(false);
           }}
@@ -75,8 +75,9 @@ export default function QuestionForm() {
             isSubmitting,
             handleReset
           }) => {
-              console.log(values.wrong_answer + " values")
-              console.log(touched + " touched")
+              console.group("formik");
+              console.log("values", values);
+              console.groupEnd("formik");
               return (
               <Form className="form" onSubmit={handleSubmit}>
                 <Field
@@ -108,8 +109,7 @@ export default function QuestionForm() {
                 >
                   {topicInput}
                 </Field>
-                
-                
+
                 <div>
                   {/* <br /> */}
                 </div>
@@ -136,34 +136,33 @@ export default function QuestionForm() {
                 
                   {/* <br /> */}
                 </div>
-                <FieldArray className="wrongAns" name="wrong_answer"
+                <FieldArray 
+                  className="wrongAns" name="wrong_answer"
                   render = {({remove, push }) => (
                     <div className="wrongAns">
                       {values.wrong_answer && values.wrong_answer.length > 0 ? (
-                        values.wrong_answer.map((one_wrong_answer, index) => {
-                          const wrongAns = `wrong_answer[${index}]`;
-                          const touchedWrongAns = getIn(touched, wrongAns);
-                          const errorWrongAns = getIn(errors, wrongAns);
-
-                          return (
+                        <div>
+                        {values.wrong_answer.map((one_wrong_answer, index) => 
+                             {console.log("Yksi" + one_wrong_answer + " tämä on index " + index)
+                           return (
                           <div className="row" id={index} key={index}>
                             <div className="col">
                               <label className="wrongAnsLabel" htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
                               <Field 
                                 type="text"
-                                value={JSON.stringify()}
-                                name={`wrong_answer.${JSON.stringify(index)}`}
+                                value={one_wrong_answer}
+                                name={`wrong_answer.${index}`}
                                 placeholder="Lisää uusi"
-                                id="wrongAns"
-                                className={
-                                touchedWrongAns && errorWrongAns
-                                ? "has-error"
-                                : "wrongAns"
-                                }/>                              
-                              <ErrorMessage
-                                component="div"
-                                name="wrong_answer"
-                                className="invalidWrongAnswer" />
+  
+                                />
+                              {errors.wrong_answer &&
+                                errors.wrong_answer[index] &&
+                                touched.wrong_answer &&
+                                touched.wrong_answer[index] && (
+                                  <div className="wrongError">
+                                    {errors.wrong_answer[index]}
+                                    </div>
+                                )}                            
                             </div>
                             <div className="col">
                               <button
@@ -172,27 +171,29 @@ export default function QuestionForm() {
                                 onClick={() => remove(index)}>X
                             </button>
                           </div>
-                          {/* <div>
-                            <button type="button" className="secondary"
-                            onClick={() => push({ wrong_answer: "Add another" })}>
-                            Lisää väärä vastaus
-                            </button>
-                          </div> */}
-                          
-                          <button type="button" id="btn" className="secondary btnLogin"
-                          onClick={() => push({ wrong_answer: "Add another" })}>
-                          Lisää väärä vastaus
-                      </button></div>
-                        )}) 
+                        </div>)
+                      })}
+                        <button type="button" className="secondary btnLogin"
+                        onClick={() => push("")}>
+                        Lisää väärä vastaus
+                      </button>
+                        </div>
                         ) : (                      
                       <button type="button" className="secondary btnLogin"
-                        onClick={() => push({ wrong_answer: "Add another" })}>
+                        onClick={() => push("")}>
                         Lisää väärä vastaus
-                    </button>
-                        )
-                  } </div>
-                  )}
+                      </button>
+                      )}
+                         
+                    </div>
+                    )}
                 />
+
+
+
+
+
+
                 <br />
                 <button className="btnLogin" onClick={event => {
                   event.preventDefault();
