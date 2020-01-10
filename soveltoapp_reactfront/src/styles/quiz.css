@@ -10,7 +10,7 @@
 .qntxtbox {
   padding: 5px;
   background-color: #d46161;
-  border-radius: 12px;
+
   font-size: 1.2em;
 }
 @media (min-width: 576px) {
@@ -60,6 +60,18 @@
   padding-left: 0px;
   padding-right: 0px;
   margin-top: 7px;
+  border-radius: 5px;
   overflow-wrap: break-word;
   word-wrap: break-word;
+}
+.studentNickname {
+  display: block;
+    width: 100%;
+    padding: 20px;
+    -webkit-appearance: none;
+    border: 0;
+    outline: 0;
+    transition: 0.3s;
+    
+   
 }

@@ -73,6 +73,7 @@ export default function Quiz({history}) {
             handleSubmit
           }) => (
             <Form onSubmit={handleSubmit}>
+              <div className="text-white studentNickname">
               <Field
                 type="text"
                 name="nickname"
@@ -87,7 +88,7 @@ export default function Quiz({history}) {
                 component="div"
                 name="nickname"
                 className="invalidQName"
-              />
+              /></div>
               <div className="qnbox">{studentQs}</div>
               <button type="submit" onClick={submitClick} disabled={isSubmitting}>
                 Submit
