@@ -5,7 +5,7 @@ import socketIOClient from "socket.io-client";
 import { getStudentQs, postScores } from "../../service/Request";
 import Question from "./Question";
 import {StoreContext} from '../../context/StoreContext'
-import "../../styles/quiz.css";
+import "../../styles/quiz.scss";
 
 const onKeyDown = (keyEvent) => {
   if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
@@ -64,7 +64,7 @@ export default function Quiz({history}) {
 
     return (
       <div className="container">
-        <h2>{message.title}</h2>
+        <h2 className="text-white">{message.title}</h2>
         <Formik
           initialValues={{nickname: "", questionIDs: [], answers: []}}
           validationSchema={quizSchema}
@@ -89,11 +89,13 @@ export default function Quiz({history}) {
             handleBlur,
             handleSubmit
           }) => (
-            <Form onSubmit={handleSubmit} onKeyDown={onKeyDown}>
+            <Form onSubmit={handleSubmit}><div className="qnbox">{studentQs}</div>
+              <div className="text-white">
               <Field
                 type="text"
                 name="nickname"
-                placeholder="Nimimerkki"
+                id="studentNickname"
+                placeholder="Kirjoita nimesi"
                 className={touched.nickname && errors.nickname ? "error" : null}
                 onChange={handleChange}
                 autoComplete="off"
@@ -104,8 +106,8 @@ export default function Quiz({history}) {
                 component="div"
                 name="nickname"
                 className="invalidQName"
-              />
-              <div className="qnbox">{studentQs}</div>
+              /></div>
+              
               <button type="submit" onClick={submitClick} disabled={isSubmitting}>
                 Submit
               </button>

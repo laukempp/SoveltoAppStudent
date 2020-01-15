@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 //import { Formik, Form, Field } from "formik";
-import "../../styles/quiz.css";
+import "../../styles/quiz.scss";
 import {StoreContext} from '../../context/StoreContext'
 
 const Question = ({ result, index }) => {
