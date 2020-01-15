@@ -5,7 +5,7 @@ import socketIOClient from "socket.io-client";
 import { getStudentQs, postScores } from "../../service/Request";
 import Question from "./Question";
 import {StoreContext} from '../../context/StoreContext'
-import "../../styles/quiz.css";
+import "../../styles/quiz.scss";
 
 export default function Quiz({history}) {
   const {state} = useContext(StoreContext);
@@ -50,7 +50,7 @@ export default function Quiz({history}) {
 
     return (
       <div className="container">
-        <h2>{message.title}</h2>
+        <h2 className="text-white">{message.title}</h2>
         <Formik
           initialValues={{nickname: "", score: []}}
           validationSchema={quizSchema}
@@ -72,11 +72,13 @@ export default function Quiz({history}) {
             handleBlur,
             handleSubmit
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}><div className="qnbox">{studentQs}</div>
+              <div className="text-white">
               <Field
                 type="text"
                 name="nickname"
-                placeholder="Nimimerkki"
+                id="studentNickname"
+                placeholder="Kirjoita nimesi"
                 className={touched.nickname && errors.nickname ? "error" : null}
                 onChange={handleChange}
                 autoComplete="off"
@@ -87,8 +89,8 @@ export default function Quiz({history}) {
                 component="div"
                 name="nickname"
                 className="invalidQName"
-              />
-              <div className="qnbox">{studentQs}</div>
+              /></div>
+              
               <button type="submit" onClick={submitClick} disabled={isSubmitting}>
                 Submit
               </button>

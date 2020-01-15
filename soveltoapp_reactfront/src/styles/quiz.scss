@@ -10,7 +10,7 @@
 .qntxtbox {
   padding: 5px;
   background-color: #d46161;
-  border-radius: 12px;
+
   font-size: 1.2em;
 }
 @media (min-width: 576px) {
@@ -60,6 +60,40 @@
   padding-left: 0px;
   padding-right: 0px;
   margin-top: 7px;
+  border-radius: 5px;
   overflow-wrap: break-word;
   word-wrap: break-word;
+}
+
+#studentNickname {
+  &::placeholder {
+  color: ghostwhite;
+  
+}
+  
+  background: rgb(2, 1, 1);
+  
+  display: block;
+  
+    width: 50%;
+    margin: auto;
+    margin-top: 5%;
+    margin-bottom: 2%;
+    text-align: center;
+    padding: 10px;
+    -webkit-appearance: none;
+    border: 0;
+    outline: 0;
+    transition: 0.8s;
+    
+    &:focus {
+      &::placeholder {
+        color: gray;
+      }
+        background: darken(rgba(255, 255, 255, 0.952), 3%);
+        color: rgb(0, 0, 0);
+        border-radius: 50px;
+        width: 70%;
+        transition: 0.5s ease;
+    }
 }
