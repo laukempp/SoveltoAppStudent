@@ -15,11 +15,19 @@ const validationSchema = Yup.object().shape({
     .min(2, "Vastauksen täytyy sisältää vähintään kaksi merkkiä.")
     .max(255, "Vastaus ei voi olla pidempi kuin 255 merkkiä.")
     .required("Anna oikea vastaus"),
-  wrong_answer: Yup.array()
-    .min(1, "Vähintään yksi väärä vastaus.")
-    .max(3, "Enintään kolme väärää vastausta")
+  wrong_answer: Yup.array().of(
+    Yup.string()
+    .min(3, "Väärän vastauksen täytyy sisältää vähintään kaksi merkkiä.")
+    .max(255, "Väärä vastaus ei voi olla pidempi kuin 255 merkkiä.")
     .required("Vähintään yksi väärä vastaus vaaditaan")
+  )
+  .required('Väärä vastaus täytyy valita')
+  .min(1, 'Vähintään yksi väärä vastaus täytyy olla')
 });
+
+const FriendArrayErrors = errors =>
+  typeof errors.wrong_answer === 'string' ? <div>{errors.wrong_answer}</div> : null;
+
 
 export default function QuestionForm() {
   const authT = auth.sessionStorageGetItem();
@@ -45,8 +53,6 @@ export default function QuestionForm() {
     wrong_answer: [""],
     topics_id: 1
   };
-
-  console.log(initial.wrong_answer)
 
   if (authT) {
     return (
@@ -133,21 +139,21 @@ export default function QuestionForm() {
                   className="invalidCorrectAnswer"
                 />
                 <div>
-                
-                  {/* <br /> */}
+                {FriendArrayErrors(errors)}               
+                {/* <br /> */}
                 </div>
                 <FieldArray 
                   className="wrongAns" name="wrong_answer"
-                  render = {({remove, push }) => (
+                  render = {({remove, push }) => {
+                  return (                    
                     <div className="wrongAns">
                       {values.wrong_answer && values.wrong_answer.length > 0 ? (
                         <div>
-                        {values.wrong_answer.map((one_wrong_answer, index) => 
-                             {console.log("Yksi" + one_wrong_answer + " tämä on index " + index)
+                        {values.wrong_answer.map((one_wrong_answer, index) => {
                            return (
                           <div className="row" id={index} key={index}>
                             <div className="col">
-                              <label className="wrongAnsLabel" htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärät vastaukset</label>
+                              <label className="wrongAnsLabel" htmlFor={`wrong_answer.${one_wrong_answer}`}>Väärä vastaus nro {index+1} </label>
                               <Field 
                                 type="text"
                                 value={one_wrong_answer}
@@ -174,7 +180,7 @@ export default function QuestionForm() {
                         </div>)
                       })}
                         <button type="button" className="secondary btnLogin"
-                        onClick={() => push("")}>
+                        onClick={() => values.wrong_answer.length<3 && push("")}>
                         Lisää väärä vastaus
                       </button>
                         </div>
@@ -186,7 +192,7 @@ export default function QuestionForm() {
                       )}
                          
                     </div>
-                    )}
+                    )}}
                 />
 
 

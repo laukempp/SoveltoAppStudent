@@ -6,12 +6,16 @@ import {StoreContext} from '../../context/StoreContext'
 const Question = ({ result, index }) => {
   const {state, actions} = useContext(StoreContext);
   const [answerOptions, setAnswerOptions] = useState([]); 
-  const [counter, setCounter] = useState({id: result.id, identifier: index, point: 0});
+  const [counter, setCounter] = useState({id: result.id, identifier: index, resultText: ""});
   const [selected, setSelected] = useState();
 
   console.log(state.pointList)
 
-  let newArray = result.wrong_answer.concat(result.correct_answer)
+  let newArray = result.wrong_answer.concat(result.correct_answer).map((item, index) => {
+    return {option: index, answerText: item}
+  })
+
+  console.log(newArray)
 
   useEffect(() => {
     shuffle(newArray)
@@ -28,27 +32,37 @@ const Question = ({ result, index }) => {
     setAnswerOptions(arr);
   };
 
-  const onChangeCheck = e => {
+  /*const onChangeCheck = e => {
     setSelected({...selected, [e.target.name]: e.target.value })
-    if (e.target.value === result.correct_answer) {
-      setCounter({...counter, point: 1})
+    if (e.target.value === result.correct_answer) {    
+      setCounter({...counter, [e.target.name]: e.target.value})    
       actions.addToPointList(counter, state.pointList);
     } if (e.target.value !== result.correct_answer) {
-      setCounter({...counter, point: 0})
-      actions.addToPointList(counter, state.pointList);
+      setCounter({...counter, [e.target.name]: e.target.value})
+      actions.addToPointList(counter, state.pointList)
+     
     }
-  }
+  }*/
+
+  const onChangeCheck = e => {
+    setSelected({...selected, [e.target.name]: e.target.value })
+    let data = {id: result.id, identifier: index, resultText: e.target.value}    
+    actions.addToPointList(data, state.pointList); 
+    }
+  
+
+  
 
   let answers = answerOptions.map((answer, index) => {
     return (
       <div key={index}>
         <input
           type="radio"
-          value={answer}
+          value={answer.answerText}
           onChange={onChangeCheck}
           name={result.id}
         />{" "}
-        <label>{answer}</label>
+        <label>{answer.answerText}{answer.option}</label>
       </div>
     );
   })

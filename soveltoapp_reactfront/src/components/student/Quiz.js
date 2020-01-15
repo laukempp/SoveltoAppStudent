@@ -7,6 +7,19 @@ import Question from "./Question";
 import {StoreContext} from '../../context/StoreContext'
 import "../../styles/quiz.css";
 
+const onKeyDown = (keyEvent) => {
+  if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+    keyEvent.preventDefault();
+  }
+}
+
+const quizSchema = Yup.object().shape({
+  nickname: Yup.string()
+    .required("Nimimerkki täytyy valita")
+    .min(2, "Kaksi kirjainta vähintään olis hyvä!")
+    .max(20, "Liikaa merkkejä")
+});
+
 export default function Quiz({history}) {
   const {state} = useContext(StoreContext);
   const [message, setMessage] = useState({});
@@ -18,11 +31,13 @@ export default function Quiz({history}) {
     getStudentQs(message).then(res => setQuestions(res));
     sessionStorage.setItem("started", message.idArray);
   });
+
   const submitClick = () => {
     socket.emit("submitClick", ev => {
       console.log("submit click lähtetty", ev);
     })
   }
+
   let newObject = { idArray: [] };
   newObject["idArray"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
 
@@ -30,12 +45,11 @@ export default function Quiz({history}) {
     getStudentQs(newObject).then(res => setQuestions(res));
   }, []);
 
-  const quizSchema = Yup.object().shape({
-    nickname: Yup.string()
-      .required("Nimimerkki täytyy valita")
-      .min(2, "Kaksi kirjainta vähintään olis hyvä!")
-      .max(20, "Liikaa merkkejä")
-  });
+  const createDataArray = (array) => {
+    return array.map((item) => {
+      return {questionIDS: item.id, answers: item.resultText}
+    })
+  }
 
   if (sessionStorage.getItem("started")) {
     const studentQs = questions.map((result, index) => {
@@ -52,13 +66,16 @@ export default function Quiz({history}) {
       <div className="container">
         <h2>{message.title}</h2>
         <Formik
-          initialValues={{nickname: "", score: []}}
+          initialValues={{nickname: "", questionIDs: [], answers: []}}
           validationSchema={quizSchema}
           onSubmit={(values, { setSubmitting }) => {
-            values.score = state.pointList;
+            values.questionIDs = createDataArray(state.pointList)
+            values.answers = createDataArray(state.pointList)
             setSubmitting(true);
             setTimeout(() => {
+              console.log("submit tapahtuu")
               postScores(values);
+              console.log(values)
             })
             setSubmitting(false);
           }}
@@ -72,7 +89,7 @@ export default function Quiz({history}) {
             handleBlur,
             handleSubmit
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} onKeyDown={onKeyDown}>
               <Field
                 type="text"
                 name="nickname"
