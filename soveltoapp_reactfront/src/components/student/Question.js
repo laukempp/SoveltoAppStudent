@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-//import { Formik, Form, Field } from "formik";
 import "../../styles/quiz.scss";
 import {StoreContext} from '../../context/StoreContext'
 
 const Question = ({ result, index }) => {
   const {state, actions} = useContext(StoreContext);
   const [answerOptions, setAnswerOptions] = useState([]); 
-  const [counter, setCounter] = useState({id: result.id, identifier: index, resultText: ""});
   const [selected, setSelected] = useState();
-
-  console.log(state.pointList)
 
   let newArray = result.wrong_answer.concat(result.correct_answer).map((item, index) => {
     return {option: index, answerText: item}
   })
-
-  console.log(newArray)
 
   useEffect(() => {
     shuffle(newArray)
@@ -49,9 +43,6 @@ const Question = ({ result, index }) => {
     let data = {id: result.id, identifier: index, resultText: e.target.value}    
     actions.addToPointList(data, state.pointList); 
     }
-  
-
-  
 
   let answers = answerOptions.map((answer, index) => {
     return (
@@ -62,7 +53,7 @@ const Question = ({ result, index }) => {
           onChange={onChangeCheck}
           name={result.id}
         />{" "}
-        <label>{answer.answerText}{answer.option}</label>
+        <label>{answer.answerText}</label>
       </div>
     );
   })

@@ -29,7 +29,7 @@ export default function Quiz({history}) {
   socket.on("eventMessageStudent", message => {
     setMessage(message);
     getStudentQs(message).then(res => setQuestions(res));
-    sessionStorage.setItem("started", message.idArray);
+    sessionStorage.setItem("started", message.question_ids);
   });
 
   const submitClick = () => {
@@ -38,18 +38,26 @@ export default function Quiz({history}) {
     })
   }
 
-  let newObject = { idArray: [] };
-  newObject["idArray"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
+  let newObject = { question_ids: [] };
+  newObject["question_ids"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
 
   useEffect(() => {
     getStudentQs(newObject).then(res => setQuestions(res));
   }, []);
 
-  const createDataArray = (array) => {
-    return array.map((item) => {
-      return {questionIDS: item.id, answers: item.resultText}
-    })
+  const createDataArray = (array, marker) => {
+    if (marker) {
+      return array.map((item) => {
+        return item.id
+      })
+    } else {
+      return array.map((item) => {
+        return item.resultText
+      })
+    }
   }
+
+  console.log(state.pointList)
 
   if (sessionStorage.getItem("started")) {
     const studentQs = questions.map((result, index) => {
@@ -66,11 +74,11 @@ export default function Quiz({history}) {
       <div className="container">
         <h2 className="text-white">{message.title}</h2>
         <Formik
-          initialValues={{nickname: "", questionIDs: [], answers: []}}
+          initialValues={{nickname: "", question_ids: [], user_answer: []}}
           validationSchema={quizSchema}
           onSubmit={(values, { setSubmitting }) => {
-            values.questionIDs = createDataArray(state.pointList)
-            values.answers = createDataArray(state.pointList)
+            values.question_ids = createDataArray(state.pointList, message);
+            values.user_answer = createDataArray(state.pointList);
             setSubmitting(true);
             setTimeout(() => {
               console.log("submit tapahtuu")
