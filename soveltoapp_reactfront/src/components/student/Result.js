@@ -1,28 +1,53 @@
-import React from 'react'
-/* import { studentScore } from ''; */
+import React, {useState, useEffect} from 'react'
+import { studentScore } from '../../service/Request'; 
+import Question from './Question'
 
-const Score =() => {
+const Result = (history) => {
 
-    sessionStorage.removeItem('started')
+    const [result, setResult] = useState();
+    const [questions, setQuestions] = useState(history.location.state.questions)
 
+
+    useEffect(() => {
+        studentScore(history.location.state.values)
+        .then(res => setResult(res))
+      }, []);
+    
+    console.log(questions)
+
+    /*const quiz = result.quizQuestions.map((result, index) => {
+        return (
+          <Question
+            index={index}
+            result={result}
+            key={result.id}
+          />
+        );
+      });*/
+
+    
+      sessionStorage.removeItem('started')
 
         return (
             <div>
-                <h2 className="detail_header">Hienosti vedetty!</h2>
-                <table>
-                <tbody>
-                    <tr>
-                    <th>Nimimerkki</th>
-                    <th>Tulos</th>
-                    </tr>
-                    <tr>
-                        <td>{sessionStorage.getItem('nick')}</td>
-                        <td>{sessionStorage.getItem('result')}%</td>
-                    </tr>
-                    </tbody>
-                </table>
-                </div>
+                {result && result.lenght > 0 ? (
+                    result.quizQuestions.map((result, index) => {
+                        return (
+                            <Question
+                            index={index}
+                            result={result}
+                            key={result.id}
+                            />);
+                        })) : (questions.map((result, index) => {
+                            return (
+                                <Question
+                                index={index}
+                                result={result}
+                                key={result.id}
+                                />);
+                            }))}
+            </div>
         )
 }
 
-export default Score;
+export default Result;

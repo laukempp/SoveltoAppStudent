@@ -26,18 +26,6 @@ const Question = ({ result, index }) => {
     setAnswerOptions(arr);
   };
 
-  /*const onChangeCheck = e => {
-    setSelected({...selected, [e.target.name]: e.target.value })
-    if (e.target.value === result.correct_answer) {    
-      setCounter({...counter, [e.target.name]: e.target.value})    
-      actions.addToPointList(counter, state.pointList);
-    } if (e.target.value !== result.correct_answer) {
-      setCounter({...counter, [e.target.name]: e.target.value})
-      actions.addToPointList(counter, state.pointList)
-     
-    }
-  }*/
-
   const onChangeCheck = e => {
     setSelected({...selected, [e.target.name]: e.target.value })
     let data = {id: result.id, identifier: index, resultText: e.target.value}    
