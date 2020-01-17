@@ -34,9 +34,10 @@ const Question = ({ result, index }) => {
 
   let answers = answerOptions.map((answer, index) => {
     return (
-      <div key={index}>
+      <div className="radioContainer" key={index}>
         <input
           type="radio"
+          className="ansRadioBtn"
           value={answer.answerText}
           onChange={onChangeCheck}
           name={result.id}

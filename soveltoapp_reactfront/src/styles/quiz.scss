@@ -9,8 +9,8 @@
 }
 .qntxtbox {
   padding: 5px;
-  background-color: #d46161;
-
+  background-color: #940e0e;
+  color: rgb(255, 255, 255);
   font-size: 1.2em;
 }
 @media (min-width: 576px) {
@@ -67,10 +67,11 @@
 
 #studentNickname {
   &::placeholder {
-  color: ghostwhite;
+  color: rgb(242, 242, 255);
   
 }
-  
+  color: rgb(253, 218, 218);
+  font-weight: 500;
   background: rgb(2, 1, 1);
   
   display: block;
@@ -96,4 +97,14 @@
         width: 70%;
         transition: 0.5s ease;
     }
+}
+.ansRadioBtn {
+  left: 3.5%;
+  position: absolute;
+}
+/* .radioContainer {
+  position: absolute;
+} */
+.container {
+  position: relative;
 }
