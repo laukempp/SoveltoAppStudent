@@ -82,7 +82,11 @@ export default function Quiz({history}) {
             setSubmitting(true);
             setTimeout(() => {
               console.log("submit tapahtuu")
-              postScores(values);
+              postScores(values)
+              .then(() => {history.push({
+                pathname: "/student/results",
+                state: {values:values, questions:questions}
+            })});
               console.log(values)
             })
             setSubmitting(false);
