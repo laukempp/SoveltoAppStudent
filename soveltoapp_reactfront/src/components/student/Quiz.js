@@ -7,6 +7,19 @@ import Question from "./Question";
 import {StoreContext} from '../../context/StoreContext'
 import "../../styles/quiz.scss";
 
+const onKeyDown = (keyEvent) => {
+  if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
+    keyEvent.preventDefault();
+  }
+}
+
+const quizSchema = Yup.object().shape({
+  nickname: Yup.string()
+    .required("Nimimerkki täytyy valita")
+    .min(2, "Kaksi kirjainta vähintään olis hyvä!")
+    .max(20, "Liikaa merkkejä")
+});
+
 export default function Quiz({history}) {
   const {state} = useContext(StoreContext);
   const [message, setMessage] = useState({});
@@ -16,26 +29,35 @@ export default function Quiz({history}) {
   socket.on("eventMessageStudent", message => {
     setMessage(message);
     getStudentQs(message).then(res => setQuestions(res));
-    sessionStorage.setItem("started", message.idArray);
+    sessionStorage.setItem("started", message.question_ids);
   });
+
   const submitClick = () => {
     socket.emit("submitClick", ev => {
       console.log("submit click lähtetty", ev);
     })
   }
-  let newObject = { idArray: [] };
-  newObject["idArray"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
+
+  let newObject = { question_ids: [] };
+  newObject["question_ids"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
 
   useEffect(() => {
     getStudentQs(newObject).then(res => setQuestions(res));
   }, []);
 
-  const quizSchema = Yup.object().shape({
-    nickname: Yup.string()
-      .required("Nimimerkki täytyy valita")
-      .min(2, "Kaksi kirjainta vähintään olis hyvä!")
-      .max(20, "Liikaa merkkejä")
-  });
+  const createDataArray = (array, marker) => {
+    if (marker) {
+      return array.map((item) => {
+        return item.id
+      })
+    } else {
+      return array.map((item) => {
+        return item.resultText
+      })
+    }
+  }
+
+  console.log(state.pointList)
 
   if (sessionStorage.getItem("started")) {
     const studentQs = questions.map((result, index) => {
@@ -52,13 +74,16 @@ export default function Quiz({history}) {
       <div className="container">
         <h2 className="text-white">{message.title}</h2>
         <Formik
-          initialValues={{nickname: "", score: []}}
+          initialValues={{nickname: "", question_ids: [], user_answer: []}}
           validationSchema={quizSchema}
           onSubmit={(values, { setSubmitting }) => {
-            values.score = state.pointList;
+            values.question_ids = createDataArray(state.pointList, message);
+            values.user_answer = createDataArray(state.pointList);
             setSubmitting(true);
             setTimeout(() => {
+              console.log("submit tapahtuu")
               postScores(values);
+              console.log(values)
             })
             setSubmitting(false);
           }}
