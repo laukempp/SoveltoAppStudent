@@ -4,48 +4,35 @@ import Question from './Question'
 
 const Result = (history) => {
 
-    const [result, setResult] = useState();
+    const [score, setScore] = useState([]);
     const [questions, setQuestions] = useState(history.location.state.questions)
+
+    let helperVar = "help"
 
 
     useEffect(() => {
         studentScore(history.location.state.values)
-        .then(res => setResult(res))
+        .then(res => setScore(res))
       }, []);
     
     console.log(questions)
+    console.log(score)
 
-    /*const quiz = result.quizQuestions.map((result, index) => {
-        return (
-          <Question
-            index={index}
-            result={result}
-            key={result.id}
-          />
-        );
-      });*/
 
-    
-      sessionStorage.removeItem('started')
+    //sessionStorage.removeItem('started')
 
         return (
             <div>
-                {result && result.lenght > 0 ? (
-                    result.quizQuestions.map((result, index) => {
+                {score.quizQuestions && score.quizQuestions.map((result, index) => {
+                    console.log(score.score[0].user_answer)
                         return (
                             <Question
                             index={index}
                             result={result}
                             key={result.id}
-                            />);
-                        })) : (questions.map((result, index) => {
-                            return (
-                                <Question
-                                index={index}
-                                result={result}
-                                key={result.id}
-                                />);
-                            }))}
+                            studentAnswer={score.score[0].user_answer[index]}
+                            helperVar={helperVar}
+                            />)})}
             </div>
         )
 }
