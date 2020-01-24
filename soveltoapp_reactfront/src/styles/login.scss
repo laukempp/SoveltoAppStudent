@@ -15,7 +15,7 @@ body {
     background-size:  200% 100% !important;
     animation: move 10s ease infinite;
     transform: translate3d(0, 0, 0);
-    background: linear-gradient(45deg, rgba(226, 0, 38, 0.89) 10%, #E20026 90%);
+    background: linear-gradient(90deg, rgba(226, 0, 38, 0.89) 10%, #E20026 90%);
     height: 100vh
 }
 
@@ -224,4 +224,50 @@ input[type=radio] {
     font-size: 30px;
     margin-bottom: 30px;
     margin-top: -15px;
+}
+.resCount {
+    display: inline-block;
+    /* padding: 0 100px; */
+    font-weight: 600;
+    color: black;
+    left: 90%;
+    /* background-color: #fff; */
+    
+    margin-left: auto;
+}
+.resValue {
+    color: black;
+    display: inline;
+}
+.resultContainer {
+    width: 65%;
+    padding: 1px;
+    
+    margin: auto;
+    /* background-color: #fff; */
+    
+    margin: 2px 0;
+}
+.resultBG {
+    background-color: rgba(39, 37, 30, 0.404);
+    max-width: 600px;
+    width: 70%;
+    margin: auto;
+    padding-bottom: 15px;
+    margin-top: 2%;
+    border-radius: 5px;
+    padding: 10px;
+}
+.resNumber {
+    margin-left: 2%;
+}
+@media (min-width: 1000px){
+    .resultBG {
+        background-color: rgba(39, 37, 30, 0.404);
+        width: 50%;
+        margin: auto;
+        padding-bottom: 15px;
+        margin-top: 2%;
+        border-radius: 5px;
+    }
 }
