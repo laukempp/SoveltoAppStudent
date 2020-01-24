@@ -1,21 +1,17 @@
 import React, {useState, useEffect} from 'react'
 import { studentScore } from '../../service/Request'; 
-import Question from './Question'
+import ScoreItem from './ScoreItem'
 
 const Result = (history) => {
 
     const [score, setScore] = useState([]);
-    const [questions, setQuestions] = useState(history.location.state.questions)
-
-    let helperVar = "help"
-
 
     useEffect(() => {
         studentScore(history.location.state.values)
         .then(res => setScore(res))
       }, []);
     
-    console.log(questions)
+    console.log(history.location.state.values)
     console.log(score)
 
 
@@ -23,15 +19,15 @@ const Result = (history) => {
 
         return (
             <div>
-                {score.quizQuestions && score.quizQuestions.map((result, index) => {
-                    console.log(score.score[0].user_answer)
+                {score && score.map((item, index) => {
+                    console.log(score)
                         return (
-                            <Question
+                            <ScoreItem
                             index={index}
-                            result={result}
-                            key={result.id}
-                            studentAnswer={score.score[0].user_answer[index]}
-                            helperVar={helperVar}
+                            question={item.question}
+                            key={item.id}
+                            studentAnswer={item.results}
+                            id={item.id}
                             />)})}
             </div>
         )
