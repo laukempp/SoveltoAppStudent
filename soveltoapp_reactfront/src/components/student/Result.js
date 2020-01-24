@@ -1,51 +1,34 @@
 import React, {useState, useEffect} from 'react'
 import { studentScore } from '../../service/Request'; 
-import Question from './Question'
+import ScoreItem from './ScoreItem'
 
 const Result = (history) => {
 
-    const [result, setResult] = useState();
-    const [questions, setQuestions] = useState(history.location.state.questions)
-
+    const [score, setScore] = useState([]);
 
     useEffect(() => {
         studentScore(history.location.state.values)
-        .then(res => setResult(res))
+        .then(res => setScore(res))
       }, []);
     
-    console.log(questions)
+    console.log(history.location.state.values)
+    console.log(score)
 
-    /*const quiz = result.quizQuestions.map((result, index) => {
-        return (
-          <Question
-            index={index}
-            result={result}
-            key={result.id}
-          />
-        );
-      });*/
 
-    
-      sessionStorage.removeItem('started')
+    //sessionStorage.removeItem('started')
 
         return (
             <div>
-                {result && result.lenght > 0 ? (
-                    result.quizQuestions.map((result, index) => {
+                {score && score.map((item, index) => {
+                    console.log(score)
                         return (
-                            <Question
+                            <ScoreItem
                             index={index}
-                            result={result}
-                            key={result.id}
-                            />);
-                        })) : (questions.map((result, index) => {
-                            return (
-                                <Question
-                                index={index}
-                                result={result}
-                                key={result.id}
-                                />);
-                            }))}
+                            question={item.question}
+                            key={item.id}
+                            studentAnswer={item.results}
+                            id={item.id}
+                            />)})}
             </div>
         )
 }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "../../styles/quiz.scss";
 import {StoreContext} from '../../context/StoreContext'
 
-const Question = ({ result, index }) => {
+const Question = ({ result, index}) => {
   const {state, actions} = useContext(StoreContext);
   const [answerOptions, setAnswerOptions] = useState([]); 
   const [selected, setSelected] = useState();
@@ -47,7 +47,6 @@ const Question = ({ result, index }) => {
     );
   })
 
-
   return (
     <div>
       <div className="qntxtbox">
@@ -57,6 +56,7 @@ const Question = ({ result, index }) => {
         {answers}
       </div>
     </div>
-  );
-};
+  )
+}
+
 export default Question;
