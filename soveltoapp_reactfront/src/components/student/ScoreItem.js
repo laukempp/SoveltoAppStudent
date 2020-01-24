@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React from "react";
 import "../../styles/quiz.scss";
 
 const ScoreItem = ({question, studentAnswer, id}) => {
