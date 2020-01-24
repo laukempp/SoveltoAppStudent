@@ -27,7 +27,7 @@ const ScoreItem = ({question, studentAnswer, id}) => {
                     disabled
                     name={id}
                     />{" "} */}
-                    <label>{item.value}</label>
+                    <label className="answer"> {item.value}</label>
                 </div>
                 )
             }) 
