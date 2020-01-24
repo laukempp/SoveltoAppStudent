@@ -9,7 +9,7 @@ const Result = (history) => {
     useEffect(() => {
         studentScore(history.location.state.values)
         .then(res => setScore(res))
-      }, []);
+      }, [history.location.state.values]);
     
     console.log(history.location.state.values)
     console.log(score)
