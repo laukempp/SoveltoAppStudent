@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { studentScore } from '../../service/Request'; 
 import ScoreItem from './ScoreItem'
 
-const Result = (history) => {
+const Result = ({history}) => {
 
     const [score, setScore] = useState([]);
 
