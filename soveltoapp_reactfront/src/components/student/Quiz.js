@@ -20,10 +20,12 @@ const quizSchema = Yup.object().shape({
     .max(20, "Liikaa merkkejä")
 });
 
-export default function Quiz({history}) {
+export default function Quiz({history, match}) {
   const {state} = useContext(StoreContext);
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
+
+  console.log(match.params.quiz_author)
 
   const socket = socketIOClient("http://localhost:5001");
   socket.on("eventMessageStudent", message => {
