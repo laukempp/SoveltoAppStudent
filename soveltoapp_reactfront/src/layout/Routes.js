@@ -12,8 +12,8 @@ const Routes = () => (
   <Router>
     <Switch>
      
-      <Route exact path="/student/quiz" render={props => <Quiz {...props} />} />
-      <Route exact path="/student/results" component={Result} />
+      <Route exact path="/student/quiz/:teacher_badge/" render={props => <Quiz {...props} />} />
+      <Route exact path="/student/:teacher_badge/results" component={Result} />
       
       <Route component={Quiz} />
     </Switch> 
