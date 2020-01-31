@@ -25,15 +25,16 @@ export default function Quiz({history, match}) {
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
 
-  console.log(match.params.quiz_author)
+  console.log(match)
+
+  const getQuiz = {quiz_author: parseInt(match.params.quiz_author)}
 
   const socket = socketIOClient("http://localhost:5001");
   socket.on("eventMessageStudent", message => {
     setMessage(message);
-    getStudentQs(message).then(res => setQuestions(res));
+    getStudentQs(getQuiz).then(res => setQuestions(res));
     sessionStorage.setItem("started", message.question_ids);
   });
-
   const submitClick = () => {
     socket.emit("submitClick", ev => {
       console.log("submit click lähtetty", ev);
@@ -44,7 +45,7 @@ export default function Quiz({history, match}) {
   newObject["question_ids"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
 
   useEffect(() => {
-    getStudentQs(newObject).then(res => setQuestions(res));
+    getStudentQs(getQuiz).then(res => setQuestions(res));
   }, []);
 
   const createDataArray = (array, marker) => {
