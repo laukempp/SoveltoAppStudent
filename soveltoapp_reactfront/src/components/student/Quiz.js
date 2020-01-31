@@ -25,7 +25,7 @@ export default function Quiz({history, match}) {
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
 
-  console.log(match.params.quiz_author)
+  console.log(match.params)
 
   const socket = socketIOClient("http://localhost:5001");
   socket.on("eventMessageStudent", message => {

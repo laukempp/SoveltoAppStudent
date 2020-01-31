@@ -13,6 +13,7 @@ const Routes = ({}) => (
     <Switch>
      
       <Route exact path={`/student/:quiz_author`} render={props => <Quiz {...props} />} />
+      <Route exact path={`/student/:quiz_author/:quiz_id`} render={props => <Quiz {...props} />} />
       <Route exact path="/student/:teacher_badge/results" component={Result} />
       
       {/*<Route component={Quiz} />*/}
