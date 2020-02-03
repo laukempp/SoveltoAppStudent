@@ -25,16 +25,26 @@ export default function Quiz({history, match}) {
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
 
-  console.log(match)
+  const getQuiz = (match) => {
+    if (match.params.quiz_badge) {
+      return {quiz_badge: match.params.quiz_badge}
+    } else if (match.params.title) {
+      return {title: match.params.title}
+    } else  if (match.params.quiz_author) {
+      return {quiz_author: parseInt(match.params.quiz_author)}
+    } 
+  }
 
-  const getQuiz = {quiz_author: parseInt(match.params.quiz_author)}
+  console.log(getQuiz(match))
 
   const socket = socketIOClient("http://localhost:5001");
   socket.on("eventMessageStudent", message => {
+    let sessionItem = Math.round(Math.random() * 100000)
     setMessage(message);
-    getStudentQs(getQuiz).then(res => setQuestions(res));
-    sessionStorage.setItem("started", message.question_ids);
+    getStudentQs(getQuiz(match)).then(res => setQuestions(res));
+    sessionStorage.setItem(sessionItem, message.quiz_badge);
   });
+
   const submitClick = () => {
     socket.emit("submitClick", ev => {
       console.log("submit click lähtetty", ev);
@@ -45,7 +55,7 @@ export default function Quiz({history, match}) {
   newObject["question_ids"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
 
   useEffect(() => {
-    getStudentQs(getQuiz).then(res => setQuestions(res));
+    getStudentQs(getQuiz(match)).then(res => setQuestions(res));
   }, []);
 
   const createDataArray = (array, marker) => {
@@ -62,7 +72,7 @@ export default function Quiz({history, match}) {
 
   console.log(state.pointList)
 
-  if (sessionStorage.getItem("started")) {
+  if (sessionStorage.getItem("started") || true) {
     const studentQs = questions.map((result, index) => {
       return (
         <Question

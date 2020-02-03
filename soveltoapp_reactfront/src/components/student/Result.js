@@ -4,19 +4,27 @@ import ScoreItem from './ScoreItem'
 
 const Result = ({history}) => {
 
+    console.log(history)
+
     const [score, setScore] = useState([]);
 
     useEffect(() => {
-        studentScore(history.location.state.values)
+        studentScore()
         .then(res => setScore(res))
-      }, [history.location.state.values]);
+      }, [history]);
     
-    console.log(history.location.state.values)
+    console.log(history)
     console.log(score)
 
 
     //sessionStorage.removeItem('started')
-
+    if (!history.location.state) {
+        return (
+            <div>
+                Sori, ei oo tuloxii
+            </div>
+        )
+    } else {
         return (
             <div>
                 {score && score.map((item, index) => {
@@ -31,6 +39,7 @@ const Result = ({history}) => {
                             />)})}
             </div>
         )
+    }
 }
 
 export default Result;

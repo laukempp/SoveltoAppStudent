@@ -1,12 +1,12 @@
-export const getStudentQs = (array) => {
-  console.log(JSON.stringify(array))
+export const getStudentQs = (object) => {
+  console.log(JSON.stringify(object))
   return fetch("/api/quiz", {
     method: "POST",
     headers: {
       "Accept": "application/json",
       "Content-type": "application/json"
     },
-    body: JSON.stringify(array),
+    body: JSON.stringify(object),
   })
     .then(res => res.json())
 };
