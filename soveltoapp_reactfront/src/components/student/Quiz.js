@@ -36,13 +36,13 @@ export default function Quiz({history, match}) {
   }
 
   console.log(getQuiz(match))
+  console.log(questions)
 
   const socket = socketIOClient("http://localhost:5001");
   socket.on("eventMessageStudent", message => {
-    let sessionItem = Math.round(Math.random() * 100000)
     setMessage(message);
     getStudentQs(getQuiz(match)).then(res => setQuestions(res));
-    sessionStorage.setItem(sessionItem, message.quiz_badge);
+    sessionStorage.setItem("", message.quiz_badge);
   });
 
   const submitClick = () => {
@@ -72,8 +72,9 @@ export default function Quiz({history, match}) {
 
   console.log(state.pointList)
 
-  if (sessionStorage.getItem("started") || true) {
-    const studentQs = questions.map((result, index) => {
+  if (sessionStorage.getItem(sessionItem)) {
+
+    {/*const studentQs = questions.map((result, index) => {
       return (
         <Question
           index={index}
@@ -81,7 +82,7 @@ export default function Quiz({history, match}) {
           key={result.id}
         />
       );
-    });
+    });*/}
 
     return (
       <div className="container">
@@ -114,7 +115,19 @@ export default function Quiz({history, match}) {
             handleBlur,
             handleSubmit
           }) => (
-            <Form onSubmit={handleSubmit}><div className="qnbox">{studentQs}</div>
+            <Form onSubmit={handleSubmit}><div className="qnbox">
+              
+              {questions && questions.map((result, index) => {
+                  return (
+                      <Question
+                      index={index}
+                      result={result}
+                      key={result.id}
+                      />
+                  );
+                })}
+              
+              </div>
               <div className="text-white">
               <Field
                 type="text"
