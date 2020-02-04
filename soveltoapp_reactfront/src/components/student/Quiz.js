@@ -38,11 +38,13 @@ export default function Quiz({history, match}) {
   console.log(getQuiz(match))
 
   const socket = socketIOClient("http://localhost:5001");
+  
   socket.on("eventMessageStudent", message => {
-    let sessionItem = Math.round(Math.random() * 100000)
+     
     setMessage(message);
+
     getStudentQs(getQuiz(match)).then(res => setQuestions(res));
-    sessionStorage.setItem(sessionItem, message.quiz_badge);
+    sessionStorage.setItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d", message.quiz_badge);
   });
 
   const submitClick = () => {
@@ -72,7 +74,7 @@ export default function Quiz({history, match}) {
 
   console.log(state.pointList)
 
-  if (sessionStorage.getItem("started") || true) {
+  if (sessionStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d")) {
     const studentQs = questions.map((result, index) => {
       return (
         <Question
