@@ -4,16 +4,21 @@ import ScoreItem from './ScoreItem'
 
 const Result = ({history}) => {
 
-    console.log(history)
+    const tag = sessionStorage.getItem('moi')
+
+    const resultSearchTag = {quiz_badge: sessionStorage.getItem('c2eb1463-da5a-4eea-aa0e-4e27cc83b85d'), result_tag: parseInt(tag)}
+
+
+    console.log(tag)
 
     const [score, setScore] = useState([]);
 
     useEffect(() => {
-        studentScore()
+        studentScore(resultSearchTag)
         .then(res => setScore(res))
-      }, [history]);
+      }, []);
     
-    console.log(history)
+    console.log(history.location.state.values)
     console.log(score)
 
 
