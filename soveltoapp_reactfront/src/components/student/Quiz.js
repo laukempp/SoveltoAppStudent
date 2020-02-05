@@ -43,6 +43,7 @@ export default function Quiz({history, match}) {
   
   socket.on("eventMessageStudent", message => {
     setMessage(message);
+    
     if (message.quiz_author === match.params.quiz_author) {
       sessionStorage.setItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d", message.quiz_badge);
     }
