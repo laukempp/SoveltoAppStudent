@@ -27,6 +27,8 @@ export default function Quiz({history, match}) {
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
 
+  const badge = sessionStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d");
+
   const getQuiz = (match) => {
     if (match.params.quiz_badge) {
       return {quiz_badge: match.params.quiz_badge}
@@ -36,9 +38,6 @@ export default function Quiz({history, match}) {
       return {quiz_author: parseInt(match.params.quiz_author)}
     } 
   }
-
-  console.log(getQuiz(match))
-  console.log(tagi)
 
   const socket = socketIOClient("http://localhost:5001");
   
@@ -77,21 +76,12 @@ export default function Quiz({history, match}) {
   console.log(state.pointList)
 
   if (sessionStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d")) {
-    {/*const studentQs = questions.map((result, index) => {
-      return (
-        <Question
-          index={index}
-          result={result}
-          key={result.id}
-        />
-      );
-    });*/}
-
+    
     return (
       <div className="container">
         <h2 className="text-white">{message.title}</h2>
         <Formik
-          initialValues={{nickname: "", question_ids: [], user_answer: [], result_tag: tagi}}
+          initialValues={{nickname: "", question_ids: [], user_answer: [], result_tag: tagi, quiz_badge: badge}}
           validationSchema={quizSchema}
           onSubmit={(values, { setSubmitting }) => {
             values.question_ids = createDataArray(state.pointList, message);
