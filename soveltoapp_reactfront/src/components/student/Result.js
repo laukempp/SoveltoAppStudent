@@ -4,9 +4,9 @@ import ScoreItem from './ScoreItem'
 
 const Result = ({history}) => {
 
-    const tag = sessionStorage.getItem('moi')
+    const tag = localStorage.getItem('moi')
 
-    const resultSearchTag = {quiz_badge: sessionStorage.getItem('c2eb1463-da5a-4eea-aa0e-4e27cc83b85d'), result_tag: parseInt(tag)}
+    const resultSearchTag = {quiz_badge: localStorage.getItem('c2eb1463-da5a-4eea-aa0e-4e27cc83b85d'), result_tag: parseInt(tag)}
 
 
     console.log(tag)
@@ -18,14 +18,14 @@ const Result = ({history}) => {
         .then(res => setScore(res))
       }, []);
     
-    console.log(history.location.state.values)
-    console.log(score)
+  /*   console.log(history.location.state.values)
+    console.log(score) */
 
 
-    //sessionStorage.removeItem('started')
+    //localStorage.removeItem('started')
     if (!history.location.state) {
         return (
-            <div>
+            <div className="text-white">
                 Sori, ei oo tuloxii
             </div>
         )

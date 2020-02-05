@@ -27,7 +27,7 @@ export default function Quiz({history, match}) {
   const [message, setMessage] = useState({});
   const [questions, setQuestions] = useState([]);
 
-  const badge = sessionStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d");
+  const badge = localStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d");
 
   const getQuiz = (match) => {
     if (match.params.quiz_badge) {
@@ -45,7 +45,7 @@ export default function Quiz({history, match}) {
     setMessage(message);
     
     if (message.quiz_author === match.params.quiz_author) {
-      sessionStorage.setItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d", message.quiz_badge);
+      localStorage.setItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d", message.quiz_badge);
     }
     getStudentQs(getQuiz(match)).then(res => setQuestions(res));
   });
@@ -57,7 +57,7 @@ export default function Quiz({history, match}) {
   }
 
   let newObject = { question_ids: [] };
-  newObject["question_ids"] = JSON.parse("[" + sessionStorage.getItem("started") + "]");
+  newObject["question_ids"] = JSON.parse("[" + localStorage.getItem("started") + "]");
 
   useEffect(() => {
     getStudentQs(getQuiz(match)).then(res => setQuestions(res));
@@ -77,7 +77,7 @@ export default function Quiz({history, match}) {
 
   console.log(state.pointList)
 
-  if (sessionStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d")) {
+  if (localStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d")) {
     
     return (
       <div className="container">
@@ -88,7 +88,7 @@ export default function Quiz({history, match}) {
           onSubmit={(values, { setSubmitting }) => {
             values.question_ids = createDataArray(state.pointList, message);
             values.user_answer = createDataArray(state.pointList);
-            sessionStorage.setItem('moi', tagi)
+            localStorage.setItem('moi', tagi)
             setSubmitting(true);
             setTimeout(() => {
               console.log("submit tapahtuu")
