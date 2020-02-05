@@ -6,15 +6,14 @@ import Result from "../components/student/Result";
 import { StoreProvider } from "../context/StoreContext";
 
 
-const Routes = ({}) => (
+const Routes = () => (
 
   <StoreProvider>
   <Router>
-    <Switch>
-     
-      <Route exact path={`/student/a1quiz/:quiz_author`} render={props => <Quiz {...props} />} />
-      <Route exact path={`/student/c2quiz/:quiz_badge`} render={props => <Quiz {...props} />} />
-      <Route exact path={`/student/f3quiz/:title`} render={props => <Quiz {...props} />} />
+    <Switch>    
+      <Route exact path= "/student/a1quiz/:quiz_author" render={props => <Quiz {...props} />} />
+      <Route exact path="/student/c2quiz/:quiz_badge" render={props => <Quiz {...props} />} />
+      <Route exact path="/student/f3quiz/:title" render={props => <Quiz {...props} />} />
       <Route exact path="/student/results" component={Result} />
       
       <Route component={Quiz} />
