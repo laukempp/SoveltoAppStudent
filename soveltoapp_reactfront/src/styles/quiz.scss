@@ -1,3 +1,6 @@
+
+$color-primary: rgb(182, 87, 60);
+
 .qnbox {
   background-color: #f5f5f5;
   margin-top: 15px;
@@ -102,9 +105,29 @@
   left: 3.5%;
   position: absolute;
 }
-/* .radioContainer {
-  position: absolute;
-} */
+.radioContainer {
+  background-color: #f5f5f5;
+    &:hover {
+      background-color: rgba(211, 209, 209, 0.801);
+    }
+}
 .container {
   position: relative;
+}
+.quizSubmit {
+  display: inline-block;
+  width: 35%;
+  margin-top: 6px;
+  background-color: darken($color-primary, 5%);
+  color: #fff;
+  padding: 10px 10px;
+  outline: 0;
+  border: 0;
+  border-radius: 2px;
+  border-collapse: collapse;
+  font-weight: 500;
+    &:hover {
+      background: darken($color-primary, 10%);
+      font-weight: 600;
+    }
 }
