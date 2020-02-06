@@ -39,12 +39,14 @@ export default function Quiz({history, match}) {
     } 
   }
 
+  console.log("history" + history)
   const socket = socketIOClient("http://localhost:5001");
   
   socket.on("eventMessageStudent", message => {
     setMessage(message);
     if (message.quiz_author === match.params.quiz_author) {
-      localStorage.setItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d", message.quiz_badge);}
+      localStorage.setItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d", message.quiz_badge);
+      localStorage.setItem("c2e44369-649925-4eea-7726-7746383b85d", message.quiz_badge)}
     getStudentQs(getQuiz(match)).then(res => setQuestions(res));
   });
 
@@ -59,12 +61,16 @@ export default function Quiz({history, match}) {
   }, []);
 
   const createDataArray = (array, marker) => {
+    
+    let newOne = array.sort((a, b) => a.id - b.id)
+
     if (marker) {
-      return array.map((item) => {
+      return newOne.map((item) => {
+        console.log("sortattu" + item)
         return item.id
       })
     } else {
-      return array.map((item) => {
+      return newOne.map((item) => {
         return item.resultText
       })
     }
@@ -72,7 +78,7 @@ export default function Quiz({history, match}) {
 
   console.log(state.pointList)
 
-  if (localStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d")) {
+  if (localStorage.getItem("c2e44369-649925-4eea-7726-7746383b85d")) {
     
     return (
       <div className="container">
@@ -83,11 +89,12 @@ export default function Quiz({history, match}) {
           onSubmit={(values, { setSubmitting }) => {
             values.question_ids = createDataArray(state.pointList, message);
             values.user_answer = createDataArray(state.pointList);
-            localStorage.setItem('moi', tagi)
+            localStorage.setItem('c2e44369-da5a-4eea-aa0e-7746383b85d', tagi)
             setSubmitting(true);
             setTimeout(() => {
               console.log("submit tapahtuu")
               postScores(values)
+              .then(localStorage.removeItem("c2e44369-649925-4eea-7726-7746383b85d"))
               .then(() => {history.push({
                 pathname: "/student/results",
                 state: {values:values, questions:questions, tagi:tagi}
