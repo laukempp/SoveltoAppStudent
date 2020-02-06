@@ -144,8 +144,8 @@ export default function Quiz({history, match}) {
                 className="invalidQName"
               /></div>
               
-              <button type="submit" onClick={submitClick} disabled={isSubmitting}>
-                Submit
+              <button className="quizSubmit" type="submit" onClick={submitClick} disabled={isSubmitting}>
+                Lähetä
               </button>
             </Form>
           )}
