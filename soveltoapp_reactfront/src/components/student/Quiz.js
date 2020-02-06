@@ -25,11 +25,10 @@ const tagi = Math.round(Math.random() * 100000);
 export default function Quiz({history, match}) {
   const {state} = useContext(StoreContext);
   const [message, setMessage] = useState({});
-  const [questions, setQuestions] = useState([]);
+  const [data, setData] = useState([]);
+  const [title, setTitle] = useState()
 
-  const badge = localStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d");
-
-  const getQuiz = (match) => {
+  /* const getQuiz = (match) => {
     if (match.params.quiz_badge) {
       return {quiz_badge: match.params.quiz_badge}
     } else if (match.params.title) {
@@ -38,15 +37,26 @@ export default function Quiz({history, match}) {
       return {quiz_author: parseInt(match.params.quiz_author)}
     } 
   }
+ */
+  console.log(title)
 
+  console.log("history" + history)
   const socket = socketIOClient("http://localhost:5001");
   
   socket.on("eventMessageStudent", message => {
     setMessage(message);
     if (message.quiz_author === match.params.quiz_author) {
-      localStorage.setItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d", message.quiz_badge);
-    }
-    getStudentQs(getQuiz(match)).then(res => setQuestions(res));
+      sessionStorage.setItem("quizID", message.quiz_badge)
+      sessionStorage.setItem("start", "6638926664537829101")
+      
+      let object = {badge: message.quiz_badge}
+      getStudentQs(object).then(res => {
+        setData(res.question)
+        setTitle(res.result)
+        })
+      } else {
+        console.log("moi")
+      }
   });
 
   const submitClick = () => {
@@ -55,46 +65,54 @@ export default function Quiz({history, match}) {
     })
   }
 
-  let newObject = { question_ids: [] };
-  newObject["question_ids"] = JSON.parse("[" + localStorage.getItem("started") + "]");
+  const badge = {badge: sessionStorage.getItem("quizID")};
 
+  console.log(badge)
   useEffect(() => {
-    getStudentQs(getQuiz(match)).then(res => setQuestions(res));
+    getStudentQs(badge).then(res => { 
+      setData(res.question)
+      setTitle(res.result)});
   }, []);
 
   const createDataArray = (array, marker) => {
+    
+    let newOne = array.sort((a, b) => a.id - b.id)
+
     if (marker) {
-      return array.map((item) => {
+      return newOne.map((item) => {
+        console.log("sortattu" + item)
         return item.id
       })
     } else {
-      return array.map((item) => {
+      return newOne.map((item) => {
         return item.resultText
       })
     }
   }
 
-  console.log(state.pointList)
 
-  if (localStorage.getItem("c2eb1463-da5a-4eea-aa0e-4e27cc83b85d")) {
+  console.log(title)
+
+  if (sessionStorage.getItem("start")) {
     
     return (
       <div className="container">
-        <h2 className="text-white">{message.title}</h2>
+        <h2 className="text-white">{title ? title[0].title : null} </h2>
         <Formik
-          initialValues={{nickname: "", question_ids: [], user_answer: [], result_tag: tagi, quiz_badge: badge}}
+          initialValues={{nickname: "", question_ids: [], user_answer: [], result_tag: tagi, quiz_badge: badge.badge}}
           validationSchema={quizSchema}
           onSubmit={(values, { setSubmitting }) => {
             values.question_ids = createDataArray(state.pointList, message);
             values.user_answer = createDataArray(state.pointList);
-            localStorage.setItem('moi', tagi)
+            sessionStorage.setItem('studentTag', tagi)
             setSubmitting(true);
             setTimeout(() => {
               console.log("submit tapahtuu")
               postScores(values)
+              .then(sessionStorage.removeItem("start"))
               .then(() => {history.push({
                 pathname: "/student/results",
-                state: {values:values, questions:questions, tagi:tagi}
+                state: {values:values, data:data, tagi:tagi}
             })});
               console.log(values)
             })
@@ -112,7 +130,7 @@ export default function Quiz({history, match}) {
           }) => (
             <Form onSubmit={handleSubmit}><div className="qnbox">
               
-              {questions.length > 0 && questions.map((result, index) => {
+              {data && data.length > 0 && data.map((result, index) => {
                   return (
                       <Question
                       index={index}
