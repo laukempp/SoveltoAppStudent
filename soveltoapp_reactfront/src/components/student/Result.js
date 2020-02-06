@@ -4,9 +4,11 @@ import ScoreItem from './ScoreItem'
 
 const Result = ({history}) => {
 
-    const tag = localStorage.getItem('c2e44369-da5a-4eea-aa0e-7746383b85d')
+    const tag = sessionStorage.getItem('studentTag')
 
-    const resultSearchTag = {quiz_badge: localStorage.getItem('c2eb1463-da5a-4eea-aa0e-4e27cc83b85d'), result_tag: parseInt(tag)}
+    const resultSearchTag = {result_tag: tag}
+
+    
 
 
     console.log(tag)
