@@ -1,5 +1,4 @@
 export const getStudentQs = (object) => {
-  console.log(JSON.stringify(object))
   return fetch("/api/quiz", {
     method: "POST",
     headers: {
