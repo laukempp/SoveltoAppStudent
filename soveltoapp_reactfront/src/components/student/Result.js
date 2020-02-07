@@ -3,28 +3,38 @@ import { studentScore } from '../../service/Request';
 import ScoreItem from './ScoreItem'
 
 const Result = ({history}) => {
+    const [score, setScore] = useState([]);
 
     const tag = sessionStorage.getItem('studentTag')
-
-    const resultSearchTag = {result_tag: tag}
-
-    
-
-
-    console.log(tag)
-
-    const [score, setScore] = useState([]);
+    const quizID = sessionStorage.getItem('quizID')
+    const resultSearchTag = {result_tag: tag, quiz_badge: quizID}
 
     useEffect(() => {
         studentScore(resultSearchTag)
         .then(res => setScore(res))
       }, []);
+
+    const pointCounter = array => {
+        let points = []
+
+        if (array) {
+            array.map(item => {
+                item.results.map(count => {
+                    if (count.count === 1 && count.isCorrect === true) {
+                        points.push(count.count)
+                    }
+                })
+            })
+        }
+    return (<div className="text-white">Kokonaispisteesi: {points.length}/{score.length} eli {points.length/score.length*100} %</div>)
+    }
+
+    console.log(score)
+    console.log(pointCounter(score))
     
   /*   console.log(history.location.state.values)
     console.log(score) */
 
-
-    //localStorage.removeItem('started')
     if (!history.location.state) {
         return (
             <div className="text-white">
@@ -34,6 +44,7 @@ const Result = ({history}) => {
     } else {
         return (
             <div>
+                {pointCounter(score)}
                 {score && score.map((item, index) => {
                     console.log(score)
                         return (

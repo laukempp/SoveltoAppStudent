@@ -39,15 +39,17 @@ export default function Quiz({history, match}) {
   }
  */
   console.log(title)
+  console.log(data)
 
-  console.log("history" + history)
   const socket = socketIOClient("http://localhost:5001");
   
   socket.on("eventMessageStudent", message => {
     setMessage(message);
     if (message.quiz_author === match.params.quiz_author) {
+      sessionStorage.removeItem("quizID")
+      sessionStorage.setItem("start", message.quiz_badge)
+      sessionStorage.setItem("teacher", message.quiz_author)
       sessionStorage.setItem("quizID", message.quiz_badge)
-      sessionStorage.setItem("start", "6638926664537829101")
       
       let object = {badge: message.quiz_badge}
       getStudentQs(object).then(res => {
@@ -65,11 +67,10 @@ export default function Quiz({history, match}) {
     })
   }
 
-  const badge = {badge: sessionStorage.getItem("quizID")};
+  const badge = {badge: sessionStorage.getItem("start")};
 
-  console.log(badge)
   useEffect(() => {
-    getStudentQs(badge).then(res => { 
+    getStudentQs(badge).then(res => {
       setData(res.question)
       setTitle(res.result)});
   }, []);
@@ -91,9 +92,7 @@ export default function Quiz({history, match}) {
   }
 
 
-  console.log(title)
-
-  if (sessionStorage.getItem("start")) {
+  if (sessionStorage.getItem("start") && data && match.params.quiz_author === sessionStorage.getItem("teacher")) {
     
     return (
       <div className="container">
@@ -110,6 +109,8 @@ export default function Quiz({history, match}) {
               console.log("submit tapahtuu")
               postScores(values)
               .then(sessionStorage.removeItem("start"))
+              .then(() => setData([]))
+              .then(() => setTitle())
               .then(() => {history.push({
                 pathname: "/student/results",
                 state: {values:values, data:data, tagi:tagi}
