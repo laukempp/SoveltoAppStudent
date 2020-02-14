@@ -3,6 +3,7 @@ import "../../styles/quiz.scss";
 
 const ScoreItem = ({question, studentAnswer, id}) => {
 
+    //Tässä muotoillaan vastausnäkymä niin, että jos oppilas on vastannut oikein, vastaus maalataan tietynväriseksi ja jos väärin niin sekä oppilaan väärä vastaus että se, mikä olisi ollut oikea vastaus, maalataan tietynvärisiksi. Funktio palauttaa html-elementtejä.
     const showResult = () => {
         return studentAnswer.map((item, index) => {
             let colorsin = {backgroundColor : "rgb(247,247,248)"}
@@ -32,7 +33,8 @@ const ScoreItem = ({question, studentAnswer, id}) => {
                 )
             }) 
         }
-
+    
+    //Esitetään tulokset
     return (
           <div className="resultBG">
               <h4 className="text-white">{question}</h4>
