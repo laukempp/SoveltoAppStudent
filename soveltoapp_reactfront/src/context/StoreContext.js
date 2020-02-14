@@ -2,6 +2,9 @@ import React, { createContext, useReducer} from "react";
 import { reducer, initialState } from "./reducers";
 import { useActions } from "./actions";
 
+//Tässä komponentissa luodaan store, jonka avulla säilötään globaalia tilaa
+//Komponentin luomisessa on käytetty tätä lähdettä: https://itnext.io/replace-redux-state-with-react-hooks-and-context-7906e0fd5521
+
 const StoreContext = createContext(initialState);
 
 const StoreProvider = ({ children }) => {

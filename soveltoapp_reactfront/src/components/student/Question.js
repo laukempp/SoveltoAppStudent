@@ -3,18 +3,25 @@ import "../../styles/quiz.scss";
 import {StoreContext} from '../../context/StoreContext'
 
 const Question = ({ result, index}) => {
-  const {state, actions} = useContext(StoreContext);
+
+  //Määritellään komponentin tila
   const [answerOptions, setAnswerOptions] = useState([]); 
   const [selected, setSelected] = useState();
 
+  //Otetaan käyttöön reactin useContext-hook, jota käytetään vähän kuin Reduxia eli tilan säilyttämiseen
+  const {state, actions} = useContext(StoreContext);
+
+  //Muotoillaan Quiz-komponentin propsina välittämää arrayta uudelleen niin, että kaikki vastaukset ovat samalla tasolla ja samannimisiä
   let newArray = result.wrong_answer.concat(result.correct_answer).map((item, index) => {
     return {option: index, answerText: item}
   })
 
+  //Joka kerta, kun sivu renderöityy, sekoitetaan vastausten järjestystä
   useEffect(() => {
     shuffle(newArray)
   }, [])
 
+  //Funktio vastausten järjestyksen sekoittamiseen
   const shuffle = arr => {
     let i, j, temp;
     for (i = arr.length - 1; i > 0; i--) {
@@ -26,12 +33,14 @@ const Question = ({ result, index}) => {
     setAnswerOptions(arr);
   };
 
+  //Funktio, joka tallentaa oppilaan vastaukset. setSelected poimii vastaukset, mutta oleellisempaa on data-muuttujan keräämä tieto, koska se lähetetään ja tallennetaan store-komponentin ylläpitämään arrayhin, jotta kaikki oppilaan vastaukset saadaan tallennettua. Lisää kommentointia storen puolella.
   const onChangeCheck = e => {
     setSelected({...selected, [e.target.name]: e.target.value })
     let data = {id: result.id, identifier: index, resultText: e.target.value}    
     actions.addToPointList(data, state.pointList); 
     }
 
+  //Muotoillaan vastaussetti 
   let answers = answerOptions.map((answer, index) => {
     return (
       <div className="radioContainer" key={index}>
@@ -47,6 +56,7 @@ const Question = ({ result, index}) => {
     );
   })
 
+  //Lopullinen renderöinti, jossa kysymys ja ylläoleva vastaussetin muotoileva muuttuja
   return (
     <div>
       <div className="qntxtbox">

@@ -68,7 +68,7 @@ $color-primary: rgb(182, 87, 60);
   word-wrap: break-word;
 }
 
-#studentNickname {
+#studentNickname, #teacherBadge  {
   &::placeholder {
   color: rgb(242, 242, 255);
   
