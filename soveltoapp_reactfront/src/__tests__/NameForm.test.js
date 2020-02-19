@@ -104,7 +104,7 @@ describe("NameForm component", () => {
 
         await submitForm(form)
         
-        expect(sessionStorage.setItem).toHaveBeenCalledWith('badge', validBadge);
+        expect(sessionStorage.setItem).toHaveBeenCalledWith('nickname', validNick);
       })
 
     it('Should NOT trigger submit when button is clicked if nick & badge are invalid', async () => {

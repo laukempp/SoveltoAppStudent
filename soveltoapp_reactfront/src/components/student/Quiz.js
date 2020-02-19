@@ -3,6 +3,7 @@ import socketIOClient from "socket.io-client";
 import { getStudentQs, postScores } from "../../service/Request";
 import Question from "./Question";
 import {StoreContext} from '../../context/StoreContext'
+import { uuid } from 'uuidv4';
 import "../../styles/quiz.scss";
 
 const onKeyDown = (keyEvent) => {
@@ -11,7 +12,12 @@ const onKeyDown = (keyEvent) => {
   }
 }
 
-const tagi = Math.round(Math.random() * 100000);
+const freeTheButton = (arr1, arr2) => {
+  if (arr1.length === arr2.length) {
+    return false
+  } 
+  return true
+}
 
 export default function Quiz({history, match}) {
   const {state} = useContext(StoreContext);
@@ -58,19 +64,20 @@ export default function Quiz({history, match}) {
     }
   }
 
-  const submitClick = () => {
+  const submitClick = (e) => {
+    e.preventDefault()
     let postData = { 
       nickname: 'nick',
       question_ids: createDataArray(state.pointList, message), 
       user_answer : createDataArray(state.pointList),
-      result_tag: tagi, 
+      result_tag: uuid(), 
       quiz_badge: badge.badge }
 
     console.log(postData)
 
     postScores(postData)
       .then(sessionStorage.removeItem("start"))
-      .then(sessionStorage.setItem('studentTag', tagi))
+      .then(sessionStorage.setItem('studentTag', postData.result_tag))
       .then(socket.emit("submitClick", ev => {
         console.log("submit click lähtetty", ev);
       }))
@@ -99,7 +106,7 @@ export default function Quiz({history, match}) {
                 })}
               
               </div>             
-              <button className="quizSubmit" type="button" onClick={submitClick}>
+              <button className="quizSubmit" type="button" onClick={submitClick} disabled={freeTheButton(state.pointList, data)}>
                 Lähetä
               </button>
         </form>
@@ -107,7 +114,7 @@ export default function Quiz({history, match}) {
     )
   } else {
     return <div>
-      <h2 className="detail_header">Odota hetki, tentti alkaa pian</h2></div>;
+      <h2 id="quizFormTitle" className="detail_header">Odota hetki, tentti alkaa pian</h2></div>;
   }
 }
 
