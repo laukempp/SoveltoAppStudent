@@ -9,23 +9,27 @@
     "@testing-library/react": "^9.3.3",
     "@testing-library/user-event": "^7.1.2",
     "bootstrap": "^4.4.1",
+    "chromedriver": "^80.0.1",
     "formik": "^2.0.7",
     "node-sass": "^4.13.0",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
+    "react-scripts": "3.4.0",
     "reactstrap": "^8.2.0",
+    "selenium-webdriver": "^4.0.0-alpha.5",
     "sinon": "^8.1.1",
     "socket.io-client": "^2.3.0",
+    "uuidv4": "^6.0.2",
     "yup": "^0.27.0"
   },
   "proxy": "http://localhost:5000/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --verbose ./src/__test__/unit_tests/",
+    "mocha": "mocha --recursive ./src/__test__/automated_tests/test.test.js --timeout 10000",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -54,6 +58,7 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "jest-localstorage-mock": "^2.4.0",
     "jest-websocket-mock": "^2.0.1",
+    "mocha": "^7.0.1",
     "mock-socket": "^9.0.3"
   }
 }

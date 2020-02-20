@@ -16,7 +16,7 @@ const Routes = () => (
       <Route exact path="/student/f3quiz/:title" render={props => <Quiz {...props} />} />
       <Route exact path="/student/results" component={Result} />
       <Route exact path="/student/enter" render={props => <NameForm {...props} />} />        
-      <Route component={Quiz} />
+      <Route component={NameForm} />
     </Switch> 
   </Router>
   </StoreProvider>

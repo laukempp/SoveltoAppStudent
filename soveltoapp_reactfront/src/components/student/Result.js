@@ -5,6 +5,8 @@ import ScoreItem from './ScoreItem'
 const Result = ({history}) => {
     const [score, setScore] = useState([]);
 
+    console.log(score)
+
     /*Haetaan sessionstoragesta sinne tallennettu opiskelijatagi ja quizin ID. Näitä tietoja käytetään tulosten hakemiseksi ja ne tallentuvat sessionStorageen edellisessä näkymässä, kun opiskelija painaa "submit"-nappia*/
     const tag = sessionStorage.getItem('studentTag')
     const quizID = sessionStorage.getItem('quizID')
@@ -31,7 +33,7 @@ const Result = ({history}) => {
                 })
             })
         }
-    return (<div className="text-white">Kokonaispisteesi: {points.length}/{score.length} eli {points.length/score.length*100} %</div>)
+    return (<div className="text-white">Kokonaispisteesi: {points.length}/{score.length} eli {Math.round(points.length/score.length*100)} %</div>)
     }
     
     //Mikäli sivulle tullaan suoraan kirjoittamalla se urliin, sillä ei ole historiaa ja vain tämä näkymä renderöityy

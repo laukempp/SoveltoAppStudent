@@ -1,7 +1,7 @@
 import React from "react";
 import { act } from "react-dom/test-utils";
 import Enzyme, {shallow, mount} from "enzyme";
-import NameForm from "../components/student/NameForm";
+import NameForm from "../../components/student/NameForm"
 import Adapter from "enzyme-adapter-react-16"
 import sinon from "sinon"; 
 import {Form} from "formik";
@@ -104,7 +104,7 @@ describe("NameForm component", () => {
 
         await submitForm(form)
         
-        expect(sessionStorage.setItem).toHaveBeenCalledWith('badge', validBadge);
+        expect(sessionStorage.setItem).toHaveBeenCalledWith('nickname', validNick);
       })
 
     it('Should NOT trigger submit when button is clicked if nick & badge are invalid', async () => {

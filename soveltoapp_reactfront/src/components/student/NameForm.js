@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { checkTeacherBadge } from "../../service/Request";
 import * as Yup from "yup";
 import "../../styles/quiz.scss";
+import { uuid } from 'uuidv4';
 
 const quizSchema = Yup.object().shape({
     nickname: Yup.string()
@@ -17,6 +18,7 @@ const quizSchema = Yup.object().shape({
 
 export default function NameForm({history}) {
   const [show, setShow] = useState(true)
+  const [teacher_badge, setTeacher_badge] = useState(0)
 
     return (
         <div className="container">
@@ -26,13 +28,15 @@ export default function NameForm({history}) {
             validationSchema={quizSchema}
             onSubmit={(values, { setSubmitting, resetForm }) => {              
                 setSubmitting(true);
-                sessionStorage.setItem('nickname', values.nickname)            
+                sessionStorage.setItem('nickname', values.nickname)          
                 console.log("submit tapahtuu")
                 checkTeacherBadge({badge: values.badge})
                 .then(res => {
                     if (res.success) {
+                      sessionStorage.setItem('sessionID', uuid())
                       history.push({pathname: `/student/quiz/${values.badge}`})
                     } else {
+                      setTeacher_badge(values.badge)
                       setShow(false)
                     }
                 })
@@ -91,10 +95,10 @@ export default function NameForm({history}) {
                 />
                 </div>
                 <div>
-                  {show ? null : <div>Opettajanumeroa {values.badge} ei voida tunnistaa, kokeile uudelleen!</div>}
+                  {show ? null : <div id="teacherError">Opettajanumeroa {teacher_badge} ei voida tunnistaa, kokeile uudelleen!</div>}
                 </div>
                 
-                <button className="quizSubmit" onClick={handleSubmit} type="submit" disabled={isSubmitting}>
+                <button id="nfButton" className="quizSubmit" onClick={handleSubmit} type="submit" disabled={isSubmitting}>
                   Lähetä
                 </button>
               </Form>
