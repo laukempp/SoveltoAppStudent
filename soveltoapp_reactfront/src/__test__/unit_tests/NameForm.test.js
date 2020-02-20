@@ -1,7 +1,7 @@
 import React from "react";
 import { act } from "react-dom/test-utils";
 import Enzyme, {shallow, mount} from "enzyme";
-import NameForm from "../components/student/NameForm";
+import NameForm from "../../components/student/NameForm"
 import Adapter from "enzyme-adapter-react-16"
 import sinon from "sinon"; 
 import {Form} from "formik";

@@ -1,7 +1,7 @@
 import React from "react";
 import Enzyme, {shallow, mount} from "enzyme";
 import WS from "jest-websocket-mock";
-import Quiz from "../components/student/Quiz"
+import Quiz from "../../components/student/Quiz"
 import Adapter from "enzyme-adapter-react-16"
 
 Enzyme.configure({adapter: new Adapter()});
