@@ -6,18 +6,19 @@ const Result = ({history}) => {
     const [score, setScore] = useState([]);
 
     console.log(score)
+    console.log(history)
 
-    /*Haetaan sessionstoragesta sinne tallennettu opiskelijatagi ja quizin ID. Näitä tietoja käytetään tulosten hakemiseksi ja ne tallentuvat sessionStorageen edellisessä näkymässä, kun opiskelija painaa "submit"-nappia*/
-    const tag = sessionStorage.getItem('studentTag')
+    const tag = JSON.parse(localStorage.getItem('sessionKey'))
+    const storageTag = tag && tag.sessionID;
     const quizID = sessionStorage.getItem('quizID')
-    
-    //Muotoillaan opiskelijatagista ja quizin ID:sta olio, jonka voi lähettää backendille kyselyä varten
-    const resultSearchTag = {result_tag: tag, quiz_badge: quizID}
 
+    const resultSearchTag = {result_tag: storageTag, quiz_badge: quizID}
+
+    
     //useEffect hakee oppilaan tulokset yllämuotoillulla oliolla sivulle joka kerta, kun sivu renderöityy
     useEffect(() => {
         studentScore(resultSearchTag)
-        .then(res => setScore(res))
+            .then(res => setScore(res))
       }, []);
     
     //Funktio laskee oppilaan kokonaispisteet tarkistamalla, missä kohdin oppilaan vastaus JA oikea vastaus olivat saman; niistä oppilas saa pisteen. 
@@ -37,7 +38,7 @@ const Result = ({history}) => {
     }
     
     //Mikäli sivulle tullaan suoraan kirjoittamalla se urliin, sillä ei ole historiaa ja vain tämä näkymä renderöityy
-    if (!history.location.state) {
+    if (!history.location.state || !localStorage.getItem('sessionKey')) {
         return (
             <div className="text-white">
                 Sori, ei oo tuloxii
