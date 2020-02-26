@@ -76,6 +76,7 @@ export default function Quiz({history, match}) {
     console.log(postData)
 
     postScores(postData)
+      .then(res => {console.log(res)})
       .then(sessionStorage.removeItem("start"))
       .then(sessionStorage.setItem('studentTag', postData.result_tag))
       .then(socket.emit("submitClick", ev => {

@@ -16,6 +16,30 @@ const quizSchema = Yup.object().shape({
       .max(99999, "Opettajanumero sisältää viisi numeroa")
   });
 
+let pastDate = JSON.parse(localStorage.getItem('sessionKey'))
+
+const lessThan10HoursAgo = date => {
+  const hours = 1000 * 60 * 60 * 10;
+  const tenHoursAgo = Date.now() - hours;
+
+  return date > tenHoursAgo
+}
+
+const compareTimeAndSet = now => {
+  let storeItem = {sessionID: uuid(), timestamp: Date.now()}
+
+  console.log(lessThan10HoursAgo(now.timestamp))
+
+  if (now) { 
+    if (!lessThan10HoursAgo(now.timestamp)) {
+      localStorage.setItem("sessionKey", JSON.stringify(storeItem))
+    } else {
+      console.log('vähemmän kuin 10h')
+    }
+  } else {
+    localStorage.setItem("sessionKey", JSON.stringify(storeItem))}
+}
+
 export default function NameForm({history}) {
   const [show, setShow] = useState(true)
   const [teacher_badge, setTeacher_badge] = useState(0)
@@ -33,7 +57,7 @@ export default function NameForm({history}) {
                 checkTeacherBadge({badge: values.badge})
                 .then(res => {
                     if (res.success) {
-                      sessionStorage.setItem('sessionID', uuid())
+                      compareTimeAndSet(pastDate)
                       history.push({pathname: `/student/quiz/${values.badge}`})
                     } else {
                       setTeacher_badge(values.badge)
