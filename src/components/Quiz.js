@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import socketIOClient from "socket.io-client";
-import { getStudentQs, postScores } from "../../service/Request";
+import { getStudentQs, postScores } from "../service/Request";
 import Question from "./Question";
-import {StoreContext} from '../../context/StoreContext'
+import {StoreContext} from '../context/StoreContext'
 import { uuid } from 'uuidv4';
-import "../../styles/quiz.scss";
+import "../styles/quiz.scss";
 
 const freeTheButton = (arr1, arr2) => {
   if (arr1.length === arr2.length) {

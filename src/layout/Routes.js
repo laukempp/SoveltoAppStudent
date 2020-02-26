@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route} from "react-router-dom";
-import NameForm from '../components/student/NameForm'
-import Quiz from "../components/student/Quiz";
-import Result from "../components/student/Result";
+import NameForm from '../components/NameForm'
+import Quiz from "../components/Quiz";
+import Result from "../components/Result";
 import { StoreProvider } from "../context/StoreContext";
 
 

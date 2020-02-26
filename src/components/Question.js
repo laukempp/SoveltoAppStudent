@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import "../../styles/quiz.scss";
-import {StoreContext} from '../../context/StoreContext'
+import "../styles/quiz.scss";
+import {StoreContext} from '../context/StoreContext'
 
 const Question = ({ result, index}) => {
 

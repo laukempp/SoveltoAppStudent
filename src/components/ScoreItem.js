@@ -1,5 +1,5 @@
 import React from "react";
-import "../../styles/quiz.scss";
+import "../styles/quiz.scss";
 
 const ScoreItem = ({question, studentAnswer, id}) => {
 
