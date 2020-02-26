@@ -12,9 +12,32 @@ const quizSchema = Yup.object().shape({
       .max(20, "Liikaa merkkejä"),
     badge: Yup.number()
       .required("Syötä opettajanumero")
-      .min(10000, "Opettajanumero sisältää viisi numeroa")
+      .min(0, "Vähintään yksi numero")
       .max(99999, "Opettajanumero sisältää viisi numeroa")
   });
+
+const previousDate = JSON.parse(localStorage.getItem('sessionKey'))
+
+const hourCheck = (date) => {
+  const hours = 1000 * 60 * 60 //* 10;
+  const tenHoursAgo = Date.now() - hours;
+
+  return date > tenHoursAgo;
+}
+
+const checkAndSetStorage = now => {
+  let storageItem = {sessionID: uuid(), timestamp: Date.now()}
+
+  if (now) {
+    console.log('tarkistus')
+    let pastTime = now.timestamp;
+    if (!hourCheck(pastTime)) {
+    localStorage.setItem('sessionKey', JSON.stringify(storageItem))}
+  } else {
+    console.log('toimii')
+    localStorage.setItem('sessionKey', JSON.stringify(storageItem))
+  }
+}
 
 export default function NameForm({history}) {
   const [show, setShow] = useState(true)
@@ -33,7 +56,7 @@ export default function NameForm({history}) {
                 checkTeacherBadge({badge: values.badge})
                 .then(res => {
                     if (res.success) {
-                      sessionStorage.setItem('sessionID', uuid())
+                      checkAndSetStorage(previousDate);
                       history.push({pathname: `/student/quiz/${values.badge}`})
                     } else {
                       setTeacher_badge(values.badge)

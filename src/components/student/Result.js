@@ -5,19 +5,28 @@ import ScoreItem from './ScoreItem'
 const Result = ({history}) => {
     const [score, setScore] = useState([]);
 
+    console.log(history)
+
+    const getResults = () => {
+            const tagForResult = ((history||{}).location||{}).state
+            console.log(tagForResult)
+        studentScore(tagForResult)
+            .then(res => setScore(res))
+    }
+
     console.log(score)
 
-    /*Haetaan sessionstoragesta sinne tallennettu opiskelijatagi ja quizin ID. Näitä tietoja käytetään tulosten hakemiseksi ja ne tallentuvat sessionStorageen edellisessä näkymässä, kun opiskelija painaa "submit"-nappia*/
-    const tag = sessionStorage.getItem('studentTag')
-    const quizID = sessionStorage.getItem('quizID')
     
-    //Muotoillaan opiskelijatagista ja quizin ID:sta olio, jonka voi lähettää backendille kyselyä varten
-    const resultSearchTag = {result_tag: tag, quiz_badge: quizID}
-
     //useEffect hakee oppilaan tulokset yllämuotoillulla oliolla sivulle joka kerta, kun sivu renderöityy
     useEffect(() => {
+        const tag = JSON.parse(localStorage.getItem('sessionKey'))
+        const storageTag = tag && tag.sessionID;
+        const quizID = sessionStorage.getItem('quizID')
+
+        const resultSearchTag = {result_tag: storageTag, quiz_badge: quizID}
+
         studentScore(resultSearchTag)
-        .then(res => setScore(res))
+            .then(res => setScore(res))
       }, []);
     
     //Funktio laskee oppilaan kokonaispisteet tarkistamalla, missä kohdin oppilaan vastaus JA oikea vastaus olivat saman; niistä oppilas saa pisteen. 
@@ -35,12 +44,19 @@ const Result = ({history}) => {
         }
     return (<div className="text-white">Kokonaispisteesi: {points.length}/{score.length} eli {Math.round(points.length/score.length*100)} %</div>)
     }
+    //!history.location.state || !localStorage.getItem('sessionKey'
     
     //Mikäli sivulle tullaan suoraan kirjoittamalla se urliin, sillä ei ole historiaa ja vain tämä näkymä renderöityy
-    if (!history.location.state) {
+    if (!history.location.state || !localStorage.getItem('sessionKey')) {
         return (
             <div className="text-white">
                 Sori, ei oo tuloxii
+            </div>
+        )
+    } else if (score && score.length <= 0) {
+        return (
+            <div className="text-white">
+                {getResults()}
             </div>
         )
     } else {

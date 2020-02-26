@@ -18,7 +18,8 @@ export const postScores = score => {
     method: "POST",
     headers: { "Content-Type": "application/json"},
     body: JSON.stringify(score)
-  });
+  })
+  .then(res => res.JSON())
 };
 
 //Noudetaan tulokset tietokannasta

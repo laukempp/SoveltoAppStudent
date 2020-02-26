@@ -21,7 +21,7 @@ describe('Testing NameForm', () => {
     await driver.findElement(By.id('studentNickname')).click();
     await driver.findElement(By.id('studentNickname')).sendKeys('nimi', webdriver.Key.TAB);
     await driver.findElement(By.id('teacherBadge')).click();
-    await driver.findElement(By.id('teacherBadge')).sendKeys('60768', webdriver.Key.TAB);
+    await driver.findElement(By.id('teacherBadge')).sendKeys('70408', webdriver.Key.TAB);
     await driver.findElement(By.id('teacherBadge')).click();
     await driver.findElement(By.id('nfButton')).click()
 
