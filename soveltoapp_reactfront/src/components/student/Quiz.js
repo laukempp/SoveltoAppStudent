@@ -120,7 +120,7 @@ export default function Quiz({history, match}) {
       .then(setTitle())
       .then(history.push({
         pathname: "/student/results",
-        state: {data:data, values: postData}}))
+        state: {result_tag: postData.result_tag, quiz_badge: postData.quiz_badge}}))
     }
 
   if (sessionStorage.getItem("start") && data && match.params.quiz_author === sessionStorage.getItem("teacher")) {
