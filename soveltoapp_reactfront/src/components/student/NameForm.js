@@ -13,7 +13,7 @@ const quizSchema = Yup.object().shape({
     badge: Yup.number()
       .required("Syötä opettajanumero")
       .min(0, "Vähintään yksi numero")
-      .max(99999, "Opettajanumero sisältää viisi numeroa")
+      .max(99999, "Opettajanumero sisältää enintään viisi numeroa")
   });
 
 const previousDate = JSON.parse(localStorage.getItem('sessionKey'))
