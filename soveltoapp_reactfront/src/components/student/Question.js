@@ -11,15 +11,14 @@ const Question = ({ result, index}) => {
   //Otetaan käyttöön reactin useContext-hook, jota käytetään vähän kuin Reduxia eli tilan säilyttämiseen
   const {state, actions} = useContext(StoreContext);
 
-  //Muotoillaan Quiz-komponentin propsina välittämää arrayta uudelleen niin, että kaikki vastaukset ovat samalla tasolla ja samannimisiä
-  let newArray = result.wrong_answer.concat(result.correct_answer).map((item, index) => {
-    return {option: index, answerText: item}
-  })
-
   //Joka kerta, kun sivu renderöityy, sekoitetaan vastausten järjestystä
   useEffect(() => {
+    let newArray = result.wrong_answer.concat(result.correct_answer).map((item, index) => {
+      return {option: index, answerText: item}
+    })
+
     shuffle(newArray)
-  }, [])
+  }, [result.wrong_answer, result.correct_answer])
 
   //Funktio vastausten järjestyksen sekoittamiseen
   const shuffle = arr => {
