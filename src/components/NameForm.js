@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { checkTeacherBadge } from "../../service/Request";
+import { checkTeacherBadge } from "../service/Request";
 import * as Yup from "yup";
-import "../../styles/quiz.scss";
+import "../styles/quiz.scss";
 import { uuid } from 'uuidv4';
 
 const quizSchema = Yup.object().shape({
@@ -13,7 +13,7 @@ const quizSchema = Yup.object().shape({
     badge: Yup.number()
       .required("Syötä opettajanumero")
       .min(0, "Vähintään yksi numero")
-      .max(99999, "Opettajanumero sisältää viisi numeroa")
+      .max(99999, "Opettajanumero sisältää enintään viisi numeroa")
   });
 
 const previousDate = JSON.parse(localStorage.getItem('sessionKey'))
