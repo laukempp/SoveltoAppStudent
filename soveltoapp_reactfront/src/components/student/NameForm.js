@@ -12,32 +12,31 @@ const quizSchema = Yup.object().shape({
       .max(20, "Liikaa merkkejä"),
     badge: Yup.number()
       .required("Syötä opettajanumero")
-      .min(10000, "Opettajanumero sisältää viisi numeroa")
+      .min(0, "Vähintään yksi numero")
       .max(99999, "Opettajanumero sisältää viisi numeroa")
   });
 
-let pastDate = JSON.parse(localStorage.getItem('sessionKey'))
+const previousDate = JSON.parse(localStorage.getItem('sessionKey'))
 
-const lessThan10HoursAgo = date => {
-  const hours = 1000 * 60 * 60 * 10;
+const hourCheck = (date) => {
+  const hours = 1000 * 60 * 60 //* 10;
   const tenHoursAgo = Date.now() - hours;
 
-  return date > tenHoursAgo
+  return date > tenHoursAgo;
 }
 
-const compareTimeAndSet = now => {
-  let storeItem = {sessionID: uuid(), timestamp: Date.now()}
+const checkAndSetStorage = now => {
+  let storageItem = {sessionID: uuid(), timestamp: Date.now()}
 
-  console.log(lessThan10HoursAgo(now.timestamp))
-
-  if (now) { 
-    if (!lessThan10HoursAgo(now.timestamp)) {
-      localStorage.setItem("sessionKey", JSON.stringify(storeItem))
-    } else {
-      console.log('vähemmän kuin 10h')
-    }
+  if (now) {
+    console.log('tarkistus')
+    let pastTime = now.timestamp;
+    if (!hourCheck(pastTime)) {
+    localStorage.setItem('sessionKey', JSON.stringify(storageItem))}
   } else {
-    localStorage.setItem("sessionKey", JSON.stringify(storeItem))}
+    console.log('toimii')
+    localStorage.setItem('sessionKey', JSON.stringify(storageItem))
+  }
 }
 
 export default function NameForm({history}) {
@@ -57,7 +56,7 @@ export default function NameForm({history}) {
                 checkTeacherBadge({badge: values.badge})
                 .then(res => {
                     if (res.success) {
-                      compareTimeAndSet(pastDate)
+                      checkAndSetStorage(previousDate);
                       history.push({pathname: `/student/quiz/${values.badge}`})
                     } else {
                       setTeacher_badge(values.badge)

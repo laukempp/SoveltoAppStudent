@@ -6,17 +6,40 @@ import {StoreContext} from '../../context/StoreContext'
 import { uuid } from 'uuidv4';
 import "../../styles/quiz.scss";
 
-const onKeyDown = (keyEvent) => {
-  if ((keyEvent.charCode || keyEvent.keyCode) === 13) {
-    keyEvent.preventDefault();
-  }
-}
-
 const freeTheButton = (arr1, arr2) => {
   if (arr1.length === arr2.length) {
     return false
   } 
   return true
+}
+
+const createDataArray = (array, marker) => {
+  let newOne = array.sort((a, b) => a.id - b.id)
+
+  if (marker) {
+    return newOne.map((item) => item.id)
+  } else {
+    return newOne.map((item) => item.resultText)
+  }
+}
+
+const hourCheck = (date) => {
+  const hours = 1000 * 60 * 60 //* 10;
+  const tenHoursAgo = Date.now() - hours;
+
+  return date > tenHoursAgo;
+}
+
+const checkAndSetStorage = now => {
+  let storageItem = {sessionID: uuid(), timestamp: Date.now()}
+
+  if (now) {
+    let pastTime = now.timestamp;
+    if (!hourCheck(pastTime)) {
+    localStorage.setItem('sessionKey', JSON.stringify(storageItem))}
+  } else {
+    localStorage.setItem('sessionKey', JSON.stringify(storageItem))
+  }
 }
 
 export default function Quiz({history, match}) {
@@ -25,44 +48,56 @@ export default function Quiz({history, match}) {
   const [data, setData] = useState([]);
   const [title, setTitle] = useState()
 
+  const tagItem = JSON.parse(localStorage.getItem("sessionKey"))
+
   const socket = socketIOClient("http://localhost:5001");
-  
+
+  checkAndSetStorage(tagItem)
+
   socket.on("eventMessageStudent", message => {
     setMessage(message);
     if (message.quiz_author === match.params.quiz_author) {
-      sessionStorage.removeItem("quizID")
-      sessionStorage.setItem("start", message.quiz_badge)
-      sessionStorage.setItem("teacher", message.quiz_author)
-      sessionStorage.setItem("quizID", message.quiz_badge)
+        sessionStorage.removeItem("quizID")
+        sessionStorage.setItem("start", message.quiz_badge)
+        sessionStorage.setItem("teacher", message.quiz_author)
+        sessionStorage.setItem("quizID", message.quiz_badge)
       
-      let object = {badge: message.quiz_badge}
+        let socketObject = {badge: message.quiz_author,
+                            result_tag: tagItem && tagItem.sessionID,
+                            quiz_badge: message.quiz_badge}
 
-      getStudentQs(object).then(res => {
-        setData(res.question)
-        setTitle(res.result)
-        })
+        getStudentQs(socketObject).then(res => {
+          setData(res.question)
+          setTitle(res.result)
+          })
       } else {
         console.log("moi")
       }
   });
 
-  const badge = {badge: sessionStorage.getItem("start")};
-
   useEffect(() => {
+
+    const tagItem = JSON.parse(localStorage.getItem("sessionKey"));
+    const badge = {badge: parseInt(match.params.quiz_author),
+                    result_tag: tagItem && tagItem.sessionID,
+                    quiz_badge: sessionStorage.getItem("quizID")
+                  };
+    if (tagItem) {           
     getStudentQs(badge).then(res => {
-      setData(res.question)
-      setTitle(res.result)});
-  }, []);
+      if (!res.question) {
+        sessionStorage.removeItem('start')
+        setData()
+      } else {
+        sessionStorage.setItem('start', res.result[0].quiz_badge)
+        sessionStorage.setItem("teacher", match.params.quiz_author)
+        sessionStorage.setItem("quizID", res.result[0].quiz_badge)
+        setData(res.question)
+        setTitle(res.result[0].title)
+      }
+    })} 
 
-  const createDataArray = (array, marker) => {
-    let newOne = array.sort((a, b) => a.id - b.id)
-
-    if (marker) {
-      return newOne.map((item) => item.id)
-    } else {
-      return newOne.map((item) => item.resultText)
-    }
-  }
+    return
+  }, [match.params.quiz_author]);
 
   const submitClick = (e) => {
     e.preventDefault()
@@ -70,8 +105,8 @@ export default function Quiz({history, match}) {
       nickname: 'nick',
       question_ids: createDataArray(state.pointList, message), 
       user_answer : createDataArray(state.pointList),
-      result_tag: uuid(), 
-      quiz_badge: badge.badge }
+      result_tag: tagItem && tagItem.sessionID, 
+      quiz_badge: sessionStorage.getItem("start")}
 
     console.log(postData)
 
@@ -86,7 +121,7 @@ export default function Quiz({history, match}) {
       .then(setTitle())
       .then(history.push({
         pathname: "/student/results",
-        state: {data:data, values: postData}}))
+        state: {result_tag: postData.result_tag, quiz_badge: postData.quiz_badge}}))
     }
 
   if (sessionStorage.getItem("start") && data && match.params.quiz_author === sessionStorage.getItem("teacher")) {
@@ -97,15 +132,14 @@ export default function Quiz({history, match}) {
         <form>
           <div className="qnbox">             
               {data && data.length > 0 && data.map((result, index) => {
-                  return (
-                      <Question
-                      index={index}
-                      result={result}
-                      key={result.id}
-                      />
-                  );
-                })}
-              
+    return (
+        <Question
+        index={index}
+        result={result}
+        key={result.id}
+        />
+    );
+  })}             
               </div>             
               <button className="quizSubmit" type="button" onClick={submitClick} disabled={freeTheButton(state.pointList, data)}>
                 Lähetä
