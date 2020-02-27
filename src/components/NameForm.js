@@ -29,14 +29,13 @@ const checkAndSetStorage = now => {
   let storageItem = {sessionID: uuid(), timestamp: Date.now()}
 
   if (now) {
-    console.log('tarkistus')
     let pastTime = now.timestamp;
     if (!hourCheck(pastTime)) {
     localStorage.setItem('sessionKey', JSON.stringify(storageItem))}
   } else {
-    console.log('toimii')
     localStorage.setItem('sessionKey', JSON.stringify(storageItem))
   }
+  sessionStorage.setItem('sessionKey', storageItem.sessionID)
 }
 
 export default function NameForm({history}) {
@@ -51,8 +50,8 @@ export default function NameForm({history}) {
             validationSchema={quizSchema}
             onSubmit={(values, { setSubmitting, resetForm }) => {              
                 setSubmitting(true);
-                sessionStorage.setItem('nickname', values.nickname)          
-                console.log("submit tapahtuu")
+                sessionStorage.setItem('nickname', values.nickname)        
+                console.log("submit toimii")
                 checkTeacherBadge({badge: values.badge})
                 .then(res => {
                     if (res.success) {
@@ -63,10 +62,6 @@ export default function NameForm({history}) {
                       setShow(false)
                     }
                 })
-                /*.then(() => {history.push({
-                  pathname: `/student/${values.badge}`
-              })});*/
-                console.log(values)
                 resetForm()
                 setSubmitting(false);
             }}

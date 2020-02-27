@@ -19,7 +19,7 @@ export const postScores = score => {
     headers: { "Content-Type": "application/json"},
     body: JSON.stringify(score)
   })
-  .then(res => res.JSON())
+  .then(res => res.json())
 };
 
 //Noudetaan tulokset tietokannasta
