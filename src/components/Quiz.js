@@ -3,9 +3,9 @@ import socketIOClient from "socket.io-client";
 import { getStudentQs, postScores } from "../service/Request";
 import Question from "./Question";
 import {StoreContext} from '../context/StoreContext'
-import { uuid } from 'uuidv4';
 import "../styles/quiz.scss";
 
+//Submit-nappi on disabled aina siihen asti, että on vastattu kaikkiin kysymyksiin - tarkistaa siis, että vastaus-array on samanpituinen kuin kysymys-array
 const freeTheButton = (arr1, arr2) => {
   if (arr1.length === arr2.length) {
     return false
@@ -13,6 +13,7 @@ const freeTheButton = (arr1, arr2) => {
   return true
 }
 
+//Käytetään tietokantaan lähetettävän datan muotoiluun. Funktio erottelee storen tuloslistasta id:t omaksi arrayksi ja vastaustekstit omaksi arrayksi sen mukaan, onko annettu mukaan markkeri vai ei. Funktio myös sorttaa id:t oikeaan järjestykseen, jotta backend voi myöhemmin suorittaa tuloslaskun oikein
 const createDataArray = (array, marker) => {
   let newOne = array.sort((a, b) => a.id - b.id)
 
@@ -23,36 +24,20 @@ const createDataArray = (array, marker) => {
   }
 }
 
-const hourCheck = (date) => {
-  const hours = 1000 * 60 * 60 //* 10;
-  const tenHoursAgo = Date.now() - hours;
-
-  return date > tenHoursAgo;
-}
-
-const checkAndSetStorage = now => {
-  let storageItem = {sessionID: uuid(), timestamp: Date.now()}
-
-  if (now) {
-    let pastTime = now.timestamp;
-    if (!hourCheck(pastTime)) {
-    localStorage.setItem('sessionKey', JSON.stringify(storageItem))}
-  } else {
-    localStorage.setItem('sessionKey', JSON.stringify(storageItem))
-  }
-}
-
 export default function Quiz({history, match}) {
   const {state} = useContext(StoreContext);
   const [message, setMessage] = useState({});
-  const [data, setData] = useState([]);
+  const [data, setData] = useState();
   const [title, setTitle] = useState()
 
-  const tagItem = JSON.parse(localStorage.getItem("sessionKey"))
+  if (!sessionStorage.getItem("nickname")) {
+    history.push({pathname: "/student/enter/"})
+  }
+
+  //const tagItem = JSON.parse(localStorage.getItem("sessionKey"))
+  const tagTestItem = sessionStorage.getItem("sessionKey")
 
   const socket = socketIOClient("http://localhost:5001");
-
-  checkAndSetStorage(tagItem)
 
   socket.on("eventMessageStudent", message => {
     setMessage(message);
@@ -63,7 +48,7 @@ export default function Quiz({history, match}) {
         sessionStorage.setItem("quizID", message.quiz_badge)
       
         let socketObject = {badge: message.quiz_author,
-                            result_tag: tagItem && tagItem.sessionID,
+                            result_tag: tagTestItem /*tagItem && tagItem.sessionID*/,
                             quiz_badge: message.quiz_badge}
 
         getStudentQs(socketObject).then(res => {
@@ -77,12 +62,14 @@ export default function Quiz({history, match}) {
 
   useEffect(() => {
 
-    const tagItem = JSON.parse(localStorage.getItem("sessionKey"));
+    //const tagItem = JSON.parse(localStorage.getItem("sessionKey"));
+    const tagTestItem = sessionStorage.getItem("sessionKey")
     const badge = {badge: parseInt(match.params.quiz_author),
-                    result_tag: tagItem && tagItem.sessionID,
+                    result_tag: tagTestItem /*tagItem && tagItem.sessionID*/,
                     quiz_badge: sessionStorage.getItem("quizID")
                   };
-    if (tagItem) {           
+
+    if (tagTestItem) {           
     getStudentQs(badge).then(res => {
       if (!res.question) {
         sessionStorage.removeItem('start')
@@ -102,10 +89,10 @@ export default function Quiz({history, match}) {
   const submitClick = (e) => {
     e.preventDefault()
     let postData = { 
-      nickname: 'nick',
+      nickname: sessionStorage.getItem("nickname"),
       question_ids: createDataArray(state.pointList, message), 
       user_answer : createDataArray(state.pointList),
-      result_tag: tagItem && tagItem.sessionID, 
+      result_tag: tagTestItem /*tagItem && tagItem.sessionID*/, 
       quiz_badge: sessionStorage.getItem("start")}
 
     console.log(postData)
@@ -113,6 +100,7 @@ export default function Quiz({history, match}) {
     postScores(postData)
       .then(res => {console.log(res)})
       .then(sessionStorage.removeItem("start"))
+      .then(sessionStorage.removeItem("sessionKey"))
       .then(sessionStorage.setItem('studentTag', postData.result_tag))
       .then(socket.emit("submitClick", ev => {
         console.log("submit click lähtetty", ev);

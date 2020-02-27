@@ -5,16 +5,11 @@ import ScoreItem from './ScoreItem'
 const Result = ({history}) => {
     const [score, setScore] = useState([]);
 
-    console.log(history)
-
     const getResults = () => {
-            const tagForResult = ((history||{}).location||{}).state
-            console.log(tagForResult)
+        const tagForResult = ((history||{}).location||{}).state
         studentScore(tagForResult)
             .then(res => setScore(res))
     }
-
-    console.log(score)
 
     
     //useEffect hakee oppilaan tulokset yllämuotoillulla oliolla sivulle joka kerta, kun sivu renderöityy
@@ -44,7 +39,6 @@ const Result = ({history}) => {
         }
     return (<div className="text-white">Kokonaispisteesi: {points.length}/{score.length} eli {Math.round(points.length/score.length*100)} %</div>)
     }
-    //!history.location.state || !localStorage.getItem('sessionKey'
     
     //Mikäli sivulle tullaan suoraan kirjoittamalla se urliin, sillä ei ole historiaa ja vain tämä näkymä renderöityy
     if (!history.location.state || !localStorage.getItem('sessionKey')) {
