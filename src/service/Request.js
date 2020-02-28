@@ -23,7 +23,7 @@ export const postScores = score => {
 };
 
 //Noudetaan tulokset tietokannasta
-export const studentScore = searchData => {
+export const studentScore = (searchData) => {
   return fetch('/api/scores/student', {
     method: "POST",
     headers: { "Content-Type": "application/json"},
