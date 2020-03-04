@@ -76,7 +76,7 @@ export default function NameForm({history}) {
               handleSubmit,
             }) => (
               <Form>
-                <div>
+                <div className="text-white">
                 <h2 className="text-white">Tervetuloa tekemään tenttiä!</h2>
                 <Field
                   type="text"

@@ -38,19 +38,20 @@ const Question = ({ result, index}) => {
     let data = {id: result.id, identifier: index, resultText: e.target.value}    
     actions.addToPointList(data, state.pointList); 
     }
-
+    console.log(answerOptions)
   //Muotoillaan vastaussetti 
   let answers = answerOptions.map((answer, index) => {
     return (
       <div className="radioContainer" key={index}>
         <input
+          id={answer.answerText}
           type="radio"
           className="ansRadioBtn"
           value={answer.answerText}
           onChange={onChangeCheck}
           name={result.id}
-        />{" "}
-        <label>{answer.answerText}</label>
+        />
+        <label htmlFor={answer.answerText}>{answer.answerText}</label>
       </div>
     );
   })
