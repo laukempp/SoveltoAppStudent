@@ -97,7 +97,7 @@ const Result = ({ history }) => {
       <div>
         <br/>
         <Link to={{pathname: "/student/quiz/" + sessionStorage.getItem("teacher")}}>
-        <h5 className="textWhite">Takaisin tenttisivulle</h5></Link>
+        <h5 className="registerUser">Takaisin tenttisivulle</h5></Link>
       </div>
       </div>
     );

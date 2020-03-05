@@ -276,3 +276,10 @@ input[type=radio] {
     margin-bottom: 1%;
     font-weight: 600;
 }
+.registerUser {
+    font-weight: 650;
+    color: rgb(245, 226, 191);
+    &:hover {
+      color: lightblue;
+    }
+  }
