@@ -35,23 +35,24 @@ const Question = ({ result, index }) => {
 
   //Funktio, joka tallentaa oppilaan vastaukset. setSelected poimii vastaukset, mutta oleellisempaa on data-muuttujan keräämä tieto, koska se lähetetään ja tallennetaan store-komponentin ylläpitämään arrayhin, jotta kaikki oppilaan vastaukset saadaan tallennettua. Lisää kommentointia storen puolella.
   const onChangeCheck = e => {
-    setSelected({ ...selected, [e.target.name]: e.target.value });
-    let data = { id: result.id, identifier: index, resultText: e.target.value };
-    actions.addToPointList(data, state.pointList);
-  };
-
-  //Muotoillaan vastaussetti
+    setSelected({...selected, [e.target.name]: e.target.value })
+    let data = {id: result.id, identifier: index, resultText: e.target.value}    
+    actions.addToPointList(data, state.pointList); 
+    }
+    console.log(answerOptions)
+  //Muotoillaan vastaussetti 
   let answers = answerOptions.map((answer, index) => {
     return (
       <div className="radioContainer" key={index}>
         <input
+          id={answer.answerText}
           type="radio"
           className="ansRadioBtn"
           value={answer.answerText}
           onChange={onChangeCheck}
           name={result.id}
-        />{" "}
-        <label>{answer.answerText}</label>
+        />
+        <label htmlFor={answer.answerText}>{answer.answerText}</label>
       </div>
     );
   });

@@ -47,9 +47,6 @@ export default function NameForm({ history }) {
   const [show, setShow] = useState(true);
   const [teacher_badge, setTeacher_badge] = useState(0);
 
-  console.log(history)
-
-  //Formikin submitissa tarkistetaan ensin, onko opettajanumero olemassa. Jos saadaan success-viesti, suoritetaan localStoragen sessioData-operaatio, tallennetaan nimimerkki sessionStorageen ja siirrytään seuraavalle sivulle. Jos ei ole, asetetaan komponentin tilaksi se numerosarja, jonka oppilas syötti ja setShow'n tilaksi false. Tämä siksi, että voidaan näyttää oppilaalle, minkä numeron hän syötti ja kertoa, että se oli virheellinen
   return (
     <div className="container">
       <h2 className="text-white"> </h2>
@@ -58,9 +55,10 @@ export default function NameForm({ history }) {
         validationSchema={quizSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
+          sessionStorage.setItem("nickname", values.nickname);
+          console.log("submit toimii");
           checkTeacherBadge({ badge: values.badge }).then(res => {
             if (res.success) {
-              sessionStorage.setItem("nickname", values.nickname);
               checkAndSetStorage(previousDate);
               history.push({ pathname: `/student/quiz/${values.badge}` });
             } else {
@@ -82,10 +80,8 @@ export default function NameForm({ history }) {
           handleSubmit
         }) => (
           <Form>
-            <div>
+            <div className="text-white">
               <h2 className="text-white">Tervetuloa tekemään tenttiä!</h2>
-              <br/>
-              <div className="text-white">{(((history || {}).location || {}).state || {}).message}</div>
               <Field
                 type="text"
                 name="nickname"
