@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
 import "../styles/quiz.scss";
-import {StoreContext} from '../context/StoreContext'
+import { StoreContext } from "../context/StoreContext";
 
-const Question = ({ result, index}) => {
-
+const Question = ({ result, index }) => {
   //Määritellään komponentin tila
-  const [answerOptions, setAnswerOptions] = useState([]); 
+  const [answerOptions, setAnswerOptions] = useState([]);
   const [selected, setSelected] = useState();
 
   //Otetaan käyttöön reactin useContext-hook, jota käytetään vähän kuin Reduxia eli tilan säilyttämiseen
-  const {state, actions} = useContext(StoreContext);
+  const { state, actions } = useContext(StoreContext);
 
   //Joka kerta, kun sivu renderöityy, sekoitetaan vastausten järjestystä
   useEffect(() => {
-    let newArray = result.wrong_answer.concat(result.correct_answer).map((item, index) => {
-      return {option: index, answerText: item}
-    })
+    let newArray = result.wrong_answer
+      .concat(result.correct_answer)
+      .map((item, index) => {
+        return { option: index, answerText: item };
+      });
 
-    shuffle(newArray)
-  }, [result.wrong_answer, result.correct_answer])
+    shuffle(newArray);
+  }, [result.wrong_answer, result.correct_answer]);
 
   //Funktio vastausten järjestyksen sekoittamiseen
   const shuffle = arr => {
@@ -54,7 +55,7 @@ const Question = ({ result, index}) => {
         <label htmlFor={answer.answerText}>{answer.answerText}</label>
       </div>
     );
-  })
+  });
 
   //Lopullinen renderöinti, jossa kysymys ja ylläoleva vastaussetin muotoileva muuttuja
   return (
@@ -62,11 +63,9 @@ const Question = ({ result, index}) => {
       <div className="qntxtbox">
         <b>{result.question}</b>
       </div>
-      <div className="answerDiv">
-        {answers}
-      </div>
+      <div className="answerDiv">{answers}</div>
     </div>
-  )
-}
+  );
+};
 
 export default Question;
