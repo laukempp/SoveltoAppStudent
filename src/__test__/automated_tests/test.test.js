@@ -6,10 +6,17 @@ const webdriver = require('selenium-webdriver'),
 
 const assert = require('assert');
 
+const chai = require('chai');
+const chaiAsPromised = require('chai-as-promised');
+
+chai.use(chaiAsPromised);
+
+const expect = chai.expect;
+
 describe('Testing NameForm', () => {
   let driver;
 
-  before(async ()=> {
+  beforeEach(async ()=> {
     driver = await new webdriver.Builder()
     .forBrowser('chrome')
     .build();
@@ -21,7 +28,7 @@ describe('Testing NameForm', () => {
     await driver.findElement(By.id('studentNickname')).click();
     await driver.findElement(By.id('studentNickname')).sendKeys('nimi', webdriver.Key.TAB);
     await driver.findElement(By.id('teacherBadge')).click();
-    await driver.findElement(By.id('teacherBadge')).sendKeys('70408', webdriver.Key.TAB);
+    await driver.findElement(By.id('teacherBadge')).sendKeys('551', webdriver.Key.TAB);
     await driver.findElement(By.id('teacherBadge')).click();
     await driver.findElement(By.id('nfButton')).click()
 
@@ -37,8 +44,7 @@ describe('Testing NameForm', () => {
     await driver.findElement(By.id('studentNickname')).click();
     await driver.findElement(By.id('studentNickname')).sendKeys('nimi', webdriver.Key.TAB);
     await driver.findElement(By.id('teacherBadge')).click();
-    await driver.findElement(By.id('teacherBadge')).sendKeys('66489', webdriver.Key.TAB);
-    await driver.findElement(By.id('teacherBadge')).click();
+    await driver.findElement(By.id('teacherBadge')).sendKeys('44200', webdriver.Key.TAB);
     await driver.findElement(By.id('nfButton')).click()
 
     await driver.wait(until.elementLocated(By.id('teacherError')), 10000);
@@ -51,11 +57,11 @@ describe('Testing NameForm', () => {
     })*/
 
       let errorElement = await driver.findElement(By.id('teacherError')).getText()
-      assert.equal(errorElement, 'Opettajanumeroa 66489 ei voida tunnistaa, kokeile uudelleen!')
+      assert.equal(errorElement, 'Opettajanumeroa 44200 ei voida tunnistaa, kokeile uudelleen!')
 
   })
 
-  after(() => driver && driver.quit())
+  afterEach(() => driver && driver.quit())
 
 })
 
