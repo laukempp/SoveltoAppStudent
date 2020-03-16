@@ -43,6 +43,8 @@ const checkAndSetStorage = now => {
   sessionStorage.setItem("sessionKey", storageItem.sessionID);
 };
 
+
+
 export default function NameForm({ history }) {
   const [show, setShow] = useState(true);
   const [teacher_badge, setTeacher_badge] = useState(0);
@@ -79,6 +81,7 @@ export default function NameForm({ history }) {
           handleBlur,
           handleSubmit
         }) => (
+          
           <Form>
             <div className="text-white">
               <h2 className="text-white">Tervetuloa tekemään tenttiä!</h2>
@@ -119,7 +122,7 @@ export default function NameForm({ history }) {
             </div>
             <div>
               {show ? null : (
-                <div id="teacherError">
+                <div className="text-white" id="teacherError">
                   Opettajanumeroa {teacher_badge} ei voida tunnistaa, kokeile
                   uudelleen!
                 </div>
@@ -131,7 +134,7 @@ export default function NameForm({ history }) {
               className="quizSubmit"
               onClick={handleSubmit}
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || values.nickname && values.badge ? null : true}
             >
               Lähetä
             </button>
