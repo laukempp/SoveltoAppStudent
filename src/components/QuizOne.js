@@ -6,15 +6,6 @@ import FormButton from './FormButton'
 import { StoreContext } from "../context/StoreContext";
 import "../styles/quiz.scss";
 
-//Submit-nappi on disabled aina siihen asti, että on vastattu kaikkiin kysymyksiin - tarkistaa siis, että vastaus-array on samanpituinen kuin kysymys-array
-const freeTheButton = (index, point) => {
-    let realIndex = index + 1;
-    if (realIndex === point.length) {
-      return false;
-    }
-    return true;
-  };
-
 //Käytetään tietokantaan lähetettävän datan muotoiluun. Funktio erottelee storen tuloslistasta id:t omaksi arrayksi ja vastaustekstit omaksi arrayksi sen mukaan, onko annettu mukaan markkeri vai ei. Funktio myös sorttaa id:t oikeaan järjestykseen, jotta backend voi myöhemmin suorittaa tuloslaskun oikein
 const createDataArray = (array, marker) => {
     let newOne = array.sort((a, b) => a.id - b.id);
@@ -28,7 +19,7 @@ const createDataArray = (array, marker) => {
 
 const QuizWhole = ({formProps}) => {
     const [qNumber, setQNumber] = useState(0);
-    const [message, setMessage] = useState({});
+    const [message, setMessage] = useState('');
     const { state } = useContext(StoreContext);
     const {questions, title, tagTestItem, history} = formProps;
 
