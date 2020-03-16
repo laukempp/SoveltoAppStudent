@@ -24,7 +24,7 @@ const QuizWhole = ({formProps}) => {
     const {questions, title, tagTestItem, history} = formProps;
 
     console.log(message)
-
+    
     //Muodostetaan socket-clientti
     const socket = socketIOClient("http://localhost:5001");
 
@@ -33,13 +33,14 @@ const QuizWhole = ({formProps}) => {
     e.preventDefault();
     if (state.pointList.length < questions.length) {
         setMessage("Muistithan vastata kaikkiin kysymyksiin!")
-    } else {
+    } else { 
     let postData = {
       nickname: sessionStorage.getItem("nickname"),
       question_ids: createDataArray(state.pointList, 'marker'),
       user_answer: createDataArray(state.pointList),
       result_tag: tagTestItem /*tagItem && tagItem.sessionID*/,
       quiz_badge: sessionStorage.getItem("start")
+     
     };
 
     postScores(postData)
@@ -65,7 +66,16 @@ const QuizWhole = ({formProps}) => {
       );
     }
   };
-
+  const buttonDisabler = () => {
+    let value;
+    if (state.pointList.length === questions.length){
+      value = false
+    }
+    else{
+      value = true;
+    }
+    return value
+  }
     return (
         <div className="container">
         <h2 className="text-white">{title} </h2>
@@ -86,7 +96,8 @@ const QuizWhole = ({formProps}) => {
                 buttonText: "Lähetä",
                 buttonClass: "quizSubmit",
                 handleClick: submitClick,
-            }}/>        
+                buttonDisabled: buttonDisabler(),
+            }}/>       
         </form>
         <div className="text-white">{message ? message : null}</div>
       </div>

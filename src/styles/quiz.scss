@@ -171,3 +171,6 @@ input[type=radio],
 .radioContainer {
   padding: 5px 0px;
 }
+.quizSubmit:disabled {
+  background-color: gray;
+}
