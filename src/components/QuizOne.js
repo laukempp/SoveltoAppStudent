@@ -23,13 +23,23 @@ const QuizWhole = ({formProps}) => {
     const { state } = useContext(StoreContext);
     const {questions, title, tagTestItem, history} = formProps;
 
+    console.log(questions[qNumber].id)
+
 
     //Tällä funktiolla liikutaan eteenpäin kysymyksissä. Nappia painamalla siirrytään seuraavaan indeksiin.
     const nextQuestion = () => {
-        if(state.pointList.length < questions.length) {
+        if (state.pointList.length === 0) {
             setMessage("Muistithan vastata kysymykseen!")
         } else {
-        setQNumber(a => a + 1)}
+        state.pointList.forEach(key => {
+            if (questions[qNumber].id === key.id) {
+                setMessage('')
+                setQNumber(a => a + 1)  
+            } else {
+                setMessage("Muistithan vastata kysymykseen!")
+                }
+            })
+        }
     }
 
     //Muodostetaan socket-clientti
