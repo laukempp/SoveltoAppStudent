@@ -76,7 +76,7 @@ const QuizWhole = ({formProps}) => {
         <div>Hei {sessionStorage.getItem("nickname")}! Tervetuloa tekemään tenttiä.</div>
         <form>
           <div className="qnbox">
-            <Question index={qNumber} result={questions[qNumber]} key={questions && questions[qNumber] && questions[qNumber].id} />
+            <Question index={qNumber} result={questions[qNumber]} key={questions && questions[qNumber] && questions[qNumber].id} setMessage={setMessage} />
           </div>
           {questions.length > state.pointList.length ? (
                     <FormButton buttonProps = {{
