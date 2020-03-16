@@ -66,13 +66,13 @@ const QuizWhole = ({formProps}) => {
       );
     }
   };
-  const buttonDisabler = () => {
+  const buttonClassChanger = () => {
     let value;
     if (state.pointList.length === questions.length){
-      value = false
+      value = "quizSubmit"
     }
     else{
-      value = true;
+      value = "quizSubmit_allNotAnswered";
     }
     return value
   }
@@ -94,9 +94,9 @@ const QuizWhole = ({formProps}) => {
           <FormButton
             buttonProps ={{
                 buttonText: "Lähetä",
-                buttonClass: "quizSubmit",
+                buttonClass: buttonClassChanger(),
                 handleClick: submitClick,
-                buttonDisabled: buttonDisabler(),
+                
             }}/>       
         </form>
         <div className="text-white">{message ? message : null}</div>

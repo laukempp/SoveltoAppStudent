@@ -174,3 +174,21 @@ input[type=radio],
 .quizSubmit:disabled {
   background-color: gray;
 }
+.quizSubmit_allNotAnswered {
+  display: inline-block;
+  width: 35%;
+  margin-top: 6px;
+  background-color: gray;
+  color: #fff;
+  padding: 10px 10px;
+  outline: 0;
+  border: 0;
+  border-radius: 2px;
+  border-collapse: collapse;
+  font-weight: 500;
+  margin: 3% 0;
+    &:hover {
+      background: darken(gray, 10%);
+      font-weight: 600;
+    }
+}
