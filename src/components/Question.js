@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import "../styles/quiz.scss";
 import { StoreContext } from "../context/StoreContext";
 
-const Question = ({ result, index }) => {
+const Question = ({ result, index, setMessage }) => {
   //Määritellään komponentin tila
   const [answerOptions, setAnswerOptions] = useState([]);
   const [selected, setSelected] = useState();
@@ -38,8 +38,9 @@ const Question = ({ result, index }) => {
     setSelected({...selected, [e.target.name]: e.target.value })
     let data = {id: result.id, identifier: index, resultText: e.target.value}    
     actions.addToPointList(data, state.pointList); 
+    setMessage('')
     }
-    console.log(answerOptions)
+
   //Muotoillaan vastaussetti 
   let answers = answerOptions.map((answer, index) => {
     return (
