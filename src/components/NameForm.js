@@ -48,7 +48,7 @@ const checkAndSetStorage = now => {
 export default function NameForm({ history }) {
   const [show, setShow] = useState(true);
   const [teacher_badge, setTeacher_badge] = useState(0);
-
+  let disabledValue;
   return (
     <div className="container">
       <h2 className="text-white"> </h2>
@@ -128,13 +128,13 @@ export default function NameForm({ history }) {
                 </div>
               )}
             </div>
-
+              {disabledValue = values.nickname && values.badge ? null : true}
             <button
               id="nfButton"
               className="quizSubmit"
               onClick={handleSubmit}
               type="submit"
-              disabled={isSubmitting || values.nickname && values.badge ? null : true}
+              disabled={isSubmitting || disabledValue}
             >
               Lähetä
             </button>
