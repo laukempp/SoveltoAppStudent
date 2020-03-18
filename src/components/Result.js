@@ -43,6 +43,7 @@ const Result = ({ history }) => {
     const resultSearchTag = { result_tag: storageTag, quiz_badge: quizID };
 
     studentScore(resultSearchTag).then(res => {
+      console.log(res)
       if (isSubscribed) {
         setScore(res);
       }

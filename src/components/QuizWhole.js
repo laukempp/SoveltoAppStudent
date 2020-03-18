@@ -70,8 +70,7 @@ const QuizWhole = ({ formProps }) => {
     let value;
     if (state.pointList.length === questions.length){
       value = "quizSubmit"
-    }
-    else{
+    } else {
       value = "quizSubmit_allNotAnswered";
     }
     return value
