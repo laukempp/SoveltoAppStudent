@@ -75,7 +75,18 @@ const QuizWhole = ({ formProps }) => {
     }
   };
 
-  if (show) {
+  const buttonClassChanger = () => {
+    let value;
+    if (state.pointList.length === questions.length){
+      value = "quizSubmit"
+    }
+    else{
+      value = "quizSubmit_allNotAnswered";
+    }
+    return value
+  }
+    
+     if (show) {
     return (
       <div>
         <h3 className="text-white">Tentti lähetetty!</h3>
@@ -105,13 +116,14 @@ const QuizWhole = ({ formProps }) => {
           </div>
           <div className="text-white">{message ? message : null}</div>
           <FormButton
-            buttonProps={{
-              buttonText: "Lähetä",
-              buttonClass: "quizSubmit",
-              handleClick: submitClick,
-              buttonDisabled: buttonDisabler()
-            }}
-          />
+
+            buttonProps ={{
+                buttonText: "Lähetä",
+                buttonClass: buttonClassChanger(),
+                handleClick: submitClick,
+                
+            }}/>       
+
         </form>
       </div>
     );
