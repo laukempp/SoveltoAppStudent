@@ -18,6 +18,7 @@ const createDataArray = (array, marker) => {
   };
 
 const QuizWhole = ({formProps}) => {
+    const [show, setShow] = useState(false);
     const [qNumber, setQNumber] = useState(0);
     const [message, setMessage] = useState('');
     const { state } = useContext(StoreContext);
@@ -59,7 +60,18 @@ const QuizWhole = ({formProps}) => {
 
     postScores(postData)
       .then(res => {
-        console.log(res);
+        if (res.nickname) {
+            setTimeout(() => {
+              history.push({
+                pathname: "/student/results",
+                state: {
+                  result_tag: postData.result_tag,
+                  quiz_badge: postData.quiz_badge
+                }
+              });
+            }, 2000);
+          }
+          setShow(true);
       })
       .then(sessionStorage.removeItem("start"))
       .then(sessionStorage.removeItem("sessionKey"))
@@ -69,17 +81,15 @@ const QuizWhole = ({formProps}) => {
           console.log("submit click lähtetty", ev);
         })
       )
-      .then(
-        history.push({
-          pathname: "/student/results",
-          state: {
-            result_tag: postData.result_tag,
-            quiz_badge: postData.quiz_badge
-          }
-        })
-      );
   };
 
+  if (show) {
+    return (
+      <div>
+        <h3 className="text-white">Tentti lähetetty!</h3>
+      </div>
+    );
+  } else {
     return (
         <div className="container">
         <h2 className="text-white">{title} </h2>
@@ -105,6 +115,7 @@ const QuizWhole = ({formProps}) => {
         <div className="text-white">{message ? message : null}</div>
       </div>
     )
+                }
 }
 
 export default QuizWhole;
