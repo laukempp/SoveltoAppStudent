@@ -23,15 +23,6 @@ const QuizWhole = ({ formProps }) => {
   const { state } = useContext(StoreContext);
   const { questions, title, tagTestItem, history } = formProps;
 
-  const buttonDisabler = () => {
-    if (state.pointList.length === questions.length) {
-      return false;
-    }
-    return true;
-  };
-
-  console.log(message);
-
   //Muodostetaan socket-clientti
   const socket = socketIOClient("http://localhost:5001");
 
@@ -79,20 +70,20 @@ const QuizWhole = ({ formProps }) => {
     let value;
     if (state.pointList.length === questions.length){
       value = "quizSubmit"
-    }
-    else{
+    } else {
       value = "quizSubmit_allNotAnswered";
     }
     return value
   }
-    
-     if (show) {
+
+  if (show) {
     return (
       <div>
         <h3 className="text-white">Tentti lähetetty!</h3>
       </div>
     );
   } else {
+  
     return (
       <div className="container">
         <h2 className="text-white">{title} </h2>
@@ -116,14 +107,12 @@ const QuizWhole = ({ formProps }) => {
           </div>
           <div className="text-white">{message ? message : null}</div>
           <FormButton
-
             buttonProps ={{
                 buttonText: "Lähetä",
                 buttonClass: buttonClassChanger(),
                 handleClick: submitClick,
                 
             }}/>       
-
         </form>
       </div>
     );
