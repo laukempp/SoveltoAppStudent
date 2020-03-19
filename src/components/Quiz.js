@@ -7,9 +7,10 @@ import QuizOne from "./QuizOne";
 import "../styles/quiz.scss";
 
 export default function Quiz({ history, match }) {
-  const [questions, setQuestions] = useState();
-  const [title, setTitle] = useState();
-  const [type, setType] = useState();
+  const [questions, setQuestions] = useState([]);
+  const [title, setTitle] = useState('');
+  const [type, setType] = useState('');
+  const [load, setLoad] = useState(false)
 
   //Tarkistetaan, löytyykö localStoragesta sessioData. Jos ei löydy, siirretään opiskelija sivulle, joka hoitaa sessioDatan tallennuksen, koska ilman sessioDataa, ei ole oikeutta nähdä tenttiä
   if (!localStorage.getItem("sessionKey")) {
@@ -37,7 +38,6 @@ export default function Quiz({ history, match }) {
     if (message.quiz_author === match.params.quiz_author) {
       sessionStorage.removeItem("quizID");
       sessionStorage.setItem("start", message.quiz_badge);
-      sessionStorage.setItem("teacher", message.quiz_author);
       sessionStorage.setItem("quizID", message.quiz_badge);
       sessionStorage.setItem("quizType", message.quiz_type)
 
@@ -46,7 +46,7 @@ export default function Quiz({ history, match }) {
         result_tag: tagTestItem /*tagItem && tagItem.sessionID*/,
         quiz_badge: message.quiz_badge
       };
-
+      
       getStudentQs(socketObject).then(res => {
         setQuestions(res.question);
         setTitle(res.result[0].title);
@@ -57,10 +57,11 @@ export default function Quiz({ history, match }) {
 
   //useEffect hakee tenttidatan ekan renderöinnin jälkeen (ekalla käytetään socket-funktion sisällä olevaa funktiota) - useEffectin sisällä tarkistetaan, että opiskelijalla on oikeus nähdä tentti (tagItem = true) ja sitten haetaan data. Jos palvelin palauttaa tyhjää, tentti on yli 10 min vanha eikä opiskejalla ole enää oikeutta nähdä sitä, joten poistetaan sessionStoragesta tentin aloittava "start" -tagi.
   useEffect(() => {
+    console.log('Sinäkö siellä')
     //const tagItem = JSON.parse(localStorage.getItem("sessionKey"));
     const tagTestItem = sessionStorage.getItem("sessionKey");
     const badge = {
-      badge: parseInt(match.params.quiz_author),
+      badge: sessionStorage.getItem('teacher'),
       result_tag: tagTestItem /*tagItem && tagItem.sessionID*/,
       quiz_badge: sessionStorage.getItem("quizID")
     };
@@ -71,7 +72,6 @@ export default function Quiz({ history, match }) {
           sessionStorage.removeItem("start");
         } else {
           sessionStorage.setItem("start", res.result[0].quiz_badge);
-          sessionStorage.setItem("teacher", match.params.quiz_author);
           sessionStorage.setItem("quizID", res.result[0].quiz_badge);
           sessionStorage.setItem("quizType", res.result[0].quiz_type)
           setQuestions(res.question);
@@ -82,7 +82,7 @@ export default function Quiz({ history, match }) {
     }
 
     return;
-  }, [match.params.quiz_author]);
+  }, []);
 
   //Kootaan lapsikomponenteille lähetettävät tiedot
   const formProps = {
@@ -95,7 +95,7 @@ export default function Quiz({ history, match }) {
   //Tentti näytetään vain, jos storagesta löytyy start-item, komponentti sisältää dataa ja urlin params vastaa sessionStorageen tallennettua opettajatagia - muuten näytetään "Odota tenttiä"
   if (
     sessionStorage.getItem("start") &&
-    questions &&
+    questions[0] &&
     match.params.quiz_author === sessionStorage.getItem("teacher") &&
     !type
   ) {
@@ -106,7 +106,7 @@ export default function Quiz({ history, match }) {
     );
   } else if (
     sessionStorage.getItem("start") &&
-    questions &&
+    questions[0] &&
     match.params.quiz_author === sessionStorage.getItem("teacher") &&
     type
   ) {

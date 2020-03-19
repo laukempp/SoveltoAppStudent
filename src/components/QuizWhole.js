@@ -55,9 +55,9 @@ const QuizWhole = ({ formProps }) => {
           }
           setShow(true);
         })
+        .then(sessionStorage.setItem("studentTag", postData.result_tag))
         .then(sessionStorage.removeItem("start"))
         .then(sessionStorage.removeItem("sessionKey"))
-        .then(sessionStorage.setItem("studentTag", postData.result_tag))
         .then(
           socket.emit("submitClick", ev => {
             console.log("submit click lähtetty", ev);
