@@ -21,14 +21,14 @@ const Result = ({ history }) => {
   }
 
   //Funktiota käytetään ensimmäiseen tuloshakuun - tapahtuu historian staten avulla
-  const getResults = () => {
+  /*const getResults = () => {
     const tagForResult = ((history || {}).location || {}).state;
     studentScore(tagForResult).then(res => {
       if (sessionStorage.getItem("nickname")) {
         setScore(res);
       }
     });
-  };
+  };*/
 
   //useEffect hakee oppilaan tulokset sivulle joka kerta, kun sivu renderöityy
   useEffect(() => {
@@ -36,7 +36,7 @@ const Result = ({ history }) => {
 
     /*const tag = JSON.parse(localStorage.getItem("sessionKey"));*/
     const storageTag = sessionStorage.getItem(
-      "sessionKey"
+      "studentTag"
     ); /*tag && tag.sessionID;*/
     const quizID = sessionStorage.getItem("quizID");
 

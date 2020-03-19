@@ -58,10 +58,10 @@ export default function NameForm({ history }) {
         onSubmit={(values, { setSubmitting, resetForm }) => {
           setSubmitting(true);
           sessionStorage.setItem("nickname", values.nickname);
-          console.log("submit toimii");
           checkTeacherBadge({ badge: values.badge }).then(res => {
             if (res.success) {
               checkAndSetStorage(previousDate);
+              sessionStorage.setItem("teacher", values.badge);
               history.push({ pathname: `/student/quiz/${values.badge}` });
             } else {
               setTeacher_badge(values.badge);
