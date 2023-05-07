@@ -18,7 +18,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "reactstrap": "^8.2.0",
-    "selenium-webdriver": "^4.0.0-alpha.5",
+    "selenium-webdriver": "^4.9.0",
     "sinon": "^8.1.1",
     "socket.io-client": "^2.3.0",
     "uuidv4": "^6.0.2",
